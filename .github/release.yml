@@ -1,0 +1,25 @@
+changelog:
+  exclude:
+    labels:
+      - 'flag.exclude-from-release'
+  categories:
+    - title: Breaking Changes
+      labels:
+        - 'flag.breaking-change'
+
+    - title: Security and Bug fixes
+      labels:
+        - 'is.bug'
+        - 'flag.security'
+
+    - title: New Features
+      labels:
+        - 'is.feature'
+
+    - title: Notable Improvements
+      labels:
+        - 'is.enhancement'
+
+    - title: Other Changes
+      labels:
+        - "*"
