@@ -1,0 +1,13 @@
+name: Github Actions testing
+on:
+  - workflow_dispatch
+
+jobs:
+  # print out the context
+  view_context:
+    runs-on: windows-latest
+    steps:
+     - name: View context attributes
+       uses: actions/github-script@v6
+       with:
+        script: console.log(context)
