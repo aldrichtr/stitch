@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build the module",
+            "type": "shell",
+            "command": "Invoke-Build Build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run tests",
+            "type":"shell",
+            "command": [
+                "${workspaceRoot}\\loadSourceModule.ps1;"
+                "Invoke-Build Test",
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Clean generated files",
+            "type": "shell",
+            "command":"Invoke-Build Clean"
+        }
+    ]
+}
