@@ -1,4 +1,4 @@
-name: Update main infraspective project board
+name: Update project board
 # This workflow ensures that the main project board gets updated when any issue or pr does
 # When an issue is created or reopened, it is given the Status of 'New'
 # When a pr is created, it is given the Status of InProgress and added to the current iteration
