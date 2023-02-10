@@ -1,0 +1,22 @@
+BeforeDiscovery {
+    if (-not($Global:StitchModuleLoaded)) {
+        $thisFile = (Get-Item $PSCommandPath)
+
+        $moduleLoaderFile = (Join-Path $thisFile.Directory 'loadModule.ps1')
+        if (Test-Path $moduleLoaderFile) {
+            . $moduleLoaderFile
+        }
+    }
+}
+
+Describe "Testing <%= $s.Visibility %> <%= $s.Type %> <%= $s.Name %>" -Tags @('unit', '<%= $s.Noun %>', '<%= $s.Verb %>' ) {
+    Context 'The command is available from the module' {
+        BeforeAll {
+            $command = Get-Command ' <%= $s.Name %>'
+        }
+
+        It 'Should load without error' {
+            $command | Should -Not -BeNullOrEmpty
+        }
+    }
+}
