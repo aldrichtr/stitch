@@ -14,7 +14,7 @@
             "label": "Run tests",
             "type":"shell",
             "command": [
-                "${workspaceRoot}\\loadSourceModule.ps1;"
+                "${workspaceRoot}\\tools\\loadSourceModule.ps1;",
                 "Invoke-Build Test",
             ],
             "group": {
