@@ -1,0 +1,4 @@
+
+# Set the the epic label
+'is.epic':
+  - '^[Epic]'
