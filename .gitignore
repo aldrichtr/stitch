@@ -1,0 +1,8 @@
+# Build Artifacts
+out/
+
+# Build staging area
+stage/
+
+# ignore the github wiki content repo
+docs/wiki
