@@ -76,3 +76,61 @@ jobs:
           project_id: ${{ env.project_number }}
           resource_node_id: ${{ github.event.issue.node_id }}
           custom_field_values: ${{ env.project_sp_13 }}
+  pr_labeled:
+    name: Pull request labeled
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set StoryPoints to 1
+        if: github.event_name == 'pull_requests' && github.event.label.name == 'sp.01'
+        uses: leonsteinhaeuser/project-beta-automations@v2.0.1
+        with:
+          gh_token: ${{ env.project_token }}
+          user: aldrichtr
+          project_id: ${{ env.project_number }}
+          resource_node_id: ${{ github.event.pull_request.node_id }}
+          custom_field_values: ${{ env.project_sp_01 }}
+      - name: Set StoryPoints to 2
+        if: github.event_name == 'pull_requests' && github.event.label.name == 'sp.02'
+        uses: leonsteinhaeuser/project-beta-automations@v2.0.1
+        with:
+          gh_token: ${{ env.project_token }}
+          user: aldrichtr
+          project_id: ${{ env.project_number }}
+          resource_node_id: ${{ github.event.pull_request.node_id }}
+          custom_field_values: ${{ env.project_sp_02 }}
+      - name: Set StoryPoints to 3
+        if: github.event_name == 'pull_requests' && github.event.label.name == 'sp.03'
+        uses: leonsteinhaeuser/project-beta-automations@v2.0.1
+        with:
+          gh_token: ${{ env.project_token }}
+          user: aldrichtr
+          project_id: ${{ env.project_number }}
+          resource_node_id: ${{ github.event.pull_request.node_id }}
+          custom_field_values: ${{ env.project_sp_03 }}
+      - name: Set StoryPoints to 5
+        if: github.event_name == 'pull_requests' && github.event.label.name == 'sp.05'
+        uses: leonsteinhaeuser/project-beta-automations@v2.0.1
+        with:
+          gh_token: ${{ env.project_token }}
+          user: aldrichtr
+          project_id: ${{ env.project_number }}
+          resource_node_id: ${{ github.event.pull_request.node_id }}
+          custom_field_values: ${{ env.project_sp_05 }}
+      - name: Set StoryPoints to 8
+        if: github.event_name == 'pull_requests' && github.event.label.name == 'sp.08'
+        uses: leonsteinhaeuser/project-beta-automations@v2.0.1
+        with:
+          gh_token: ${{ env.project_token }}
+          user: aldrichtr
+          project_id: ${{ env.project_number }}
+          resource_node_id: ${{ github.event.pull_request.node_id }}
+          custom_field_values: ${{ env.project_sp_08 }}
+      - name: Set StoryPoints to 13
+        if: github.event_name == 'pull_requests' && github.event.label.name == 'sp.13'
+        uses: leonsteinhaeuser/project-beta-automations@v2.0.1
+        with:
+          gh_token: ${{ env.project_token }}
+          user: aldrichtr
+          project_id: ${{ env.project_number }}
+          resource_node_id: ${{ github.event.pull_request.node_id }}
+          custom_field_values: ${{ env.project_sp_13 }}
