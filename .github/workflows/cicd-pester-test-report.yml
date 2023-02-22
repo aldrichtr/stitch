@@ -2,6 +2,7 @@ name: Generate a Pester test report
 run-name: Creating Pester test report for ${{ github.base_ref }} by @${{ github.actor }}
 
 on:
+  workflow_dispatch:
   push:
     branches-ignore:
       - main
