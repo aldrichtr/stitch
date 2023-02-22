@@ -7,7 +7,14 @@ jobs:
   view_context:
     runs-on: windows-latest
     steps:
-     - name: View context attributes
-       uses: actions/github-script@v6
-       with:
-        script: console.log(context)
+     - name: View github context attributes
+       shell: pwsh
+       env:
+         GITHUB_CONTEXT: ${{ toJson(github) }}
+       run: |
+         Write-Host $PSVersionTable
+         $githubContext =  $env:GITHUB_CONTEXT | ConvertFrom-Json -Depth 32
+         Write-Host "$('-' * 78)"
+         Write-Host "Github Context:"
+         $githubContext
+         Write-Host "$('-' * 78)"
