@@ -1,13 +1,19 @@
+#Requires -Modules @{ ModuleName = "Pester"; ModuleVersion = "5.4.0"}
+
 param(
     [Parameter()]
-    [string]$ConfigFile = 'pester.Unit.config.psd1'
+    [string]$ConfigFile
 )
 
 if (Test-Path $ConfigFile) {
-
-    $config = Import-Psd $ConfigFile
-    $pesterConfig = New-PesterConfiguration -Hashtable $config
+    try {
+        $config = Import-PowerShellDataFile -Path $ConfigFile
+        $pesterConfig = New-PesterConfiguration -Hashtable $config
+    } catch {
+        Write-Host "Could not import $ConfigFile"
+    }
 } else {
+    Write-Host 'No Config File given running all tests in ./tests'
     $pesterConfig = New-PesterConfiguration -Hashtable @{
         Run = @{
             Path = './tests'
