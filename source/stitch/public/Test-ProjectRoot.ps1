@@ -44,31 +44,81 @@ function Test-ProjectRoot {
             }
         )]
         [Alias('PSPath')]
-        [string]$Path = (Get-Location).ToString()
+        [string]$Path = (Get-Location).ToString(),
+
+        # Powershell Data File with defaults
+        [Parameter(
+        )]
+        [string]$Defaults,
+
+        # Default Source directory
+        [Parameter(
+        )]
+        [string]$Source = '.\source',
+
+        # Default Tests directory
+        [Parameter(
+        )]
+        [string]$Tests = '.\tests',
+
+        # Default Staging directory
+        [Parameter(
+        )]
+        [string]$Staging = '.\stage',
+
+        # Default Artifact directory
+        [Parameter(
+        )]
+        [string]$Artifact = '.\out',
+
+        # Default Docs directory
+        [Parameter(
+        )]
+        [string]$Docs = '.\docs'
     )
     begin {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         #! How many default directories must be present to be considered true
         $DEFAULTS_REQUIRED = 2
 
-        $defaultsFile = (Join-Path $MyInvocation.MyCommand.Module.ModuleBase 'Defaults.psd1')
-        $defaults = Import-Psd $defaultsFile
+        $FAILSAFE_DEFAULTS = @{
+            Source   = $Source
+            Tests    = $Tests
+            Staging  = $Staging
+            Artifact = $Artifact
+            Docs     = $Docs
+        }
+
+        if ($PSBoundParameters.ContainsKey('Defaults')) {
+            if (Test-Path $Defaults) {
+                Write-Debug "Importing defaults from $Defaults"
+                $defaultFolders = Import-PowerShellDataFile $Defaults
+            }
+        } else {
+            Write-Debug 'No defaults file found using internal defaults'
+            $defaultFolders = $FAILSAFE_DEFAULTS
+        }
     }
     process {
-        Write-Debug 'Testing against default project directories'
+        Write-Debug "Testing against default project directories in $Path"
         $defaultsInDirectory = 0
-        foreach ($key in $defaults.Keys) {
+        foreach ($key in $defaultFolders.Keys) {
             Write-Debug "Checking for $key variable. Defaults found so far $defaultsInDirectory"
             $pathVariable = Get-Variable $key -ValueOnly -ErrorAction SilentlyContinue
             if ($null -ne $pathVariable) {
-                $pathToTest = $pathVariable
+                Write-Debug "  - found $pathVariable"
+                $pathToTest = (Join-Path $Path $pathVariable)
             } else {
-                $pathToTest = (Join-Path $Path $defaults[$key])
+                Write-Debug '  - Not found joining with Path'
+                $pathToTest = (Join-Path $Path $defaultFolders[$key])
             }
 
             Write-Debug "Testing if $pathToTest is present"
             if (Test-Path $pathToTest) {
+                Write-Debug '  - It was found'
                 $defaultsInDirectory += 1
+            } else {
+                Write-Debug '  - It was found'
             }
         }
     }

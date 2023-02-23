@@ -1,8 +1,7 @@
-
-Function Get-SourceItem {
+﻿
+function Get-SourceItem {
     <#
     #>
-    [OutputType('BuildTool.SourceItem')]
     [CmdletBinding()]
     param(
         # Specifies a path to one or more locations.

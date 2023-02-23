@@ -13,5 +13,9 @@
         Tags = @('ci')
     }
 
+    Metadata = @{
+        Version = '1.5.7'
+        Tags = @('ci')
+    }
 
 }

@@ -14,8 +14,8 @@ function Get-SourceTypeMap {
     }
     process {
         if ($null -eq $script:SourceTypeMap) {
-            Write-Verbose "Source type map not set.  Creating now."
-            $script:SourceTypeMap = New-SourceTypeMap
+            Write-Debug   "Source type map not set.  Creating now."
+            New-SourceTypeMap
         }
         $script:SourceTypeMap | Write-Output
     }
