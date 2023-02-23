@@ -22,7 +22,37 @@ function Resolve-ProjectRoot {
 
         # Optionally limit the number of levels to seach
         [Parameter()]
-        [int]$Depth = 8
+        [int]$Depth = 8,
+
+        # Powershell Data File with defaults
+        [Parameter(
+        )]
+        [string]$Defaults,
+
+        # Default Source directory
+        [Parameter(
+        )]
+        [string]$Source = '.\source',
+
+        # Default Tests directory
+        [Parameter(
+        )]
+        [string]$Tests = '.\tests',
+
+        # Default Staging directory
+        [Parameter(
+        )]
+        [string]$Staging = '.\stage',
+
+        # Default Artifact directory
+        [Parameter(
+        )]
+        [string]$Artifact = '.\out',
+
+        # Default Docs directory
+        [Parameter(
+        )]
+        [string]$Docs = '.\docs'
     )
     begin {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
@@ -44,7 +74,8 @@ function Resolve-ProjectRoot {
         }
         do {
             if ($null -ne $currentLocation) {
-                if (Test-ProjectRoot $currentLocation.FullName) {
+                $null = $PSBoundParameters.Remove('Path')
+                if (Test-ProjectRoot @PSBoundParameters -Path $currentLocation.FullName) {
                     $rootReached = $true
                     Write-Debug "Project Root found : $($currentLocation.FullName)"
                     $currentLocation.FullName | Write-Output

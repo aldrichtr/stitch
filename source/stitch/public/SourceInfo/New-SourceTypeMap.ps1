@@ -27,25 +27,26 @@ function New-SourceTypeMap {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $DEFAULT_MAP_VAR = 'SourceTypeMap'
         $DEFAULT_MAP_FILE = '.\.build\config\sourcetypes.config.psd1'
+        $internalMap = @{}
     }
     process {
-        $script:SourceTypeMap = @{}
         if (Test-Path $DEFAULT_MAP_FILE) {
             Write-Debug "Updating source type map using '$DEFAULT_MAP_FILE'"
-            $script:SourceTypeMap | Update-Object (Import-Psd $DEFAULT_MAP_FILE)
+            $null = $internalMap = $internalMap | Update-Object (Import-Psd $DEFAULT_MAP_FILE)
         }
 
         $map = (Get-Variable -Name $DEFAULT_MAP_VAR -ValueOnly -ErrorAction SilentlyContinue)
         if ($null -ne $map) {
             Write-Debug "Updating source type map using `$$DEFAULT_MAP_VAR"
-            $script:SourceTypeMap | Update-Object $map
+            $null = $internalMap = $internalMap | Update-Object $map
         }
 
         if ($PSBoundParameters.ContainsKey('TypeMap')) {
             Write-Debug "Updating source type map using -TypeMap parameter"
-            $script:SourceTypeMap | Update-Object $TypeMap
+            $null = $internalMap = $internalMap | Update-Object $TypeMap
         }
-        Write-Verbose "`$SourceTypeMap table created"
+        Write-Debug "Type map created.  Updating `$SourceTypeMap table"
+        Set-Variable -Name $DEFAULT_MAP_VAR -Value $internalMap -Scope 'Script'
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
