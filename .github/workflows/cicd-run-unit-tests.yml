@@ -1,0 +1,57 @@
+# Github action workflow to run the Pester tests in the Unit directory
+
+name: Run unit tests
+run-name: Running unit tests for ${{ github.ref_name }} by @${{ github.actor }}
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+
+jobs:
+  UnitTest:
+    name: Run Pester tests tagged 'unit'
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          # Ensure we checkout the buildtools git submodule
+          submodules: recursive
+
+      - name: Configure the module cache
+        id: cache-modules
+        uses: actions/cache@v3
+        with:
+          path: C:\Users\runneradmin\Documents\PowerShell\Modules
+          key: ${{ runner.os }}-${{ hashFiles('**/requirements.psd1') }}
+          restore-keys: |
+            ${{ runner.os }}-psdepend-
+
+      - name: Install PSDepend2 from PSGallery
+        id: install-psdepend
+        run: |
+          $psdependModule = Get-InstalledModule PSDepend2 -ErrorAction SilentlyContinue
+          if ($null -ne $psdependModule) {
+              Write-Host "PSDepend2 is already installed"
+          } else {
+              Set-PSRepository psgallery -InstallationPolicy trusted
+              Install-Module PSDepend2 -Scope CurrentUser -Confirm:$false -Force
+          }
+
+      - name: Call PSDepend to install modules
+        id: invoke-psdepend
+        run: |
+          Import-Module PSDepend2
+          Invoke-PSDepend -Path "." -Recurse:$true -Tags 'ci' -Test | Format-Table DependencyName, Version, DependencyType
+
+          Invoke-PSDepend -Path "." -Recurse:$true -Confirm:$false -Target 'CurrentUser' -Tags 'ci'
+
+      # Run Pester Tests on files in source directory
+      - name: Run UnitTests
+        id: run-tests
+        run: |
+          .\.build\tools\runTests.ps1 -ConfigFile .\.build\config\pester.Unit.config.psd1
