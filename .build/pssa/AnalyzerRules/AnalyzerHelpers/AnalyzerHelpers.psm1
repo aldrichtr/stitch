@@ -1,39 +1,33 @@
+using namespace System.Management.Automation.Language
+using namespace System.Collections.ObjectModel
+using namespace Microsoft.Windows.PowerShell.ScriptAnalyzer
+using namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
 
-function New-PsScriptAnalyzerCorrectionExtent {
-    [CmdletBinding()]
+function New-PSSACorrection {
+    [CmdletBinding(
+        SupportsShouldProcess,
+        ConfirmImpact = 'low'
+    )]
     param(
+        # The original extent
         [Parameter(
-            ValueFromPipelineByPropertyName
+            Mandatory,
+            ValueFromPipeline
         )]
-        [int]$StartLineNumber,
+        [IScriptExtent]$Extent,
 
         [Parameter(
-            ValueFromPipelineByPropertyName
+            Mandatory,
+            Position = 0
         )]
-        [int]$EndLineNumber,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [int]$StartColumnNumber,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [int]$EndColumnNumber,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [AllowEmptyString()]
         [string]$ReplacementText,
 
         [Parameter(
-            ValueFromPipelineByPropertyName
         )]
         [string]$Path,
 
         [Parameter(
-            ValueFromPipelineByPropertyName
         )]
         [string]$Description
     )
@@ -42,7 +36,27 @@ function New-PsScriptAnalyzerCorrectionExtent {
     }
     process {
         try {
-            [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent]$PSBoundParameters | Write-Output
+            if (-not($PSBoundParameters.ContainsKey('Path'))) {
+                $Path = ''
+            }
+
+            if (-not($PSBoundParameters.ContainsKey('Description'))) {
+                $Description = ''
+            }
+
+            if ($PSCmdlet.ShouldProcess('Create Correction')) {
+                $correctionExtent = New-Object CorrectionExtent -ArgumentList @(
+                    $Extent.StartLineNumber,
+                    $Extent.EndLineNumber,
+                    $Extent.StartColumnNumber,
+                    $Extent.EndColumnNumber,
+                    $ReplacementText,
+                    $Path,
+                    $Description
+                )
+
+                $correctionExtent | Write-Output
+            }
         } catch {
             $PSCmdlet.ThrowTerminatingError($PSItem)
         }
@@ -52,68 +66,185 @@ function New-PsScriptAnalyzerCorrectionExtent {
     }
 }
 
-function New-PsScriptAnalyzerDiagnosticRecord {
-    [CmdletBinding()]
+function New-PSSADiagnosticRecord {
+    [OutputType([DiagnosticRecord])]
+    [CmdletBinding(
+        SupportsShouldProcess,
+        ConfirmImpact = 'low'
+    )]
     param(
-        <#
-        private IScriptExtent extent;
-        private string ruleName;
-        private DiagnosticSeverity severity;
-        private string scriptPath;
-        private string ruleSuppressionId;
-        private IEnumerable<CorrectionExtent> suggestedCorrections;
-        #>
-        # Why this diagnostic was created.
         [Parameter(
         )]
         [string]$Message,
 
-        # A span of text in the script
-        [Parameter(
-        )]
-        [System.Management.Automation.Language.IScriptExtent]$Extent,
-
-        # The name of the ScriptAnalyzer rule
         [Parameter(
         )]
         [string]$RuleName,
 
-        # The severity level of the issue
         [Parameter(
         )]
-        [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticSeverity]$Severity,
+        [DiagnosticSeverity]$Severity,
 
-        # Path to the script file
         [Parameter(
         )]
         [string]$ScriptPath,
 
-        # The rule ID for this record
         [Parameter(
         )]
-        [string]$SuppressionId,
+        [string]$RuleSuppressionId,
 
-        # Suggested correction to the extent
         [Parameter(
         )]
-        [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent[]]$SuggestedCorrections
+        [IScriptExtent]$Extent,
+
+        # parameter help description
+        [Parameter(
+        )]
+        [Collection[CorrectionExtent]]$SuggestedCorrections
+    )
+    begin {
+        Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+        $f = Get-PSCallStack | Select-Object -Skip 1 -First 1 | Format-RuleName
+    }
+    process {
+        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+        if (-not($PSBoundParameters.ContainsKey('RuleName'))) {
+            $RuleName = $f.ShortName
+        }
+
+        if (-not($PSBoundParameters.ContainsKey('RuleSuppressionId'))) {
+            $RuleSuppressionId = $f.ShortName
+        }
+
+        if (-not($PSBoundParameters.ContainsKey('Severity'))) {
+            $Severity = Warning
+        }
+
+        if (-not($PSBoundParameters.ContainsKey('ScriptPath'))) {
+            $ScriptPath = ''
+        }
+        try {
+
+            $record = [DiagnosticRecord]@{
+                Message              = $Message
+                Extent               = $Extent
+                RuleName             = $RuleName
+                Severity             = $Severity
+                ScriptPath           = $ScriptPath
+                RuleSuppressionID    = $RuleSuppressionId
+                SuggestedCorrections = $SuggestedCorrections
+            }
+
+            if ($PSCmdlet.ShouldProcess($RuleName, "Create Diagnostic Record")) {
+                $record | Write-Output
+            }
+        } catch {
+            $PSCmdlet.ThrowTerminatingError($PSItem)
+        }
+        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+    }
+    end {
+        Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+    }
+}
+
+function Format-RuleName {
+    [CmdletBinding()]
+    param(
+        # A function name from Get-PSCallStack
+        [Parameter(
+            Mandatory,
+            ValueFromPipelineByPropertyName
+        )]
+        [string]$FunctionName
     )
     begin {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        <#------------------------------------------------------------------
-          Convert a list of CorrectionExtents into an ObjectModel collection
-          before creating the Diagnostic Record
-        ------------------------------------------------------------------#>
-        if ($PSBoundParameters.ContainsKey('SuggestedCorrections')) {
-            $corrections = New-Object System.Collections.ObjectModel.Collection['CorrectionExtent']
-            foreach ($c in $SuggestedCorrections) {
-                $corrections.Add($c)
+        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+        $fullName = $FunctionName -replace '<.*>$', ''
+        $verb, $noun = $fullName -split '-', 2
+
+        switch -regex ($verb) {
+            '^Format' {
+                # A rule function that is intended to format PowerShell source
+                switch -Regex ($noun) {
+                    '^Place' { $shortName = $noun }
+                    default {
+                        $shortName = ($verb, $noun) -join ''
+                    }
+                }
             }
-            $PSBoundParameters['SuggestedCorrections'] = $corrections
+            '^Measure' {
+                switch -Regex ($noun) {
+                    default {
+                        $shortName = $noun
+                    }
+                }
+            }
         }
-        [Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord]$PSBoundParameters | Write-Output
+        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+    }
+    end {
+        [PSCustomObject]@{
+            FunctionName = $FunctionName
+            FullName     = $fullName
+            ShortName    = $shortName
+            Verb         = $verb
+            Noun         = $Noun
+        }
+        Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+    }
+}
+
+function Get-RuleSetting {
+    [CmdletBinding()]
+    param(
+        # The name of the function used in the Settings File
+        [Parameter(
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [string]$FunctionName,
+
+        # Return all settings
+        [Parameter(
+        )]
+        [switch]$All
+    )
+    begin {
+        Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+    }
+    process {
+        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+        $allSettings = [Helper]::Instance.GetRuleArguments()
+        if ($null -ne $allSettings) {
+            if ($All) {
+                $allSettings | Write-Output
+            } else {
+                if ($PSBoundParameters.ContainsKey('FunctionName')) {
+                    if ($FunctionName -match '(\w+)-(\w+)<\w+>') {
+                        $FunctionName = Format-RuleName $FunctionName |
+                            Select-Object -ExpandProperty ShortName
+                    }
+                } else {
+                    $FunctionName = Get-PSCallStack | Select-Object -First 1 -Skip 1 |
+                        Format-RuleName | Select-Object -ExpandProperty ShortName
+                }
+
+                if ($allSettings.ContainsKey($FunctionName)) {
+                    $allSettings[$FunctionName] | Write-Output
+                } else {
+                    Write-Debug "No settings for $FunctionName were found"
+                }
+
+            }
+        } else {
+            Write-Debug 'Could not retrieve rule settings'
+        }
+
+        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
