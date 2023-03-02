@@ -22,10 +22,8 @@ jobs:
 
           #region tests
           include_paths: tests
-          include_tags:
-            - unit
-          exclude_tags:
-            - "ci.exclude"
+          include_tags: unit
+          exclude_tags: "ci.exclude"
           #endregion tests
 
           #region report
@@ -39,9 +37,8 @@ jobs:
           #endregion gist
 
           #region coverage
-          coverage_paths:
-            - "source/stitch"
-          coverage_gist:
+          coverage_paths: "source/stitch"
+          coverage_gist: "Code coverage report (${{ env.repo }})"
           #endregion coverage
 
       - name: dump test results
