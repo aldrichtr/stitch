@@ -81,7 +81,7 @@
     #>
     Rules                 = @{
         PSAvoidUsingCmdletAliases = @{
-            Whitelist = @(
+            allowlist = @(
                 'task'
             )
         }
@@ -104,7 +104,6 @@
        If Invoke-ScriptAnalyzer cannot find rules in the CustomRulePath, it runs the standard rules without notice.
     #>
     CustomRulePath        = @(
-        '.\.build\pssa\*'
     )
     #endregion CustomRulePath
     #-------------------------------------------------------------------------------
@@ -116,7 +115,9 @@
        include the built-in rules, use the **IncludeDefaultRules** parameter.
     #>
 
-    RecurseCustomRulePath = $true
+    RecurseCustomRulePath = $false
+
     #endregion RecurseCustomRulePath
     #-------------------------------------------------------------------------------
+
 }
