@@ -39,6 +39,7 @@ jobs:
           #region coverage
           coverage_paths: "source/stitch"
           coverage_gist: "Code coverage report (${{ env.repo }})"
+          coverage_results_path: "out/coverage_report.xml"
           #endregion coverage
 
       - name: dump test results
