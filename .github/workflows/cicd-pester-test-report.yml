@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v1
       - name: Run Pester Tests
         id: pester_tests
-        uses: aldrichtr/pester-tests-report@latest
+        uses: aldrichtr/pester-tests-report@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
