@@ -1,25 +1,44 @@
 <#
 .SYNOPSIS
-    Main build driver for Stitch
+    Main build driver for the Stitch project management system.
+
+.DESCRIPTION
+    This is the main entry point for using stitch with Invoke-Build.
+
+.LINK
+  Get-BuildConfiguration
+  Initialize-StitchBuildSystem
+  Invoke-Build
+
 #>
+
 
 param(
     #-------------------------------------------------------------------------------
     #region Profile
-    # The lifecycle profile to run.  Determines which runbook will be loaded.
-    # Runs the `Build` profile if none specified, or the single runbook if only
-    # one is found
+
+    <#
+     The lifecycle profile to run.  Determines which runbook will be loaded.
+     Runs the `Build` profile if none specified, or the single runbook if only
+     one is found
+    #>
     [Parameter()]
     [Alias('Profile')]
     [string]$BuildProfile,
 
-    # The regular expression to use to find runbooks
+    <#
+     The regular expression to use to find runbooks
+    #>
     [Parameter()][string]$ProfilePattern,
 
-    # The directory to search for runbooks
+    <#
+     The directory to search for runbooks
+    #>
     [Parameter()][string]$ProfilePath,
 
-    # The default BuildProfile if not specified (and more than one runbook exists)
+    <#
+     The default BuildProfile if not specified (and more than one runbook exists)
+    #>
     [Parameter()][string]$DefaultBuildProfile,
 
     #endregion Profile
@@ -28,43 +47,64 @@ param(
     #-------------------------------------------------------------------------------
     #region Path parameters
 
-    # The base path to configuration and settings files
+    <#
+     The base path to configuration and settings files
+    #>
     [Parameter()][string]$BuildConfigRoot,
 
-    # The path to configuration and settings files for "this" Profile
+    <#
+     The path to configuration and settings files for "this" profile
+    #>
     [Parameter()][string]$BuildConfigPath,
 
-    # The file name of the configuration file
+    <#
+     The file name of the configuration file
+    #>
     [Parameter()][string]$BuildConfigFile,
 
-    # The path to the source files for this project
+    <#
+     The path to the source files for this project
+    #>
     [Parameter()][string]$Source,
 
-    # The path where the Build phase will stage the files it produces.
+    <#
+     The path where the Build phase will stage the files it produces.
+    #>
     [Parameter()][string]$Staging,
 
-    # The path to the Pester tests.
+    <#
+     The path to the Pester tests.
+    #>
     [Parameter()][string]$Tests,
 
-    # The path to where build files and other artifacts (such as log files, supporting
-    # modules, etc.) are written
+    <#
+     The path to where build files and other artifacts (such as log files, supporting
+     modules, etc.) are written
+    #>
     [Parameter()][string]$Artifact,
 
-    # The path where documentation (markdown help, etc.) is stored
+    <#
+    The path where documentation (markdown help, etc.) is stored
+    #>
     [Parameter()][string]$Docs,
+
     #endregion Path parameters
     #-------------------------------------------------------------------------------
 
     #-------------------------------------------------------------------------------
     #region Stitch task import parameters
 
-    # Do not import tasks from the Stitch module.  This can be used to bypass the
-    # import for debug/testing purposes
+    <#
+     Do not import tasks from the Stitch module.  This can be used to bypass the
+     import for debug/testing purposes
+    #>
     [Parameter()]
     [switch]$SkipModuleTaskImport,
 
-    # The information related to the current project including Modules, Paths and
-    # Version information.  See Also Get-BuildConfiguration
+    <#
+     The information related to the current project including Modules, Paths and
+     Version information.  See Also Get-BuildConfiguration
+    #>
     [Parameter()][hashtable]$BuildInfo,
 
     #endregion Stitch task import parameters
@@ -73,11 +113,15 @@ param(
     #-------------------------------------------------------------------------------
     #region Phase configuration parameters
 
-    # The path to look for custom phase definitions
+    <#
+     The path to look for custom phase definitions
+    #>
     [Parameter()]
     [string]$CustomPhasePath,
 
-    # The file filter to use to find the phase definition files
+    <#
+     The file filter to use to find the phase definition files
+    #>
     [Parameter()]
     [string]$CustomPhaseFilter,
 
@@ -87,8 +131,10 @@ param(
     #-------------------------------------------------------------------------------
     #region Clean phase parameters
 
-    # Paths that should not be deleted when `Clean` is run.  By default everything
-    # in`$Staging` and `$Artifact` are removed
+    <#
+     Paths that should not be deleted when `Clean` is run.  By default everything
+     in`$Staging` and `$Artifact` are removed
+    #>
     [Parameter()][string[]]$ExcludePathFromClean,
     #endregion Clean phase parameters
     #-------------------------------------------------------------------------------
@@ -96,7 +142,9 @@ param(
     #-------------------------------------------------------------------------------
     #region Validate phase parameters
 
-    # Do not check for module dependencies (PSDepend)
+    <#
+     Do not check for module dependencies (PSDepend)
+    #>
     [Parameter()][switch]$SkipDependencyCheck,
 
     #endregion Validate phase parameters
@@ -105,17 +153,28 @@ param(
     #-------------------------------------------------------------------------------
     #region Test phase parameters
 
-    # Produce codecoverage metrics when running Pester tests
+    <#
+     Produce codecoverage metrics when running Pester tests
+    #>
     [Parameter()][switch]$CodeCov,
 
     [Parameter()]
     [ValidateSet('JaCoCo', 'CoverageGutters')]
     [string]$CodeCovFormat,
 
+    <#
+     The Path to the directory where the Code Coverage output will be saved
+    #>
     [Parameter()][string]$CodeCovPath,
 
+    <#
+     The name of the Code Coverage output file
+    #>
     [Parameter()][string]$CodeCovFile,
 
+    <#
+     The output level of Invoke-Pester
+    #>
     [Parameter()]
     [ValidateSet('None', 'Normal', 'Detailed', 'Diagnostic')]
     [string]$PesterOutput,
@@ -126,59 +185,84 @@ param(
     #-------------------------------------------------------------------------------
     #region Build phase parameters
 
-    # Additional paths in the `$Source` directory that should be copied to `$Staging`
+    <#
+     Additional paths in the `$Source` directory that should be copied to `$Staging`
+    #>
     [Parameter()][hashtable]$CopyAdditionalItems,
 
-    # Copy the directory even though it contains no items
+    <#
+     Copy the directory even though it contains no items
+    #>
     [Parameter()][switch]$CopyEmptySourceDirs,
 
-    # `build.manifest.array.format` task will update a manifest so that arrays are
-    # written with the '@(' and ')' surrounding the list.
-    # Fields listed here will be ignored in the manifest
+    <#
+    `build.manifest.array.format` task will update a manifest so that arrays are written with the '@(' and ')'
+     surrounding the list.  Fields listed here will be ignored in the manifest
+    #>
     [Parameter()][string[]]$SkipManifestArrayFormat,
 
-    # The list of source types to include in the module file (.psm1).
+    <#
+     The list of source types to include in the module file (.psm1).
+    #>
     [Parameter()][string[]]$ModuleFileIncludeTypes,
 
-    # If the value of ModuleFilePrefix is:
-    # - null : no changes
-    # - A string that resolves to a file (relative to the Module source
-    #   directory), the contents of the files will be inserted at the top of
-    #   the module file in Staging.
-    # - A string that does not resolve to a file, it will be inserted at the top
-    #   of the module file in Staging
+    <#
+     If the value of ModuleFilePrefix is:
+       - null : no changes
+       - A string that resolves to a file (relative to the Module source
+         directory), the contents of the files will be inserted at the top of
+         the module file in Staging.
+       - A string that does not resolve to a file, it will be inserted at the top
+         of the module file in Staging
+    #>
     [Parameter()][string]$ModuleFilePrefix,
 
-    # If the value of ModuleFileSuffix is:
-    # - null : no changes
-    # - A string that resolves to a file (relative to the Module source
-    #   directory), the contents of the files will be inserted at the bottom of
-    #   the module file in Staging.
-    # - A string that does not resolve to a file, it will be inserted at the bottom
-    #   of the module file in Staging
+    <#
+    If the value of ModuleFileSuffix is:
+       - null : no changes
+       - A string that resolves to a file (relative to the Module source
+         directory), the contents of the files will be inserted at the bottom of
+         the module file in Staging.
+       - A string that does not resolve to a file, it will be inserted at the bottom
+         of the module file in Staging
+    #>
     [Parameter()][string]$ModuleFileSuffix,
 
-    # Where to make backups of the source manifest prior to updating the version
-    # information
+    <#
+     Where to make backups of the source manifest prior to updating the version
+     information
+    #>
     [Parameter()][string]$ManifestBackupPath,
 
-    # Backups are deleted after being restored by default.  Use this flag to restore
-    # the changelog from the latest backup and keep the backup file
+    <#
+     Backups are deleted after being restored by default.  Use this flag to restore
+     the changelog from the latest backup and keep the backup file
+    #>
     [Parameter()][switch]$KeepManifestBackup,
 
-    # The gitversion field to use when setting the current version in the changelog
+    <#
+     The gitversion field to use when setting the current version in the changelog
+    #>
     [Parameter()][string]$ManifestVersionField,
 
-    # The source directory where PowerShell format files are stored (if any)
+    <#
+     The source directory where PowerShell format files are stored (if any)
+    #>
     [Parameter()][string]$FormatPsXmlDirectory,
 
-    # The file format used to find Format files in the source
+    <#
+     The file format used to find Format files in the source
+    #>
     [Parameter()][string]$FormatPsXmlFileFilter,
 
-    # The source directory where PowerShell type files are stored (if any)
+    <#
+     The source directory where PowerShell type files are stored (if any)
+    #>
     [Parameter()][string]$TypePsXmlDirectory,
 
-    # The file format used to find Format files in the source
+    <#
+     The file format used to find Format files in the sourcetypes
+    #>
     [Parameter()][string]$TypePsXmlFileFilter,
 
     #endregion Build phase parameters
@@ -187,40 +271,60 @@ param(
     #-------------------------------------------------------------------------------
     #region Deploy phase parameters
 
-    # A table of files, strings to find and replacements for updating version fields
-    # in files.
+    <#
+     A table of files, strings to find and replacements for updating version fields
+     in files.
+    #>
     [Parameter()][hashtable]$ReplaceVersionInFile,
 
-    # The path to the project's changelog (if any)
+    <#
+     The path to the project's changelog (if any)
+    #>
     [Parameter()][string]$ChangelogPath,
 
-    # Where to make backups of the changlog prior to updating the version
-    # information
+    <#
+     Where to make backups of the changlog prior to updating the version
+     information
+    #>
     [Parameter()][string]$ChangelogBackupPath,
 
-    # Backups are deleted after being restored by default.  Use this flag to restore
-    # the changelog from the latest backup and keep the backup file
+    <#
+     Backups are deleted after being restored by default.  Use this flag to restore
+     the changelog from the latest backup and keep the backup file
+    #>
     [Parameter()][switch]$KeepChangelogBackup,
 
-    # The gitversion field to use when setting the current version in the changelog
+    <#
+     The gitversion field to use when setting the current version in the changelog
+    #>
     [Parameter()][string]$ChangelogVersionField,
 
-    # Location to save the modules to (copy from staging)
-    # See the `install.module.saveto` task
+    <#
+     Location to save the modules to (copy from staging)
+     See the `install.module.saveto` task
+    #>
     [Parameter()][string]$InstallSaveToPath,
 
-    # List of modules to save (all modules in project by default)
-    # See the `install.module.saveto` task
+    <#
+     List of modules to save (all modules in project by default)
+     See the `install.module.saveto` task
+    #>
     [Parameter()][string[]]$InstallSaveToModules,
 
 
-    # The gitversion field to use when calling `git tag`
+    <#
+     The gitversion field to use when calling `git tag`
+    #>
     [Parameter()][string]$GitTagVersionField,
 
-    # The name of the temporary PSRepository to create when creating a nuget package
+    <#
+     The name of the temporary PSRepository to create when creating a nuget package
+    #>
     [Parameter()][string]$ProjectPSRepoName,
 
-    # If publishing the module to a local PSRepository, add the name here
+    <#
+     If publishing the module to a local PSRepository, add the name here
+    #>
     [Parameter()][string]$PublishToPsRepo,
 
     #endregion Deploy phase parameters
@@ -228,20 +332,30 @@ param(
 
     #-------------------------------------------------------------------------------
     #region Logging parameters
-    # The path to write the build log to.
-    # LogPath and LogFile are combined at runtime to determine the path to the build
-    # log
+
+    <#
+     The path to write the build log to.
+     LogPath and LogFile are combined at runtime to determine the path to the build
+     log
+    #>
     [Parameter()][string]$LogPath,
 
-    # The file name to write the build log to
+    <#
+     The file name to write the build log to
+    #>
     [Parameter()][string]$LogFile,
 
-    # A table of output locations (Console and File), Levels (DEBUG, INFO, etc.)
-    # and other information that controls the output of the build
+    <#
+     A table of output locations (Console and File), Levels (DEBUG, INFO, etc.)
+     and other information that controls the output of the build
+    #>
     [Parameter()][hashtable]$Output,
 
-    # Suppress Build header and footer output
+    <#
+     Suppress Build header and footer output
+    #>
     [Parameter()][switch]$SkipBuildHeader
+
 
     #endregion Logging parameters
     #-------------------------------------------------------------------------------
@@ -262,19 +376,19 @@ begin {
     #! it is definitely messing with the internals a bit which is not
     #! recommended
     ------------------------------------------------------------------#>
-    Write-Debug "Setting aliases for use in tasks"
+    Write-Debug 'Setting aliases for use in tasks'
     Set-Alias -Name call -Value *Task -Description 'Call an Invoke-Build task from within another task'
 
     Set-Alias -Name phase -Value Add-BuildTask -Description 'Top level task associated with a development lifecycle phase'
 
     Set-Alias -Name replace -Value Invoke-ReplaceToken -Description 'Replace tokens in text'
-    Write-Debug "  - Complete"
+    Write-Debug '  - Complete'
     #endregion Define aliases
     #-------------------------------------------------------------------------------
 
     #-------------------------------------------------------------------------------
     #region Load Stitch module
-    Write-Debug "Loading the stitch module"
+    Write-Debug 'Loading the stitch module'
     $stitchModule = Get-Module Stitch
     Write-Debug '  - Checking if Stitch is already loaded'
     # Only load Stitch if it isn't already loaded.
@@ -296,14 +410,14 @@ begin {
 
     #-------------------------------------------------------------------------------
     #region load the profile
-    Write-Debug "Loading the configuration"
+    Write-Debug 'Loading the configuration'
     if ([string]::IsNullorEmpty($BuildConfigRoot)) {
         $BuildConfigRoot = (Join-Path $BuildRoot '.build')
     }
     Write-Debug "  - Starting in $BuildConfigRoot"
     # look for runbooks
 
-    Write-Debug "Loading build profile"
+    Write-Debug 'Loading build profile'
     #! In the simplest layout, one folder (BuildConfigRoot) contains all the files
     if ([string]::IsNullorEmpty($ProfilePath)) {
         $ProfilePath = $BuildConfigRoot
@@ -326,7 +440,7 @@ begin {
             $found = $runbooks[0]
         } else {
             if (-not([string]::IsNullorEmpty($BuildProfile))) {
-                Write-Error "Multiple runbooks found, but no BuildProfile set"
+                Write-Error 'Multiple runbooks found, but no BuildProfile set'
             } else {
                 $found = $runbooks | Where-Object { $_.Directory.BaseName -like "$Profile" } | Select-Object -First 1
                 Write-Debug '      - using single runbook'
@@ -365,7 +479,7 @@ begin {
 
     #-------------------------------------------------------------------------------
     #region Import custom tasks
-    Write-Debug "Loading build configuration"
+    Write-Debug 'Loading build configuration'
     if ([string]::IsNullorEmpty($BuildConfigFile)) {
         $BuildConfigFile = '.config.ps1'
     }
@@ -391,7 +505,7 @@ begin {
     }
 
     Remove-Variable configPath, file
-    Write-Debug "  - Complete"
+    Write-Debug '  - Complete'
     #endregion Import custom tasks
     #-------------------------------------------------------------------------------
 
@@ -422,7 +536,7 @@ begin {
         Write-Debug "Importing runbook $Runbook"
         . $Runbook
     }
-    Write-Debug "  - Complete"
+    Write-Debug '  - Complete'
     #endregion Load the runbook
     #-------------------------------------------------------------------------------
 }
