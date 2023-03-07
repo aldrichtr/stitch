@@ -5,26 +5,13 @@
 
 param(
     #-------------------------------------------------------------------------------
-    #region Stitch task import parameters
-
-    # Do not import tasks from the Stitch module.  This can be used to bypass the
-    # import for debug/testing purposes
-    [Parameter()]
-    [switch]$SkipModuleTaskImport,
-
-    # The information related to the current project including Modules, Paths and
-    # Version information.  See Also Get-BuildConfiguration
-    [Parameter()][hashtable]$BuildInfo,
-
-    #endregion Stitch task import parameters
-    #-------------------------------------------------------------------------------
-
-    #-------------------------------------------------------------------------------
     #region Profile
     # The lifecycle profile to run.  Determines which runbook will be loaded.
     # Runs the `Build` profile if none specified, or the single runbook if only
     # one is found
-    [Parameter()][string]$Profile,
+    [Parameter()]
+    [Alias('Profile')]
+    [string]$BuildProfile,
 
     # The regular expression to use to find runbooks
     [Parameter()][string]$ProfilePattern,
@@ -32,11 +19,23 @@ param(
     # The directory to search for runbooks
     [Parameter()][string]$ProfilePath,
 
+    # The default BuildProfile if not specified (and more than one runbook exists)
+    [Parameter()][string]$DefaultBuildProfile,
+
     #endregion Profile
     #-------------------------------------------------------------------------------
 
     #-------------------------------------------------------------------------------
     #region Path parameters
+
+    # The base path to configuration and settings files
+    [Parameter()][string]$BuildConfigRoot,
+
+    # The path to configuration and settings files for "this" Profile
+    [Parameter()][string]$BuildConfigPath,
+
+    # The file name of the configuration file
+    [Parameter()][string]$BuildConfigFile,
 
     # The path to the source files for this project
     [Parameter()][string]$Source,
@@ -54,6 +53,35 @@ param(
     # The path where documentation (markdown help, etc.) is stored
     [Parameter()][string]$Docs,
     #endregion Path parameters
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region Stitch task import parameters
+
+    # Do not import tasks from the Stitch module.  This can be used to bypass the
+    # import for debug/testing purposes
+    [Parameter()]
+    [switch]$SkipModuleTaskImport,
+
+    # The information related to the current project including Modules, Paths and
+    # Version information.  See Also Get-BuildConfiguration
+    [Parameter()][hashtable]$BuildInfo,
+
+    #endregion Stitch task import parameters
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region Phase configuration parameters
+
+    # The path to look for custom phase definitions
+    [Parameter()]
+    [string]$CustomPhasePath,
+
+    # The file filter to use to find the phase definition files
+    [Parameter()]
+    [string]$CustomPhaseFilter,
+
+    #endregion Phase configuration parameters
     #-------------------------------------------------------------------------------
 
     #-------------------------------------------------------------------------------
@@ -218,42 +246,10 @@ param(
     #endregion Logging parameters
     #-------------------------------------------------------------------------------
 
-
 )
+
 begin {
-    $buildConfigPaths = @(
-        "$BuildRoot\.build.config.ps1" # preferred
-        "$BuildRoot\.build\.config.ps1"
-        "$BuildRoot\.build\config.ps1"
-    )
-    foreach ($file in $buildConfigPaths) {
-        if (Test-Path $file) {
-            Write-Debug "Config file $(Resolve-Path $file) found"
-            . $file
-        }
-    }
-    #-------------------------------------------------------------------------------
-    #region Load Stitch module
     Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
-    $stitchModule = Get-Module Stitch
-    Write-Debug 'Checking if Stitch is already loaded'
-    # Only load Stitch if it isn't already loaded.
-    if ($null -eq $stitchModule) {
-        Write-Debug '  - None found'
-        try {
-            Import-Module Stitch -NoClobber -ErrorAction Stop
-        } catch {
-            Write-Error "Could not import Stitch`n$_"
-        }
-    } else {
-        Write-Debug "version $($stitchModule.Version) already loaded"
-    }
-
-    Write-Debug "Stitch loaded from $(Get-Module Stitch | Select-Object -ExpandProperty Path)"
-
-    #endregion Load Stitch module
-    #-------------------------------------------------------------------------------
-
     #-------------------------------------------------------------------------------
     #region Define aliases
 
@@ -266,21 +262,148 @@ begin {
     #! it is definitely messing with the internals a bit which is not
     #! recommended
     ------------------------------------------------------------------#>
+    Write-Debug "Setting aliases for use in tasks"
     Set-Alias -Name call -Value *Task -Description 'Call an Invoke-Build task from within another task'
 
     Set-Alias -Name phase -Value Add-BuildTask -Description 'Top level task associated with a development lifecycle phase'
 
     Set-Alias -Name replace -Value Invoke-ReplaceToken -Description 'Replace tokens in text'
+    Write-Debug "  - Complete"
     #endregion Define aliases
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region Load Stitch module
+    Write-Debug "Loading the stitch module"
+    $stitchModule = Get-Module Stitch
+    Write-Debug '  - Checking if Stitch is already loaded'
+    # Only load Stitch if it isn't already loaded.
+    if ($null -eq $stitchModule) {
+        Write-Debug '    - None found'
+        try {
+            Import-Module Stitch -NoClobber -ErrorAction Stop
+        } catch {
+            Write-Error "Could not import Stitch`n$_"
+        }
+    } else {
+        Write-Debug "  - Version $($stitchModule.Version) already loaded"
+    }
+
+    Write-Debug "   - Stitch loaded from $(Get-Module Stitch | Select-Object -ExpandProperty Path)"
+
+    #endregion Load Stitch module
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region load the profile
+    Write-Debug "Loading the configuration"
+    if ([string]::IsNullorEmpty($BuildConfigRoot)) {
+        $BuildConfigRoot = (Join-Path $BuildRoot '.build')
+    }
+    Write-Debug "  - Starting in $BuildConfigRoot"
+    # look for runbooks
+
+    Write-Debug "Loading build profile"
+    #! In the simplest layout, one folder (BuildConfigRoot) contains all the files
+    if ([string]::IsNullorEmpty($ProfilePath)) {
+        $ProfilePath = $BuildConfigRoot
+    }
+
+    if ([string]::IsNullorEmpty($ProfilePattern)) {
+        $ProfilePattern = '*runbook.ps1'
+    }
+
+    # now that we have set up our search criteria, look for runbooks
+    Write-Debug "  - Looking for runbooks in $ProfilePath using $ProfilePattern"
+
+    $runbooks = (Get-ChildItem $ProfilePath -Filter $ProfilePattern -Recurse)
+
+    if ($null -ne $runbooks) {
+        # we found at least one
+        Write-Debug "    - found $($runbooks.Count) runbooks"
+        if ($runbooks.count -eq 1) {
+            Write-Debug '      - Found single runbook'
+            $found = $runbooks[0]
+        } else {
+            if (-not([string]::IsNullorEmpty($BuildProfile))) {
+                Write-Error "Multiple runbooks found, but no BuildProfile set"
+            } else {
+                $found = $runbooks | Where-Object { $_.Directory.BaseName -like "$Profile" } | Select-Object -First 1
+                Write-Debug '      - using single runbook'
+                if ($null -eq $found) {
+                    $found = $runbooks | Where-Object { $_.BaseName -like "$Profile*" }  | Select-Object -First 1
+                }
+            }
+        }
+    } else {
+        Write-Debug '  - No runbooks found'
+    }
+
+    if ($null -ne $found) {
+        $relative = [IO.Path]::GetRelativePath($ProfilePath, $found.FullName)
+        $parts = $relative -split [regex]::Escape([IO.Path]::DirectorySeparatorChar)
+
+        Write-Debug "  - runbook is $($parts.Count) levels: $($parts -join ', ')"
+        if ($parts.Count -gt 1) {
+            $BuildConfigPath = $found.DirectoryName
+            if ([string]::IsNullorEmpty($BuildProfile)) {
+                $BuildProfile = $found.Directory.BaseName
+            }
+            Write-Debug "  - Setting BuildConfigPath to $BuildConfigPath"
+            Write-Debug "  - Setting BuildProfile to $BuildProfile"
+        }
+        Write-Debug "  - Setting Runbook to $($found.FullName)"
+        $Runbook = $found.FullName
+
+    } else {
+        Write-Debug "  - No runbook matched profile '$Profile'"
+    }
+    Remove-Variable runbooks, found, parts, relative
+
+    #endregion load the profile
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region Import custom tasks
+    Write-Debug "Loading build configuration"
+    if ([string]::IsNullorEmpty($BuildConfigFile)) {
+        $BuildConfigFile = '.config.ps1'
+    }
+
+    foreach ($configPath in @( $BuildConfigPath, $BuildConfigRoot)) {
+        $file = (Join-Path $configPath $BuildConfigFile)
+        if (Test-Path $file) {
+            Write-Debug "  - importing config file $(Resolve-Path $file)"
+            . $file
+        }
+        #! by convention, a `task` file defines a function used to create build task types
+        #! while a `build` file contains task definitions
+        if (Test-Path $configPath) {
+            Get-ChildItem -Path $configPath -Filter '*.task.ps1' -Recurse | ForEach-Object {
+                Write-Debug "  - importing custom task from $($_.BaseName)"
+                . $_.FullName
+            }
+            Get-ChildItem -Path $configPath -Filter '*.build.ps1' -Recurse | ForEach-Object {
+                Write-Debug "  - importing custom task from $($_.BaseName)"
+                . $_.FullName
+            }
+        }
+    }
+
+    Remove-Variable configPath, file
+    Write-Debug "  - Complete"
+    #endregion Import custom tasks
     #-------------------------------------------------------------------------------
 
     #-------------------------------------------------------------------------------
     #region Import Stitch tasks
 
+    Write-Debug 'Loading build scripts from stitch module '
     if (-not($SkipModuleTaskImport)) {
         $cmd = Get-Command 'Import-StitchTask' -ErrorAction SilentlyContinue
         if ($null -ne $cmd) {
             try {
+                Write-Debug '  - Calling Import function'
                 . Import-StitchTask
             } catch {
                 $PSCmdlet.ThrowTerminatingError($_)
@@ -289,72 +412,18 @@ begin {
             Write-Error 'Task import not available in this version'
         }
     }
+    Write-Debug '  - Complete'
     #endregion Import Stitch tasks
     #-------------------------------------------------------------------------------
 
     #-------------------------------------------------------------------------------
-    #region Import custom tasks
-    #! by convention, a `task` file defines a function used to create build task types
-    #! while a `build` file contains task definitions
-    if (Test-Path '.build') {
-        Get-ChildItem -Path '.build' -Filter '*.task.ps1' | ForEach-Object {
-            Write-Debug "Importing custom task from $($_.BaseName)"
-            . $_.FullName
-        }
-        Get-ChildItem -Path '.build' -Filter '*.build.ps1' | ForEach-Object {
-            Write-Debug "Importing custom task from $($_.BaseName)"
-            . $_.FullName
-        }
+    #region Load the runbook
+    if (Test-Path $Runbook) {
+        Write-Debug "Importing runbook $Runbook"
+        . $Runbook
     }
-
-    #endregion Import custom tasks
-    #-------------------------------------------------------------------------------
-
-    #-------------------------------------------------------------------------------
-    #region load the profile
-
-    # look for runbooks
-
-    if ([string]::IsNullorEmpty($ProfilePath)) {
-        $ProfilePath = '.build'
-    }
-
-    if ([string]::IsNullorEmpty($ProfilePattern)) {
-        $ProfilePattern = "*runbook.ps1"
-    }
-
-    if ([string]::IsNullOrEmpty($Profile)) {
-        $Profile = 'build'
-    }
-
-    Write-Debug "Looking for runbooks in $ProfilePath using $ProfilePattern"
-    $runbooks = (Get-ChildItem $ProfilePath -Filter $ProfilePattern)
-
-    if ($null -ne $runbooks) {
-        Write-Debug "  - found $($runbooks.Count) runbooks"
-        if ($runbooks.count -eq 1) {
-            Write-Debug "    using single runbook"
-            $found = $runbooks[0]
-        } else {
-            $found = $runbooks | Where-Object { $_.Directory.BaseName -like "$Profile"} | Select-Object -First 1
-            if ($null -eq $found) {
-                $found = $runbooks | Where-Object {$_.BaseName -like "$Profile*"}  | Select-Object -First 1
-            }
-        }
-    } else {
-        Write-Debug "  - No runbooks found"
-    }
-
-    if ($null -ne $found) {
-        $RunBookItem = $found
-        Write-Debug "Importing profile $($found.FullName)"
-        . $found.FullName
-    } else {
-        Write-Debug "No runbook matched profile '$Profile'"
-    }
-
-
-    #endregion load the profile
+    Write-Debug "  - Complete"
+    #endregion Load the runbook
     #-------------------------------------------------------------------------------
 }
 process {

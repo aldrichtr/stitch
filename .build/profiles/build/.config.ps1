@@ -3,12 +3,21 @@
 #-------------------------------------------------------------------------------
 #region BuildTool task import parameters
 $SkipModuleTaskImport = (
-    property SkipModuleTaskImport $false
+    Get-BuildProperty SkipModuleTaskImport $false
 )
+
+$BuildConfigRoot = (Join-Path $BuildRoot '.build')
+
+# The path to configuration and settings files for "this" Profile
+$BuildConfigPath = $BuildConfigRoot
+
+# The file name of the configuration file
+$BuildConfigFile = '.config.ps1'
+
 
 
 $BuildInfo = (
-    property BuildInfo @{
+    Get-BuildProperty BuildInfo @{
         Modules = @{}
         Project = @{
             Name = 'stitch'
@@ -38,27 +47,27 @@ $ProfilePath = '.build'
 #region Path parameters
 
 $Source = (
-    property Source "$BuildRoot\source"
+    Get-BuildProperty Source "$BuildRoot\source"
 )
 
 
 $Staging = (
-    property Staging "$BuildRoot\stage"
+    Get-BuildProperty Staging "$BuildRoot\stage"
 )
 
 
 $Tests = (
-    property Tests "$BuildRoot\tests"
+    Get-BuildProperty Tests "$BuildRoot\tests"
 )
 
 
 $Artifact = (
-    property Artifact "$BuildRoot\out"
+    Get-BuildProperty Artifact "$BuildRoot\out"
 )
 
 
 $Docs = (
-    property Docs "$BuildRoot\docs"
+    Get-BuildProperty Docs "$BuildRoot\docs"
 )
 #endregion  Path parameters
 #-------------------------------------------------------------------------------
@@ -67,10 +76,10 @@ $Docs = (
 #region Clean phase parameters
 
 $ExcludePathFromClean = (
-    property ExcludePathFromClean @(
-        "$(property Artifact)\modules*"
-        "$(property Artifact)\logs*"
-        "$(property Artifact)\backup*"
+    Get-BuildProperty ExcludePathFromClean @(
+        "$(Get-BuildProperty Artifact)\modules*"
+        "$(Get-BuildProperty Artifact)\logs*"
+        "$(Get-BuildProperty Artifact)\backup*"
     ) )
 
 #endregion Clean phase parameters
@@ -80,7 +89,7 @@ $ExcludePathFromClean = (
 #region Validate phase parameters
 
 $SkipDependencyCheck = (
-    property SkipDependencyCheck $false
+    Get-BuildProperty SkipDependencyCheck $false
 )
 
 #endregion Validate phase parameters
@@ -90,26 +99,26 @@ $SkipDependencyCheck = (
 #region Test phase parameters
 
 $CodeCov = (
-    property CodeCov $false
+    Get-BuildProperty CodeCov $false
 )
 
 
 $CodeCovFormat = (
-    property CodeCovFormat 'CoverageGutters'
+    Get-BuildProperty CodeCovFormat 'CoverageGutters'
 )
 
 $CodeCovPath = (
-    property CodeCovPath (Join-Path $Artifact 'tests')
+    Get-BuildProperty CodeCovPath (Join-Path $Artifact 'tests')
 )
 
 
 $CodeCovFile = (
-    property CodeCovFile ("pester.{Type}.codecov.{Format}-$(Get-Date -Format FileDateTimeUniversal).xml")
+    Get-BuildProperty CodeCovFile ("pester.{Type}.codecov.{Format}-$(Get-Date -Format FileDateTimeUniversal).xml")
 )
 
 
 $PesterOutput = (
-    property PesterOutput 'Normal'
+    Get-BuildProperty PesterOutput 'Normal'
 )
 
 #endregion Test phase parameters
@@ -119,7 +128,7 @@ $PesterOutput = (
 #region Build phase parameters
 
 $CopyAdditionalItems = (
-    property CopyAdditionalItems @{
+    Get-BuildProperty CopyAdditionalItems @{
         stitch = @{
             'Defaults.psd1'            = 'Defaults.psd1'
             'Import-BuildToolTask.ps1' = 'Import-BuildToolTask.ps1'
@@ -129,55 +138,55 @@ $CopyAdditionalItems = (
 )
 
 $CopyEmptySourceDirs = (
-    property CopyEmptySourceDirs $false
+    Get-BuildProperty CopyEmptySourceDirs $false
 )
 
 
 $SkipManifestArrayFormat = (
-    property SkipManifestArrayFormat @()
+    Get-BuildProperty SkipManifestArrayFormat @()
 )
 
 
 
 $ModuleFileIncludeTypes = (
-    property ModuleFileIncludeTypes @('enum', 'class', 'function')
+    Get-BuildProperty ModuleFileIncludeTypes @('enum', 'class', 'function')
 )
 
 $ModuleFilePrefix = (
-    property ModuleFilePrefix ''
+    Get-BuildProperty ModuleFilePrefix ''
 )
 
 $ModuleFileSuffix = (
-    property ModuleFileSuffix 'suffix.ps1'
+    Get-BuildProperty ModuleFileSuffix 'suffix.ps1'
 )
 
 
 $ManifestBackupPath = (
-    property ManifestBackupPath (Join-Path (property Artifact) 'backup')
+    Get-BuildProperty ManifestBackupPath (Join-Path (Get-BuildProperty Artifact) 'backup')
 )
 
 
 $KeepManifestBackup = (
-    property KeepManifestBackup $false
+    Get-BuildProperty KeepManifestBackup $false
 )
 
 $ManifestVersionField = (
-    property ManifestVersionField 'MajorMinorPatch'
+    Get-BuildProperty ManifestVersionField 'MajorMinorPatch'
 )
 
 $FormatPsXmlDirectory = (
-    property FormatPsXmlDirectory 'formats'
+    Get-BuildProperty FormatPsXmlDirectory 'formats'
 )
 $FormatPsXmlFileFilter = (
-    property FormatPsXmlFileFilter '*Format.ps1xml'
+    Get-BuildProperty FormatPsXmlFileFilter '*Format.ps1xml'
 )
 
 $TypePsXmlDirectory = (
-    property TypePsXmlDirectory 'types'
+    Get-BuildProperty TypePsXmlDirectory 'types'
 )
 
 $TypePsXmlFileFilter = (
-    property TypePsXmlFileFilter '*.Types.ps1xml'
+    Get-BuildProperty TypePsXmlFileFilter '*.Types.ps1xml'
 )
 #endregion Build phase parameters
 #-------------------------------------------------------------------------------
@@ -185,7 +194,7 @@ $TypePsXmlFileFilter = (
 #-------------------------------------------------------------------------------
 #region Deploy phase parameters
 $ReplaceVersionInFile = (
-    property ReplaceVersionInFile @{
+    Get-BuildProperty ReplaceVersionInFile @{
         Readme       = @{
             Path    = $BuildRoot
             Filter  = 'README.md'
@@ -205,41 +214,41 @@ $ReplaceVersionInFile = (
 
 
 $ChangelogPath = (
-    property ChangelogPath (Join-Path $BuildRoot 'CHANGELOG.md')
+    Get-BuildProperty ChangelogPath (Join-Path $BuildRoot 'CHANGELOG.md')
 )
 
 
 $ChangelogBackupPath = (
-    property ChangelogBackupPath (Join-Path (property Artifact) 'backup')
+    Get-BuildProperty ChangelogBackupPath (Join-Path (Get-BuildProperty Artifact) 'backup')
 )
 
 
 $KeepChangelogBackup = (
-    property KeepChangelogBackup $false
+    Get-BuildProperty KeepChangelogBackup $false
 )
 
 $ChangelogVersionField = (
-    property ChangelogVersionField 'MajorMinorPatch'
+    Get-BuildProperty ChangelogVersionField 'MajorMinorPatch'
 )
 
 $InstallSaveToPath = (
-    property InstallSaveToPath (Resolve-Path ($env:PSModulePath -split ';' | Select-Object -First 1))
+    Get-BuildProperty InstallSaveToPath (Resolve-Path ($env:PSModulePath -split ';' | Select-Object -First 1))
 )
 
 $InstallSaveToModules = (
-    property InstallSaveToModules ((property BuildInfo).Modules.Keys)
+    Get-BuildProperty InstallSaveToModules ((Get-BuildProperty BuildInfo).Modules.Keys)
 )
 
 $ProjectPSRepoName = (
-    property ProjectPSRepoName $BuildInfo.Project.Name
+    Get-BuildProperty ProjectPSRepoName $BuildInfo.Project.Name
 )
 
 $PublishToPsRepo = (
-    property PublishToPsRepo 'local'
+    Get-BuildProperty PublishToPsRepo 'local'
 )
 
 $GitTagVersionField = (
-    property GitTagVersionField 'MajorMinorPatch'
+    Get-BuildProperty GitTagVersionField 'MajorMinorPatch'
 )
 
 #endregion Deploy phase parameters
@@ -247,12 +256,12 @@ $GitTagVersionField = (
 
 #-------------------------------------------------------------------------------
 #region Logging parameters
-$LogPath = (property LogPath (Join-Path $Artifact 'logs'))
+$LogPath = (Get-BuildProperty LogPath (Join-Path $Artifact 'logs'))
 
-$LogFile = (property LogFile "build-$(Get-Date -Format FileDateTimeUniversal).log")
+$LogFile = (Get-BuildProperty LogFile "build-$(Get-Date -Format FileDateTimeUniversal).log")
 
 $Output = (
-    property Output @{
+    Get-BuildProperty Output @{
         Timestamp         = @{
             Format          = '%s'
             ForegroundColor = 'BrightWhite'
