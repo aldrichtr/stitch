@@ -5,6 +5,9 @@
 
 
 Enter-Build {
+    #-------------------------------------------------------------------------------
+    #region Before hook
+
     Write-Debug "`n$('-' * 80)`n-- Begin Enter-Build`n$('-' * 80)"
     if ($null -ne $Output) {
         if ($Output.ContainsKey('EnterBuild')) {
@@ -17,6 +20,12 @@ Enter-Build {
             }
         }
     }
+    #endregion Before hook
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region Stitch code
+
     $logoColor = $PSStyle.Foreground.FromRgb('#AA6600')
     $logoReset = $PSStyle.Reset
     if (-not($SkipLogo)) {
@@ -32,6 +41,13 @@ Enter-Build {
 
     $BuildInfo = Get-BuildConfiguration
     Remove-Variable logoColor, logoReset
+
+    #endregion Stitch code
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region Before hook
+
     if ($null -ne $Output) {
         if ($Output.ContainsKey('EnterBuild')) {
             if ($Output.EnterBuild.ContainsKey('After')) {
@@ -43,5 +59,9 @@ Enter-Build {
             }
         }
     }
+
+    #endregion Before hook
+    #-------------------------------------------------------------------------------
+
     Write-Debug "`n$('-' * 80)`n-- End Enter-Build`n$('-' * 80)"
 }

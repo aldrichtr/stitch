@@ -1,6 +1,9 @@
 
 Exit-Build {
-    if ($null -ne $Output) {
+    #-------------------------------------------------------------------------------
+    #region Before hook
+
+        if ($null -ne $Output) {
         if ($Output.ContainsKey('ExitBuild')) {
             if ($Output.ExitBuild.ContainsKey('Before')) {
                 if ($Output.ExitBuild.Before -is [scriptblock]) {
@@ -12,6 +15,12 @@ Exit-Build {
         }
     }
 
+    #endregion Before hook
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region Stitch code
+
     if (-not($SkipBuildHeader)) {
         $tasks = ${*}.Tasks
         $errors = ${*}.Errors
@@ -21,6 +30,12 @@ Exit-Build {
         logExit 'Total Elapsed time: {0}' ([DateTime]::Now - ${*}.Started)
         logExit "$('#' * 80)"
     }
+
+    #endregion Stitch code
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region After hook
     if ($null -ne $Output) {
         if ($Output.ContainsKey('ExitBuild')) {
             if ($Output.ExitBuild.ContainsKey('After')) {
@@ -32,4 +47,7 @@ Exit-Build {
             }
         }
     }
+
+    #endregion After hook
+    #-------------------------------------------------------------------------------
 }
