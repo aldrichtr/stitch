@@ -1,3 +1,5 @@
+$stitchEmoji = "`u{1f9f5}"
+
 $stitchLogoSmall = @"
    ___  _    _  _        _
   / __|| |_ (_)| |_  __ | |_
