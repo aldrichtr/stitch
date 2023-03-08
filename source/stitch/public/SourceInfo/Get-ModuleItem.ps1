@@ -82,7 +82,7 @@ function Get-ModuleItem {
                     if ($AsHashTable) {
                         $info | Write-Output
                     } else {
-                        $info['PSTypeName'] = 'BuildTool.ModuleItem'
+                        $info['PSTypeName'] = 'Stitch.ModuleItem'
                         [PSCustomObject]$info | Write-Output
                     }
                 }
