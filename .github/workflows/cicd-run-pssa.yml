@@ -9,6 +9,9 @@ on:
       - synchronize
   workflow_dispatch:
 
+env:
+  settings_file: 'PSScriptAnalyzerSettings.psd1'
+
 jobs:
   Analyze:
    name: Analyze source with PSSA
@@ -22,7 +25,7 @@ jobs:
       with:
        path: '.\source'
        recurse: true
-       settings: '.\.build\config\PSScriptAnalyzerSettings.psd1'
+       settings: ${{ env.settings_file }}
        output: pssa-results.sarif
 
     - name: Upload SARIF results file
