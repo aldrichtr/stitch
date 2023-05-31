@@ -1,0 +1,67 @@
+<%#
+---
+Description: Create a new Unit test
+Destination: tests/Unit
+---
+%>
+
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
+param()
+<%#
+Pester test template for Unit testing functions.
+This templace requires a SourceItemInfo object to be bound as 's'
+-%>
+
+BeforeAll {
+    $sourceFile = (Get-SourceFilePath $PSCommandPath)
+    if (Test-Path $sourceFile) {
+        . $sourceFile
+    } else {
+        throw "Could not find $sourceFile from $PSCommandPath"
+    }
+
+    $dataDirectory = (Get-TestDataPath $PSCommandPath)
+}
+
+Describe "Testing <%= $s.Visibility %> <%= $s.Type %> <%= $s.Name %>" -Tags @('unit', '<%= $s.Noun %>', '<%= $s.Verb %>' ) {
+    Context 'The <%= $s.Name %> command is available and is valid' {
+        BeforeAll {
+            $command = Get-Command '<%= $s.Name %>'
+            $tokens, $errors = @()
+            $parsed = [System.Management.Automation.Language.Parser]::ParseFile($sourceFile, [ref]$tokens, [ref]$errors)
+
+        }
+
+        It 'The source file should exist' {
+            $sourceFile | Should -Exist
+        }
+
+        It 'It should be a valid command' {
+            $command | Should -Not -BeNullOrEmpty
+        }
+
+        It 'Should parse without error' {
+            $errors.count | Should -Be 0
+        }
+<%
+$functionAst = $s.Ast.Find( {
+        param($a)
+        $a -is [System.Management.Automation.Language.FunctionDefinitionAst]
+    }, $true)
+
+$parameterAst = $functionAst.FindAll( {
+        param($a)
+        $a -is [System.Management.Automation.Language.ParameterAst]
+    }, $true) -%>
+
+<% $parameterAst | Each { -%>
+        It "It Should have a '<%= $_.Name.VariablePath %>' parameter" {
+    <% if (($_.Attributes.NamedArguments | Select-Object -ExpandProperty ArgumentName) -contains 'Mandatory') { -%>
+            $command.Parameters['<%= $_.Name.VariablePath %>'].Attributes.Mandatory | Should -BeTrue
+    <% } else { -%>
+            $command.Parameters['<%= $_.Name.VariablePath %>'].Count | Should -Be 1
+    <% } -%>
+        }
+<% } -%>
+    }
+}

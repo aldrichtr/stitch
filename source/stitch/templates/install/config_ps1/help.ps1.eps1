@@ -1,0 +1,12 @@
+<#
+.SYNOPSIS
+    The configuration file for the stitch build system
+.DESCRIPTION
+    This script configures all of the parameters used by the stitch build system.  Any value here can be overriden
+    at runtime using the Parameter on the command line.
+
+    By default, each parameter is set using `Get-BuildProperty`.  This function is part of Invoke-Build and will
+    look for the variable's value in the current session, the environment variables and then the default.
+
+    See Invoke-Build help for details on the Get-BuildProperty (alias property) command.
+#>

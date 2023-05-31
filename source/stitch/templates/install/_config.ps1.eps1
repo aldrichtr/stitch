@@ -1,0 +1,55 @@
+<%#
+---
+path: $profileDirectory
+bind: 'parameters.psd1'
+---
+-%>
+<%-
+    if ($null -eq $Parameters) {
+        throw "Parameters table not found."
+    }
+
+    if ($null -eq $TemplatePath) {
+        throw 'TemplatePath not found'
+    }
+
+    #TODO: I think maybe this file should be 'stitch.config.ps1' or 'build.config.ps1'
+    $configScriptDir    = (Join-Path $TemplatePath "config_ps1")
+    $parameterTemplate  = (Join-Path $configScriptDir 'param.ps1.eps1')
+    $helpTemplate = (Join-Path $configScriptDir 'help.ps1.eps1')
+
+-%>
+
+using namespace System.Diagnostics.CodeAnalysis
+
+<%= Invoke-EPSTemplate -Path $helpTemplate %>
+
+#-------------------------------------------------------------------------------
+#region Rule suppression
+
+<%-
+$groups = $Parameters.Values
+foreach ($group in $groups) {
+    $group | ForEach-Object {
+-%>
+        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', '<%= $_.Name %>', Justification = 'Variable used in Invoke-Build scripts')]
+        <%- } -%>
+    <%- } -%>
+
+#endregion Rule suppression
+#-------------------------------------------------------------------------------
+
+param()
+<%-
+    foreach ($groupName in $parameters.Keys) {
+        $groupParams = $Parameters[$groupName]
+-%>
+#-------------------------------------------------------------------------------
+#region <%= $groupName %>
+<%-     foreach ($groupParam in $groupParams) { -%>
+<%=         Invoke-EPSTemplate -Path $parameterTemplate  -Binding $groupParam -Safe %>
+<%-     } -%>
+#endregion <%= $groupName %>
+#-------------------------------------------------------------------------------
+
+<%- } %>
