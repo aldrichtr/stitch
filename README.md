@@ -9,6 +9,7 @@ A set of PowerShell functions and Invoke-Build tasks stitched together to aid
 the developer.
 
 ![space-pen](docs/images/space-pen.jpg)
+
 There is a [story][1] about NASA pens and pencils:
 
 > When NASA started sending astronauts into space, they quickly Discovered that
@@ -20,7 +21,7 @@ There is a [story][1] about NASA pens and pencils:
 > The Russians used a pencil.
 
 ***In this analogy, `stitch` is most definitely, the space-pen*** :rocket::black_nib:
-[TOC]
+
 
 ## Synopsis
 
@@ -96,9 +97,11 @@ Each profile can make use of the same tasks (or not), and the same parameters
 
 There are several functions that turn files in the project's source directory
 into objects on the pipeline:
+
 ![sourceinfo](docs/images/get-sourceitem-screenshot.png)
 
 Each item has a rich set of properties for use in your scripts and tasks:
+
 ![members](docs/images/sourceitem-members-screenshot.png)
 
 Some examples of things you can do with this information:
@@ -114,7 +117,7 @@ Some examples of things you can do with this information:
    ```
 
    ***Disclamer***: `stitch` has a few templates that are based on the [EPS][5]
-   module... they work ok for simple things, but I'm looking for a suitable
+   module... they work *ok* for simple things, but I'm looking for a suitable
    replacement.
 
 As you can see, there are a lot of useful things you can do with the
@@ -154,19 +157,19 @@ currently, there are three of these DSL words:
 - **jobs**: A flexible way to add subtasks (jobs) to any phase or task
 
   ```powershell
-  Build | jobs write.module, write.manifest
+  'Build' | jobs 'write.module', 'write.manifest'
   ```
 
 - **before**: Set a task to run before another
 
   ```powershell
-  Clean | before Build
+  'Clean' | before 'Build'
   ```
 
 - **after**: Set a task to run after another
 
   ```powershell
-  add.footer | after create.document
+  'add.footer' | after 'new.document'
   ```
 
 [1]: https://www.snopes.com/fact-check/the-write-stuff/
