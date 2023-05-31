@@ -1,0 +1,100 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build the module",
+            "detail": "Call Invoke-Build Build task",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "command": "Invoke-Build Build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run tests",
+            "type": "shell",
+
+            "command": [
+                "Invoke-Build Test"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": "$pester",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+
+        {
+            "label": "Run integration tests",
+            "type": "shell",
+
+            "command": [
+                "Invoke-Build Verify"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": "$pester",
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+        },
+
+
+        {
+            "label": "Run tests with configuration file",
+            "detail": "Displays a chooser that shows all config files in .build/config",
+            "type": "shell",
+            "command": [
+                "${workspaceRoot}\\.build\\tools\\runTests.ps1 -ConfigFile ${input:testConfig}"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            }
+        },
+        {
+            "label": "Clean generated files",
+            "type": "shell",
+            "command": "Invoke-Build Clean"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "testConfig",
+            "type": "command",
+            "command": "shellCommand.execute",
+            "args": {
+                // "command": "dir /S /B pester*.psd1",
+                "command": "pwsh -nol -nop -c \"Get-ChildItem . -Filter pester*.psd1 -Recurse | Select-Object -Expand FullName\"",
+                "cwd": "${workspaceFolder}/.build/config",
+            }
+        }
+    ]
+}
