@@ -1,0 +1,6 @@
+# configuration file for the issue-labeler action.  See workflows/issue-labeler.yml
+
+'is.epic':
+  - '^(\[)?Epic(\])?'
+'is.feature':
+  - '^(\[)?Feat(\])?'
