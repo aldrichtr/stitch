@@ -1,0 +1,14 @@
+<%#
+---
+Extension: .build.ps1
+Destination: .\source\stitch\BuildScripts\Tasks
+---
+-%>
+
+param(
+
+)
+
+task <%= $Name %> {
+
+}

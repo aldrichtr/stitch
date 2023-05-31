@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://raw.githubusercontent.com/PowerShell/PowerShell/master/src/Schemas/Format.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<Configuration>
+    <DefaultSettings>
+        <DisplayError>true</DisplayError>
+        <ShowError>true</ShowError>
+    </DefaultSettings>
+    <ViewDefinitions>
+        <View>
+            <Name>default</Name>
+            <ViewSelectedBy>
+                <TypeName>Stitch.SourceItemInfo</TypeName>
+            </ViewSelectedBy>
+            <GroupBy>
+                <PropertyName>Module</PropertyName>
+            </GroupBy>
+            <TableControl>
+                <!--Delete the AutoSize node if you want to use the defined widths.-->
+                <AutoSize />
+                <TableHeaders>
+                    <TableColumnHeader>
+                        <Label>Name</Label>
+                        <Width>21</Width>
+                        <Alignment>Left</Alignment>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Type</Label>
+                        <Width>11</Width>
+                        <Alignment>Left</Alignment>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Component</Label>
+                        <Width>13</Width>
+                        <Alignment>Left</Alignment>
+                    </TableColumnHeader>
+                    <TableColumnHeader>
+                        <Label>Visibility</Label>
+                        <Width>13</Width>
+                        <Alignment>Left</Alignment>
+                    </TableColumnHeader>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <!--
+            By default the entries use property names, but you can
+                            replace them with scriptblocks.
+            <ScriptBlock>$_.foo /1mb
+                            -as [int]</ScriptBlock>
+-->
+                            <TableColumnItem>
+                                <PropertyName>Name</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Type</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Component</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <!-- <PropertyName>Visibility</PropertyName> -->
+                                <ScriptBlock>
+                                    $vis = $_.Visibility
+                                    switch ($vis) {
+                                        'public' {
+                                            (-join @( $PSStyle.Foreground.Blue, $vis, $PSStyle.Reset ) )
+                                        }
+                                        'private' {
+                                            (-join @( $PSStyle.Foreground.BrightBlack, $vis, $PSStyle.Reset ) )
+                                        }
+                                        Default {
+                                            $vis
+                                        }
+                                    }
+                                </ScriptBlock>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+    </ViewDefinitions>
+</Configuration>
