@@ -9,7 +9,7 @@ function Measure-FunctionKeywordLowerCase {
     .SYNOPSIS
         Ensure the 'function' keyword is lowercase
     .DESCRIPTION
-        The named script block names should be lowercase.  This rule can auto-fix violations.
+        The function keyword should be lowercase.  This rule can auto-fix violations.
 
         **BAD**
         - Function Verb-Noun {...}
@@ -74,12 +74,13 @@ function Measure-FunctionKeywordLowerCase {
 function Measure-NamedBlockLowerCase {
     <#
     .SYNOPSIS
-        Ensure Named script blocks (Begin, Process, End, Clean) are lowercase.
+        Ensure named script blocks (begin, process, end, clean) are lowercase.
     .DESCRIPTION
         The named script block names should be lowercase.  This rule can auto-fix violations.
 
         **BAD**
         - Process {...}
+        - PROCESS {...}
 
         **GOOD**
         - process {...}
@@ -107,7 +108,7 @@ function Measure-NamedBlockLowerCase {
             # and is not Unnamed
                 (-not $Ast.Unnamed) -and
             # and does not start with a lowercase letter
-                (-not ($Ast.Extent.Text -cmatch '^[a-z]')))
+                (-not ($Ast.Extent.Text -cmatch 'begin|process|end|clean')))
         }
         $shouldSearchNested = $false
     }
@@ -117,10 +118,8 @@ function Measure-NamedBlockLowerCase {
             foreach ($violation in $violations) {
                 $extent = $violation.Extent
                 $corrections += ($extent | New-PSSACorrection -ReplacementText (
-                        -join @(
-                            $extent.Text[0].ToString().ToLower(),
-                            $extent.Text.Substring(1)
-                        ))
+                            $extent.Text.ToString().ToLower()
+                        )
                 )
 
                 $options = @{
@@ -458,8 +457,8 @@ function Format-ParameterAttributeBlock {
         #-------------------------------------------------------------------------------
 
         if ($null -ne $ruleArgs) {
-            #! because the rule setting is 'useNewLine', if it is true (the default),
-            #! then Arguments are separated by new lines, if not, then use a space
+            # because the rule setting is 'useNewLine', if it is true (the default),
+            # then Arguments are separated by new lines, if not, then use a space
             if (-not($ruleArgs.useNewLine)) {
                 $newLine = ' '
             }
@@ -472,17 +471,17 @@ function Format-ParameterAttributeBlock {
             if ($ruleArgs.ContainsKey('excludeFalseExpression')) {
                 $excludeFalseExpression = $ruleArgs.excludeFalseExpression
             }
-            #! allow the user to re-order the arguments
+            # allow the user to re-order the arguments
             if ($ruleArgs.ContainsKey( 'argumentList' )) {
                 $newList = $ruleArgs.argumentList
 
                 if (($newList.Count -gt 0) -and ($newList.Count -lt 10)) {
-                    #! add any missing arguments to the bottom of the list
+                    # add any missing arguments to the bottom of the list
                     foreach ($a in $argumentList) {
-                        #! if the argument is not in the list already
+                        # if the argument is not in the list already
                         if ($newList -notcontains $a) {
-                            #! if we are adding Falses
-                            #! but not if they are excluded
+                            # if we are adding Falses
+                            # but not if they are excluded
                             if (($useFalseExpression) -and ($excludeFalseExpression -notcontains $a)) {
                                 $newList += $a
                             }
