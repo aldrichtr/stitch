@@ -10,7 +10,11 @@ function Get-SourceFilePath {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        # we want to go from 'tests/Unit/module1/public/Get-TheThing.Tests.ps1' to  'source/module1/public/Get-TheThing.ps1'
+        <#
+        we want to go from
+        'tests/Unit/module1/public/Get-TheThing.Tests.ps1' to
+        'source/module1/public/Get-TheThing.ps1'
+        #>
         Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $sourceFile = $TestFile -replace '\.Tests\.ps1', '.ps1'
         $sourceFile = $sourceFile -replace '[uU]nit[\\\/]', ''
