@@ -19,7 +19,7 @@ function Invoke-StitchTemplate {
         [Parameter()]
         [string]$Destination,
 
-        # The name of the template
+        # The name of target file
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
@@ -65,6 +65,7 @@ function Invoke-StitchTemplate {
                     $Data = @{}
                 }
 
+                $Data['Name'] = $Name
                 # Templates can use this to import/include  other templates
                 $Data['TemplatePath'] = $Source | Split-Path -Parent
 
