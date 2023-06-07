@@ -47,6 +47,22 @@ to help manage:
 - Releases
 - Publishing / Distribution
 
+## Installing
+
+to install stitch from the [PSGallery][4]
+
+If using PSResourceGet
+
+```powershell
+Install-PSResource stitch -Prerelease
+```
+
+or if not
+
+```powershell
+Install-Module stitch -AllowPrerelease
+```
+
 ## Overview
 
 stitch is both a module, and a set of Invoke-Build tasks.  If you are already
