@@ -1,0 +1,70 @@
+<%# code: language=eps -%>
+<%#
+---
+path: $BuildRoot
+bind: 'parameters.psd1'
+---
+-%>
+<%-
+if ($null -eq $Parameters) {
+    throw 'Parameters table not found'
+}
+
+if ($null -eq $TemplatePath) {
+    throw 'TemplatePath not found'
+}
+$buildScriptDir = (Join-Path $TemplatePath 'build_ps1')
+$parameterTemplate = (Join-Path $buildScriptDir 'param.ps1.eps1')
+$helpTemplate = (Join-Path $buildScriptDir 'help.ps1.eps1')
+$contentFile = (Join-Path $buildScriptDir '_build.ps1')
+-%>
+
+using namespace System.Diagnostics.CodeAnalysis
+
+<%= Invoke-EPSTemplate -Path $helpTemplate -%>
+
+#-------------------------------------------------------------------------------
+#region Rule suppression
+
+<%-
+    $groups = $Parameters.Values
+    foreach ($group in $groups) {
+        $group | Foreach-Object {
+-%>
+[SuppressMessage('PSReviewUnusedParameter','<%= $_.Name %>',
+Justification = 'Parameters used in separate task files' )]
+<%-     } -%>
+<%- } -%>
+
+#endregion Rule suppression
+#-------------------------------------------------------------------------------
+
+param(
+    <%-
+    $parameterGroups = $Parameters.Keys
+    $lastGroup = $parameterGroups | Select-Object -Last 1
+
+    $parameterGroups | ForEach-Object {
+        $groupName = $_
+        $groupParams = $Parameters[$groupName]
+        $paramCount = $groupParams.Count
+        $currentCount = 0
+        -%>
+    #-------------------------------------------------------------------------------
+    #region <%= $groupName %>
+        <%- $groupParams | ForEach-Object { -%>
+            <%- $currentCount++ -%>
+
+<%=             Invoke-EPSTemplate -Path $parameterTemplate -Binding $_ -Safe -%>
+            <%- if ($groupName -notlike $lastGroup) { -%>,<%- } else { %>
+                <%- if ($currentCount -ne $paramCount) { -%>,<%- } %>
+                <%- } %>
+            <%- } %>
+    #endregion <%= $groupName %>
+    #-------------------------------------------------------------------------------
+        <%- } -%>
+)
+
+<%- foreach ($line in (Get-Content $contentFile)) { -%>
+<%=     $line %>
+<%- } -%>

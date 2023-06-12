@@ -1,0 +1,83 @@
+<!--
+-->
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>default</Name>
+      <ViewSelectedBy>
+        <TypeName>Stitch.ModuleItemInfo</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+          <AutoSize />
+          <TableHeaders>
+              <TableColumnHeader>
+                  <Label>Name</Label>
+                  <Width>9</Width>
+                  <Alignment>Left</Alignment>
+                </TableColumnHeader>
+                <TableColumnHeader>
+                  <Label>ModuleVersion</Label>
+                  <Width>16</Width>
+                  <Alignment>Left</Alignment>
+                </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Description</Label>
+            <Width>66</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>GUID</Label>
+            <Width>39</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>RootModule</Label>
+            <Width>14</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>ModuleFile</Label>
+            <Width>14</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>ManifestFile</Label>
+            <Width>15</Width>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+         </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <!--
+            By default the entries use property names, but you can replace them with scriptblocks.
+            <ScriptBlock>$_.foo /1mb -as [int]</ScriptBlock>
+-->
+              <TableColumnItem>
+                <PropertyName>Name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ModuleVersion</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>GUID</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>RootModule</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ModuleFile</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>ManifestFile</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>
