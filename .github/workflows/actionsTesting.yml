@@ -1,0 +1,20 @@
+name: '[test] Github Actions testing'
+on:
+  - workflow_dispatch
+
+jobs:
+  # print out the context
+  view_context:
+    runs-on: windows-latest
+    steps:
+     - name: View github context attributes
+       shell: pwsh
+       env:
+         GITHUB_CONTEXT: ${{ toJson(github) }}
+       run: |
+         Write-Host $PSVersionTable
+         $githubContext =  $env:GITHUB_CONTEXT | ConvertFrom-Json -Depth 32
+         Write-Host "$('-' * 78)"
+         Write-Host "Github Context:"
+         $githubContext
+         Write-Host "$('-' * 78)"

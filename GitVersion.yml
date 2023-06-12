@@ -1,0 +1,99 @@
+## ############################################################################
+## vscode: language=yaml
+## vscode-fold=1
+## ############################################################################
+## GitVersion configuration file
+## ############################################################################
+
+# mode : controls how and when gitversion increments the version fields
+#
+# ContinuousDelivery : Calculate the next version and use that until it is *released*
+# ContinuousDeployment : Increment the version on every commit
+# Mainline : Like ContinuousDelivery but infer releases from merges and commits on `main`
+
+mode: ContinuousDelivery
+
+# git tag regex
+tag-prefix: '[vV]'
+continuous-delivery-fallback-tag: ''
+
+#-------------------------------------------------------------------------------
+#region Output field format
+
+legacy-semver-padding: 4
+build-metadata-padding: 4
+commits-since-version-source-padding: 4
+tag-pre-release-weight: 60000
+
+# Control how the `CommitDate` field is formatted
+commit-date-format: yyyyMMddTHHmmss
+
+assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-scheme: MajorMinorPatchTag
+
+# Controls how the `AssemblySemVer` field is formatted
+assembly-versioning-format: '{Major}.{Minor}.{Patch}.{WeightedPreReleaseNumber ?? 0}'
+# Controls how the `AssemblySemFileVer` field is formatted
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{EscapedBranchName ?? none}.{BuildMetaDataPadded}'
+# Controls how the `InformationalVersion` field is formatted
+assembly-informational-format: '{FullSemVer}.Date.{CommitDate}-{ShortSha}'
+
+#endregion Output field format
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#region Commit message processing
+
+# Increment version fields based on the commit message content
+commit-message-incrementing: Enabled
+
+# Regexen to control how commit message options are found
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(hotfix|fix|patch)'
+no-bump-message: '\+semver:\s?(none|skip)'
+
+
+#-------------------------------------------------------------------------------
+#region Branch specific configuration
+
+branches:
+    # 'main'
+    #    should only increment when tagged.  This controls the version number
+    #    and release process to production
+    # 'release-vX.X.X/release/vX.X.X'
+    #    should be the version identified in the branch.  Each
+    #    commit should update the buildnumber
+    # 'fix/hotfix/bugfix/'
+    #
+  main:
+    regex: '^main$'
+    tag: ''
+    increment: Patch
+    is-release-branch: true
+    is-mainline: true
+    pre-release-weight: 1000
+  feature:
+    regex: '^feature[/-]'
+    mode: ContinuousDelivery
+    tag: useBranchName
+    increment: Patch
+    source-branches: ['main', 'release']
+    pre-release-weight: 5000
+  release:
+    regex: ^rel(ease)?[/-]
+    mode: ContinuousDelivery
+    tag: 'rc'
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    source-branches:
+    - main
+    - release
+    tracks-release-branches: false
+    is-release-branch: true
+    is-mainline: false
+    pre-release-weight: 3000
+
+#endregion Branch specific configuration
+#-------------------------------------------------------------------------------
