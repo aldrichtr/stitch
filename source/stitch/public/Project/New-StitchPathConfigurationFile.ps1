@@ -1,6 +1,8 @@
 
 function New-StitchPathConfigurationFile {
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess
+    )]
     param(
         # Default Source directory
         [Parameter(
@@ -54,7 +56,7 @@ process {
         if (-not ($PSBoundParameters.ContainsKey($location))) {
             $pathIsSet = $false
             do {
-                $ans = Read-Host "The directory where this project's $location is stored: "
+                $ans = Read-Host "The directory where this project's $location is stored "
                 if (-not ($DontValidate)) {
                     $possiblePath = (Join-Path (Get-Location) $ans)
                     if (-not (Test-Path $possiblePath)) {
@@ -64,6 +66,8 @@ process {
                                 $PSBoundParameters[$location] = $ans
                                 $pathIsSet = $true # break out of loop for this location
                         }
+                    } else {
+                        $pathIsSet = $true
                     }
                 } else {
                     $pathIsSet = $true
