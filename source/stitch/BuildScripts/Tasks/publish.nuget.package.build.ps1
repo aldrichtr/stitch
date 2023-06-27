@@ -17,7 +17,7 @@ task publish.nuget.package {
     $gitStatus = Get-GitRepositoryStatus
 
     if ($gitStatus.IsDirty) {
-        logWarn "git repository has uncommited changes"
+        logWarning "git repository has uncommited changes"
         switch ($PublishActionIfUncommitted) {
             'stash' {
                 logInfo "Calling push.git.stash task"
