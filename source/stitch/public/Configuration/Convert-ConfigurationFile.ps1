@@ -8,9 +8,9 @@ function Convert-ConfigurationFile {
     param(
         # Specifies a path to one or more configuration files.
         [Parameter(
-        Position = 0,
-        ValueFromPipeline,
-        ValueFromPipelineByPropertyName
+            Position = 0,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
         )]
         [Alias('PSPath')]
         [string[]]$Path
@@ -19,7 +19,6 @@ function Convert-ConfigurationFile {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         Write-Debug "Getting ready to convert configuration file $Path"
         if (Test-Path $Path) {
             Write-Debug '  - File exists'
@@ -48,7 +47,6 @@ function Convert-ConfigurationFile {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

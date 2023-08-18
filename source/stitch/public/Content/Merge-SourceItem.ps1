@@ -195,18 +195,20 @@ function Merge-SourceItem {
                 $statements = $combinedUsingStatements | Where-Object UsingStatementKind -Like $kind
 
                 if ($statements.Count -gt 0) {
-                    Write-Debug "     - $($statements.Count) found"
+                    Write-Debug "     - $($statements.Count) statements found"
                     $added = @()
                     foreach ($statement in $statements) {
                         $s = $statement.Extent.Text
+                        Write-Debug "       - Statement Text: '$s'"
+
                         if ($added -contains $s) {
-                            Write-Debug "       - '$s' already processed"
+                            Write-Debug "         - already processed"
                         } else {
-                            Write-Debug "       - Looking for '$s' in content"
+                            Write-Debug "         - Looking for '$s' in content"
                             # first, remove the line from the original content
-                            if (($content) -match [regex]::Escape($s)) {
+                            if ($content -match "^$([regex]::Escape($s))`$") {
                                 Write-Debug "       - found '$s' in content"
-                                $content = ($content) -replace [regex]::Escape($s), ''
+                                $content = ($content) -replace "^$([regex]::Escape($s))`$", ''
                             }
                             $null = $sb.AppendLine($s)
                             $added += $s
