@@ -4,9 +4,10 @@ function Find-BuildProfileRootDirectory {
     .SYNOPSIS
         Find the directory that has the profiles defined
     #>
+    [Alias('Resolve-BuildProfileRootDirectory')]
     [CmdletBinding()]
     param(
-        # Specifies a path to a location that contains Build Profiles (This should  be BuildConfigPath)
+        # Specifies a path to a location that contains Build Profiles (This should be BuildConfigPath)
         [Parameter(
             Position = 0,
             ValueFromPipeline,
@@ -17,17 +18,14 @@ function Find-BuildProfileRootDirectory {
     )
     begin {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
-        $possibleProfileDirectories = @(
-            'profiles',
-            'profile',
-            'runbooks'
-        )
+
+        $possibleProfileDirectories = @( 'profiles', 'profile', 'runbooks' )
         $profileDirectory = $null
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if (-not($PSBoundParameters.ContainsKey('Path'))) {
-            $possibleBuildConfigRoot += $PSCmdlet.GetVariableValue('BuildConfigRoot')
+            $possibleBuildConfigRoot = Find-BuildConfigurationRootDirectory
+
             if ([string]::IsNullorEmpty($possibleBuildConfigRoot)) {
                 $Path += Get-Location
             } else {
@@ -35,9 +33,12 @@ function Find-BuildProfileRootDirectory {
             }
         }
 
+        #! First, loop through each configuration root directory
         :root foreach ($possibleRootPath in $Path) {
+            #! Then, loop through each of the default names for a profile directory
             :profile foreach ($possibleProfileDirectory in $possibleProfileDirectories) {
                 $possibleProfilePath = (Join-Path $possibleRootPath $possibleProfileDirectory)
+
                 if (Test-Path $possibleProfilePath) {
                     $possiblePathItem = (Get-Item $possibleProfilePath)
                     if ($possiblePathItem.PSIsContainer) {
@@ -50,7 +51,6 @@ function Find-BuildProfileRootDirectory {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         $profileDirectory

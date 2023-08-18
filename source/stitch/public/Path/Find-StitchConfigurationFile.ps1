@@ -19,7 +19,6 @@ function Find-StitchConfigurationFile {
         )
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         :path foreach ($location in $Path) {
             Write-Debug "Looking in $location"
             :filter foreach ($possibleConfigFileFilter in $possibleConfigFileFilters) {
@@ -36,7 +35,6 @@ function Find-StitchConfigurationFile {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

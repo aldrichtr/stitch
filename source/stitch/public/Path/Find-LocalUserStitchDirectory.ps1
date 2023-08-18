@@ -1,5 +1,10 @@
 
 function Find-LocalUserStitchDirectory {
+    <#
+    .SYNOPSIS
+        Find the directory in the users home directory that contains stitch configuration items
+    #>
+    [Alias('Resolve-LocalUserStitchDirectory')]
     [CmdletBinding()]
     param(
         # Specifies a path to one or more locations to look for the users local stitch directory
