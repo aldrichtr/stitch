@@ -41,7 +41,7 @@ function Select-BuildRunBook {
             if (-not ([string]::IsNullorEmpty($PSCmdlet.GetVariableValue('ProfileRoot')))) {
                 $Path = $PSCmdlet.GetVariableValue('ProfileRoot')
             } else {
-                $Path = (Get-Location)
+                $Path = (Get-Location).Path
             }
         }
 

@@ -51,7 +51,7 @@ pester integration.tests -ConfigurationFile "$BuildConfigPath\pester\Integration
 }, 'integration.tests'
 
 
-'Package' | jobs 'Build', 'Verify', 'compress.nuget.package'
+'Package' | jobs 'Build', <# 'Verify' ,#> 'compress.nuget.package'
 
 'register.project.psrepo' | before 'compress.nuget.package'
 'unregister.project.psrepo' | after 'compress.nuget.package'

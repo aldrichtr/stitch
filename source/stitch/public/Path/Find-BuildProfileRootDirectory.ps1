@@ -14,6 +14,8 @@ function Find-BuildProfileRootDirectory {
             ValueFromPipelineByPropertyName
         )]
         [Alias('PSPath')]
+        [AllowEmptyString()]
+        [AllowNull()]
         [string[]]$Path
     )
     begin {
@@ -23,7 +25,7 @@ function Find-BuildProfileRootDirectory {
         $profileDirectory = $null
     }
     process {
-        if (-not($PSBoundParameters.ContainsKey('Path'))) {
+        if ([string]::IsNullorEmpty($Path)) {
             $possibleBuildConfigRoot = Find-BuildConfigurationRootDirectory
 
             if ([string]::IsNullorEmpty($possibleBuildConfigRoot)) {

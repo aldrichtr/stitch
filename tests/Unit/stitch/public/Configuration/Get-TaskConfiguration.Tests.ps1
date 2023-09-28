@@ -35,12 +35,11 @@ Describe "Testing public function Get-TaskConfiguration" -Tags @('unit', 'TaskCo
             $errors.count | Should -Be 0
         }
 
-        It "It Should have a 'Task' parameter" {
-                $command.Parameters['Task'].Count | Should -Be 1
+        It "It Should have a 'Name' parameter" {
+                $command.Parameters['Name'].Count | Should -Be 1
             }
         It "It Should have a 'TaskConfigPath' parameter" {
                 $command.Parameters['TaskConfigPath'].Count | Should -Be 1
             }
     }
 }
-

@@ -37,7 +37,7 @@ function Find-BuildConfigurationRootDirectory {
         #! if this function is called within a build script, then BuildConfigRoot should be set already
         $possibleBuildConfigRoot = $PSCmdlet.GetVariableValue('BuildConfigRoot')
 
-        if ($null -ne $possibleBuildConfigRoot) {
+        if (-not ([string]::IsNullOrEmpty($possibleBuildConfigRoot))) {
             Write-Debug "Found `$BuildConfigRoot => $possibleBuildConfigRoot"
             $configurationRootDirectory = $possibleBuildConfigRoot
         } else {
