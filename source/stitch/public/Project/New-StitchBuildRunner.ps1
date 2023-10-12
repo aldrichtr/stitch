@@ -35,7 +35,6 @@ function New-StitchBuildRunner {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $template = Get-StitchTemplate -Type 'install' -Name '.build.ps1'
 
 
@@ -59,7 +58,6 @@ function New-StitchBuildRunner {
         } else {
             throw 'Could not find the stitch build script file template'
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

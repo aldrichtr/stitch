@@ -24,7 +24,6 @@ function New-StitchConfigurationPath {
             $Path = Get-Location
         }
         $buildConfigDir = (Join-Path $Path $Name)
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         Write-Debug 'Create directories if they do not exist'
         Write-Debug "  - Looking for $buildConfigDir"
         if (-not(Test-Path $buildConfigDir)) {
@@ -35,7 +34,6 @@ function New-StitchConfigurationPath {
                 throw "Could not create Build config directory $BuildConfigDir`n$_"
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

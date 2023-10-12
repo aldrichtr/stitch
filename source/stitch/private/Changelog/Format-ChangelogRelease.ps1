@@ -39,7 +39,6 @@ function Format-ChangelogRelease {
         $dateFormatPattern = '\{date (?<df>.*?)\}'
 
     } process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
 
         Write-Debug " Items: $($ReleaseInfo.Keys)"
         $format = $formatOptions -replace $namePattern, $ReleaseInfo.Name
@@ -61,8 +60,6 @@ function Format-ChangelogRelease {
                 $format = $format -replace $datePattern, $ReleaseInfo.Timestamp
             }
         }
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     } end {
         $format
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

@@ -46,7 +46,6 @@ function Rename-SourceItem {
 
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         :file foreach ($file in $Path) {
             if (Test-Path $file) {
                 $fileItem = Get-Item $file
@@ -92,7 +91,6 @@ function Rename-SourceItem {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

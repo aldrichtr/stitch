@@ -50,7 +50,6 @@ function Export-ReleaseNotes {
         }
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $writeToFile = $PSBoundParameters.ContainsKey('Destination')
 
         if (-not ([string]::IsNullorEmpty($Path))) {
@@ -88,8 +87,6 @@ function Export-ReleaseNotes {
         } else {
             throw "$Path is not a valid Path"
         }
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

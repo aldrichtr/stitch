@@ -32,7 +32,6 @@ function ConvertFrom-CommentedProperty {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if ($PSBoundParameters.ContainsKey('Path')) {
             if (Test-Path $Path) {
                 $commentToken = $Path | Find-ParseToken -Type Comment -Pattern "^\s*#\s*$Property\s+=.*$" | Select-Object -First 1
@@ -51,8 +50,6 @@ function ConvertFrom-CommentedProperty {
                 throw "$Path is not a valid path"
             }
         }
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

@@ -17,7 +17,6 @@ function ConvertTo-Changelog {
         $config = Get-ChangelogConfig
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
 
         Format-ChangelogHeader
         [System.Environment]::NewLine
@@ -43,8 +42,6 @@ function ConvertTo-Changelog {
         [System.Environment]::NewLine
 
         Format-ChangelogFooter
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

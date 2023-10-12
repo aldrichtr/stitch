@@ -36,7 +36,6 @@ function New-SourceComponent {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $possibleSourceFolder = $PSCmdlet.GetVariableValue('Source')
         if ($null -eq $possibleSourceFolder) {
             $projectSourcePath = Get-ProjectPath | Select-Object -ExpandProperty Source
@@ -67,7 +66,6 @@ function New-SourceComponent {
         } else {
             throw "Module source not found : $moduleDirectory"
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

@@ -53,7 +53,6 @@ function Invoke-StitchTemplate {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
 
         if (-not ([string]::IsNullorEmpty($Source))) {
             if (-not (Test-Path $Source)) {
@@ -172,8 +171,6 @@ function Invoke-StitchTemplate {
         } else {
             throw "No Source given to process"
         }
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

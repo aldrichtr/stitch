@@ -36,7 +36,6 @@ function Add-ChangelogEntry {
         }
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $group = $Commit | Resolve-ChangelogGroup
         Write-Debug "Commit $($Commit.MessageShort) resolves to group $($group.DisplayName)"
 
@@ -110,7 +109,6 @@ function Add-ChangelogEntry {
                 $tokenCount++
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $doc | Write-MarkdownDocument | Out-File $Path
     }
     end {

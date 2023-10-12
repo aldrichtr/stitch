@@ -18,7 +18,6 @@ function Get-FeatureFlag {
         $featureFlagFile = (Join-Path (Get-ModulePath) 'feature.flags.config.psd1')
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if ($null -ne $BuildInfo.Flags) {
             Write-Debug "Found the buildinfo table and it has Flags set"
             $featureFlags = $BuildInfo.Flags
@@ -56,7 +55,6 @@ function Get-FeatureFlag {
         } else {
             Write-Information "No feature flag data was found"
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

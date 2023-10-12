@@ -20,7 +20,6 @@ function Checkpoint-GitWorkingDirectory {
         if (-not ($PSBoundParameters.ContainsKey('Message'))) {
             $Message = "[checkpoint] Creating checkpoint before continuing $(Get-Date -Format FileDateTimeUniversal)"
         }
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
 
         Write-Verbose 'Staging all changes'
         Add-GitItem -All
@@ -32,8 +31,6 @@ function Checkpoint-GitWorkingDirectory {
         } else {
             Get-GitBranch -Current | Send-GitBranch
         }
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

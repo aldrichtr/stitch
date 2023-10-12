@@ -15,7 +15,6 @@ function Get-ProjectPath {
             )
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $root = Resolve-ProjectRoot
         if ($null -ne $root) {
             $possibleBuildRoot = $PSCmdlet.GetVariableValue('BuildRoot')
@@ -45,7 +44,6 @@ function Get-ProjectPath {
             }
             [PSCustomObject]$resolved | Write-Output
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
