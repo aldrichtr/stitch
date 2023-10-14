@@ -20,51 +20,6 @@ param(
     [string]$InternalTaskPath = "$PSScriptRoot\BuildScripts"
 )
 
-function Merge-TaskFile {
-    <#
-    .SYNOPSIS
-        Add the task definition to the larger collection, replacing items based on BaseName
-    #>
-    param(
-        [Parameter(
-            Position = 1,
-            ValueFromPipeline
-        )]
-        [ref]$Collection,
-
-        [Parameter(
-            Position = 0
-        )]
-        [Array]$TaskFiles
-    )
-    begin {
-    }
-    process {
-        foreach ($currentTaskFile in $TaskFiles) {
-            <#
-             if this script's file name exists in the Collection scripts array, we remove it from the
-             and add this script,  otherwise just add the script
-            #>
-            $baseNames = $Collection.Value | Select-Object -ExpandProperty BaseName
-            if ($baseNames -contains $currentTaskFile.BaseName ) {
-                $previousTaskFile = $Collection.Value | Where-Object {
-                    $_.BaseName -like $currentTaskFile.BaseName
-                }
-                if ($null -ne $previousTaskFile) {
-                    Write-Verbose "Overriding $($currentTaskFile.BaseName)"
-                    $index = $Collection.Value.IndexOf( $previousTaskFile )
-                    $Collection.Value[$index] = $currentTaskFile
-                }
-            } else {
-                $Collection.Value += $currentTaskFile
-            }
-        }
-    }
-    end {
-    }
-}
-
-
 if ($null -eq $script:ImportErrors) {
     $script:ImportErrors = [ordered]@{}
 }
@@ -92,7 +47,7 @@ if ($null -ne $InternalTaskPath) {
         $moduleTaskFiles = $InternalTaskPath | Find-InvokeBuildTaskFile
         if ($moduleTaskFiles.Count -gt 0) {
             Write-Debug "    - Merging $($moduleTaskFiles.Count) task files"
-            [ref]$taskFiles | Merge-TaskFile $moduleTaskFiles
+            $moduleTaskFiles | Merge-FileCollection ([ref]$taskFiles)
         }
     }
 } else {
@@ -112,7 +67,7 @@ if ($null -ne $systemPath) {
 
 if ($systemTaskFiles.Count -gt 0) {
     Write-Debug "    - Merging $($systemTaskFiles.Count) task files"
-    [ref]$taskFiles | Merge-TaskFile $systemTaskFiles
+    $systemTaskFiles | Merge-FileCollection ([ref]$taskFiles)
 
 }
 
@@ -130,7 +85,7 @@ if ($null -ne $BuildConfigPath) {
 
 if ($projectTaskFiles.Count -gt 0) {
     Write-Debug "    - Merging $($projectTaskFiles.Count) task files"
-    [ref]$taskFiles | Merge-TaskFile $projectTaskFiles
+    $projectTaskFiles | Merge-FileCollection ([ref]$taskFiles)
 }
 
 Write-Debug "Merged all task files."

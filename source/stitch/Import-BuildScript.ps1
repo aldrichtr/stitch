@@ -20,53 +20,12 @@ param(
     [string]$InternalScriptPath  = "$PSScriptRoot\BuildScripts"
 )
 
-function Merge-BuildScript {
-    <#
-    .SYNOPSIS
-        Add the scripts to the larger collection, replacing items based on BaseName
-    #>
-    param(
-        [Parameter(
-            Position = 1,
-            ValueFromPipeline
-        )]
-        [ref]$Collection,
-
-        [Parameter(
-            Position = 0
-        )]
-        [Array]$Scripts
-    )
-    begin {
-    }
-    process {
-        foreach ($currentScript in $Scripts) {
-            <#
-             if this script's file name exists in the Collection scripts array, we remove it from the
-             and add this script,  otherwise just add the script
-            #>
-            $baseNames = $Collection.Value | Select-Object -ExpandProperty BaseName
-            if ($baseNames -contains $currentScript.BaseName ) {
-                $previousScript = $Collection.Value | Where-Object {
-                    $_.BaseName -like $currentScript.BaseName
-                }
-                if ($null -ne $previousScript) {
-                    Write-Verbose "Overriding $($currentScript.BaseName)"
-                    $index = $Collection.Value.IndexOf( $previousScript )
-                    $Collection.Value[$index] = $currentScript
-                }
-            } else {
-                $Collection.Value += $currentScript
-            }
-        }
-    }
-    end {
-    }
-}
-
 if ($null -eq $script:ImportErrors) {
     $script:ImportErrors = [ordered]@{}
 }
+
+#TODO: This function is a duplicate of Import-TaskFile, the only difference is that we are importing build scripts
+#  It should be combined into a single Import function that does task files then build scripts
 
 # build scripts in the current project
 $projectScripts = [System.Collections.ArrayList]@()
@@ -92,7 +51,7 @@ if ($null -ne $InternalScriptPath) {
         $moduleScripts = $InternalScriptPath | Find-InvokeBuildScript
         if ($moduleScripts.Count -gt 0) {
             Write-Debug "    - Merging $($moduleScripts.Count) scripts"
-            [ref]$scriptFiles | Merge-BuildScript $moduleScripts
+              $moduleScripts | Merge-FileCollection ([ref]$scriptFiles)
         }
     }
 } else {
@@ -111,7 +70,7 @@ if ($null -ne $systemPath) {
 
 if ($systemScripts.Count -gt 0) {
     Write-Debug "    - Merging $($systemScripts.Count) scripts"
-    [ref]$scriptFiles | Merge-BuildScript $systemScripts
+    $systemScripts | Merge-FileCollection ([ref]$scriptFiles)
 }
 
 <#------------------------------------------------------------------
@@ -128,7 +87,7 @@ if ($null -ne $BuildConfigPath) {
 
 if ($projectScripts.Count -gt 0) {
     Write-Debug "    - Merging $($projectScripts.Count) scripts"
-    [ref]$scriptFiles | Merge-BuildScript $projectScripts
+    $projectScripts | Merge-FileCollection ([ref]$scriptFiles)
 }
 
 Write-Debug "Merged all build scripts."
