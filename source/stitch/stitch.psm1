@@ -67,3 +67,11 @@ if (Test-Path "$PSScriptRoot\LoadOrder.txt") {
 }
 
 if (Test-Path $suffixFile) { . $suffixFile }
+
+$formatDirectory = (Join-Path $PSScriptRoot 'formats')
+
+if (Test-Path $formatDirectory) {
+    foreach ($format in (Get-ChildItem $formatDirectory -Filter "*.ps1xml")) {
+        Update-FormatData -AppendPath $format.FullName -ErrorAction SilentlyContinue
+    }
+}

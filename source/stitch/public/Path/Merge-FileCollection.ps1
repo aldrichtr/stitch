@@ -39,6 +39,7 @@ function Merge-FileCollection {
              and add this file,  otherwise just add the file
             #>
             $baseNames = $Collection.Value | Select-Object -ExpandProperty BaseName
+
             if ($baseNames -contains $currentUpdateFile.BaseName ) {
                 $previousTaskFile = $Collection.Value | Where-Object {
                     $_.BaseName -like $currentUpdateFile.BaseName
@@ -49,7 +50,7 @@ function Merge-FileCollection {
                     $Collection.Value[$index] = $currentUpdateFile
                 }
             } else {
-                $Collection.Value += $currentUpdateFile
+                [void]$Collection.Value.Add($currentUpdateFile)
             }
         }
     }

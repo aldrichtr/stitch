@@ -23,10 +23,8 @@ function Format-ChangelogHeader {
         }
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         #! There are no replacements in the header yet
         $format = $formatOptions
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         $format

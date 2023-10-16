@@ -15,7 +15,6 @@ function Import-PhaseDefinition {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if (Test-InInvokeBuild) {
             Write-Debug "Getting ready to Import phase definition file $Path"
             if (Test-Path $Path) {
@@ -65,7 +64,6 @@ function Import-PhaseDefinition {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

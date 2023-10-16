@@ -45,7 +45,6 @@ function Get-TestItemInfo {
                 #-------------------------------------------------------------------------------
                 #region Object creation
                 Write-Debug "  Creating item $($fileItem.BaseName) from $($fileItem.FullName)"
-                Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
                 $pesterConfig = New-PesterConfiguration
                 $pesterConfig.Run.PassThru = $true
                 $pesterConfig.Run.SkipRun = (-not ($RunTest))
@@ -58,7 +57,6 @@ function Get-TestItemInfo {
                     throw "Could not load test item $Path`n$_ "
                 }
             }
-                Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
             }
             end {
                 $testResult

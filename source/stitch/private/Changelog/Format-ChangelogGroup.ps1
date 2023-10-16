@@ -26,7 +26,6 @@ function Format-ChangelogGroup {
         $namePattern = '\{name\}'
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         Write-Debug "Format was '$formatOptions'"
         Write-Debug "GroupInfo is $($GroupInfo | ConvertTo-Psd)"
         if (-not ([string]::IsNullorEmpty($GroupInfo.DisplayName))) {
@@ -36,7 +35,6 @@ function Format-ChangelogGroup {
             $format = $formatOptions -replace $namePattern, $GroupInfo.Name
             Write-Debug "  - Name is $($GroupInfo.Name)"
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "Format is '$format'"

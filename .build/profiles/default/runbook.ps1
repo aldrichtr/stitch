@@ -27,6 +27,7 @@ Add-BuildTask 'write.module' @(
 Add-BuildTask 'write.manifest' @(
     'write.manifest.file',
     'add.exported.functions',
+    'add.import.functions',
     'add.exported.aliases',
     'add.required.modules',
     'add.psformat.files',

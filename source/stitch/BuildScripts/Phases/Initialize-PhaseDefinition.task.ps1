@@ -23,7 +23,6 @@ function Initialize-PhaseDefinition {
                 $Path = $BuildConfigPath
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if (Test-FeatureFlag 'phaseConfigFile') {
             if (Test-Path $Path) {
                 Write-Debug "Loading phase configuration files from $Path with filter $Filter"
@@ -60,7 +59,6 @@ function Initialize-PhaseDefinition {
         } else {
             Write-Debug "Feature flag 'phaseConfigFile' not enabled"
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

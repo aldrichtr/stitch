@@ -25,7 +25,6 @@ function Find-TodoItem {
         $todoPattern = '^(\s*)(#)?\s*TODO(:)?\s+(.*)$'
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         #TODO: To refine this we could parse the file and use the comment tokens to give to Select-String
         $results = Get-ChildItem $Path -Recurse | Select-String -Pattern $todoPattern -CaseSensitive -AllMatches
 
@@ -39,7 +38,6 @@ function Find-TodoItem {
             } | Write-Output
         }
  #>
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
