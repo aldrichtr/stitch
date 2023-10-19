@@ -331,7 +331,13 @@ function Get-SourceItemInfo {
                 }
             }
 
-            [PSCustomObject]$sourceObject | Write-Output
+            $sourceInfo = [PSCustomObject]$sourceObject
+
+
+            $sourceInfo = $sourceInfo | Add-Member -MemberType ScriptMethod -Name ToString -Value {
+                Get-Content $this.Path } -Force -PassThru
+
+            $sourceInfo | Write-Output
         } # end foreach
     } # end process block
     end {
