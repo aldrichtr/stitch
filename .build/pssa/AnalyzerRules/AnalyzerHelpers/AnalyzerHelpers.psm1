@@ -107,7 +107,6 @@ function New-PSSADiagnosticRecord {
         $f = Get-PSCallStack | Select-Object -Skip 1 -First 1 | Format-RuleName
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if (-not($PSBoundParameters.ContainsKey('RuleName'))) {
             $RuleName = $f.ShortName
         }
@@ -141,7 +140,6 @@ function New-PSSADiagnosticRecord {
         } catch {
             $PSCmdlet.ThrowTerminatingError($PSItem)
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
@@ -162,7 +160,6 @@ function Format-RuleName {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $fullName = $FunctionName -replace '<.*>$', ''
         $verb, $noun = $fullName -split '-', 2
 
@@ -184,7 +181,6 @@ function Format-RuleName {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         [PSCustomObject]@{
@@ -217,7 +213,6 @@ function Get-RuleSetting {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $allSettings = [Helper]::Instance.GetRuleArguments()
         if ($null -ne $allSettings) {
             if ($All) {
@@ -243,8 +238,6 @@ function Get-RuleSetting {
         } else {
             Write-Debug 'Could not retrieve rule settings'
         }
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

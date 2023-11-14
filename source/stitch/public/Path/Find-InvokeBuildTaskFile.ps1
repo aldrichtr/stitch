@@ -23,7 +23,6 @@ function Find-InvokeBuildTaskFile {
         $taskFilePattern = "*.task.ps1"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         foreach ($location in $Path) {
             if (Test-Path $location) {
                 $options = @{
@@ -34,7 +33,6 @@ function Find-InvokeBuildTaskFile {
                 Get-ChildItem @options
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

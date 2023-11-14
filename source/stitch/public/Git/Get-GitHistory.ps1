@@ -18,7 +18,6 @@ function Get-GitHistory {
         }
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
 
         foreach ($commit in Get-GitCommit) {
             #-------------------------------------------------------------------------------
@@ -89,8 +88,6 @@ function Get-GitHistory {
             #endregion Add to group
             #-------------------------------------------------------------------------------
         }
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
 

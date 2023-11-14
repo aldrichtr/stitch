@@ -48,7 +48,6 @@ function New-SourceItem {
 
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
 
         $template = Get-StitchTemplate -Type 'new' -Name $Type
 
@@ -80,7 +79,6 @@ function New-SourceItem {
         } else {
             throw "Could not find a 'new' template for type: $Type"
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

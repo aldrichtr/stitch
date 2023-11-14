@@ -21,7 +21,6 @@ function Get-ParameterData {
         $parameterData = Import-Psd $buildParametersFile -Unsafe
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $groups = $parameterData.Parameters.Values
 
         foreach ($group in $groups) {
@@ -34,7 +33,6 @@ function Get-ParameterData {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
@@ -77,7 +75,6 @@ function Get-BuildScriptProperty {
         }
 }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
 
         $buildPropertyMatches = Get-ChildItem @options | Select-String -Pattern '\s*Get-BuildProperty (\w+) (.+)$'
 
@@ -106,8 +103,6 @@ function Get-BuildScriptProperty {
         }
 
         $buildParameters | Write-Output
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
@@ -152,7 +147,6 @@ function Add-ParameterData {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
 
         $parameterData = Get-ParameterData
 
@@ -161,8 +155,6 @@ function Add-ParameterData {
         }
 
         $parameterData | ConvertTo-Psd | Set-Content (Get-ParameterDataFile)
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

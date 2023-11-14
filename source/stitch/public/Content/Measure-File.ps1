@@ -29,7 +29,6 @@ function Measure-File {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if (-not($PSBoundParameters.ContainsKey('Path'))) {
             if ($null -ne $psEditor) {
                 $currentFile = $psEditor.GetEditorContext().CurrentFile.Path
@@ -53,7 +52,6 @@ function Measure-File {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

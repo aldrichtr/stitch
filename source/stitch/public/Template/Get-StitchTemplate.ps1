@@ -17,7 +17,6 @@ function Get-StitchTemplate {
         $templatePath = (Join-Path (Get-ModulePath) 'templates')
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         $templateTypes = @{}
         Get-ChildItem $templatePath -Directory | ForEach-Object {
             Write-Debug "Found template file '$($_.Name)' Adding as $"
@@ -129,7 +128,6 @@ function Get-StitchTemplate {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

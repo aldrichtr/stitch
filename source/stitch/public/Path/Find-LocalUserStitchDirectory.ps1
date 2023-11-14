@@ -1,5 +1,10 @@
 
 function Find-LocalUserStitchDirectory {
+    <#
+    .SYNOPSIS
+        Find the directory in the users home directory that contains stitch configuration items
+    #>
+    [Alias('Resolve-LocalUserStitchDirectory')]
     [CmdletBinding()]
     param(
         # Specifies a path to one or more locations to look for the users local stitch directory
@@ -27,7 +32,6 @@ function Find-LocalUserStitchDirectory {
         $userStitchDirectory = $null
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if (-not($PSBoundParameters.ContainsKey('Path'))) {
             $Path = $possibleRootDirectories
         }
@@ -51,7 +55,6 @@ function Find-LocalUserStitchDirectory {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         $userStitchDirectory

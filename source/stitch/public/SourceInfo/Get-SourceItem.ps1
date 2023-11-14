@@ -26,22 +26,24 @@ function Get-SourceItem {
     process {
         if (-not($PSBoundParameters.ContainsKey('Path'))) {
             Write-Debug "No path specified.  Using default source folder"
+            #TODO: Yikes! hard-coded source path
             $Path = (Join-Path (Resolve-ProjectRoot) 'source')
-            Write-Debug "  $Path"
+            Write-Debug "Source path root: $Path"
         }
         foreach ($p in $Path) {
+            $sourceRoot = $p
             try {
                 $item = Get-Item $p -ErrorAction Stop
                 if ($item.PSIsContainer) {
-                    Get-ChildItem $item.FullName -Recurse:$Recurse |
-                    Get-sourceItemInfo -Root $item.FullName | Write-Output
+                    Get-ChildItem $item.FullName -Recurse -File
+                    | Get-SourceItemInfo -Root $sourceRoot
+                    | Write-Output
                     continue
                 } else {
-                    if ($item.Extension -eq '.ps1') {
-                        $item | Get-SourceItemInfo | Write-Output
-                    }
+                        $item
+                        | Get-SourceItemInfo -Root $sourceRoot
+                        | Write-Output
                     continue
-
                 }
             } catch {
                 Write-Warning "$p is not a valid path`n$_"

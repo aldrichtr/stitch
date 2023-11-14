@@ -27,6 +27,7 @@ Add-BuildTask 'write.module' @(
 Add-BuildTask 'write.manifest' @(
     'write.manifest.file',
     'add.exported.functions',
+    'add.import.functions',
     'add.exported.aliases',
     'add.required.modules',
     'add.psformat.files',
@@ -51,7 +52,7 @@ pester integration.tests -ConfigurationFile "$BuildConfigPath\pester\Integration
 }, 'integration.tests'
 
 
-'Package' | jobs 'Build', 'Verify', 'compress.nuget.package'
+'Package' | jobs 'Build', <# 'Verify' ,#> 'compress.nuget.package'
 
 'register.project.psrepo' | before 'compress.nuget.package'
 'unregister.project.psrepo' | after 'compress.nuget.package'

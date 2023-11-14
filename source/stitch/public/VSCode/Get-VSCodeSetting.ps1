@@ -17,7 +17,6 @@ function Get-VSCodeSetting {
         $settingsFile = "$env:APPDATA\Code\User\settings.json"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if (Test-Path $settingsFile) {
             Write-Debug "Loading the settings file"
             $settings = Get-Content $settingsFile | ConvertFrom-Json -Depth 16 -AsHashtable
@@ -44,11 +43,8 @@ function Get-VSCodeSetting {
 
         $settings['PSTypeName'] = 'VSCode.SettingsInfo'
         [PSCustomObject]$settings | Write-Output
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
 }
-

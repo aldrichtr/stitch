@@ -41,7 +41,6 @@ function Write-StitchLogo {
 
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if ($Size -like 'small') {
             $logoSource = $stitchLogoSmall
         } else {
@@ -64,8 +63,6 @@ function Write-StitchLogo {
          for ($c = 0; $c -lt $colors.Length; $c++) {
             $logoOutput = $logoOutput -replace ":$($c.ToString()):", $colors[$c]
          }
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         $logoOutput

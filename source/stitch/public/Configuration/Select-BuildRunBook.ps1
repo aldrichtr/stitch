@@ -36,12 +36,11 @@ function Select-BuildRunBook {
         $defaultRunbookSuffix = "runbook.ps1"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if (-not ($PSBoundParameters.ContainsKey('Path'))) {
             if (-not ([string]::IsNullorEmpty($PSCmdlet.GetVariableValue('ProfileRoot')))) {
                 $Path = $PSCmdlet.GetVariableValue('ProfileRoot')
             } else {
-                $Path = (Get-Location)
+                $Path = (Get-Location).Path
             }
         }
 
@@ -83,7 +82,6 @@ function Select-BuildRunBook {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

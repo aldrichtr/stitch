@@ -30,7 +30,6 @@ function New-StitchBuildProfile {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if (-not ($PSBoundParameters.ContainsKey('ProfileRoot'))) {
             $possibleProfileRoot = Find-BuildProfileRootDirectory
             if ($null -ne $possibleProfileRoot) {
@@ -57,7 +56,6 @@ function New-StitchBuildProfile {
             }
             #TODO: if we fail to create a file, should we remove the folder in a finally block?
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

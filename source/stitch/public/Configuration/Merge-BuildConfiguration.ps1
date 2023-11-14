@@ -1,15 +1,6 @@
 function Merge-BuildConfiguration {
     [CmdletBinding()]
     param(
-        # Specifies a path to one or more configuration files
-        [Parameter(
-        Position = 2,
-        ValueFromPipeline,
-        ValueFromPipelineByPropertyName
-        )]
-        [Alias('PSPath')]
-        [string[]]$Path,
-
         # The object to merge the configuration into (by reference)
         [Parameter(
             Mandatory,
@@ -20,21 +11,33 @@ function Merge-BuildConfiguration {
         # The top level key in which to add the given table
         [Parameter(
             Position = 1
-        )]
-        [string]$Key
+            )]
+            [string]$Key,
+
+            # Specifies a path to one or more configuration files
+            [Parameter(
+            Position = 2,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+            )]
+            [Alias('PSPath')]
+            [string[]]$Path
     )
     begin {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         foreach ($file in $Path) {
             $options = Convert-ConfigurationFile $Path
+
             if ($null -ne $options) {
-                $Object.Value | Update-Object -UpdateObject $options
+                if ($PSBoundParameters.ContainsKey('Key')) {
+                    $Object.Value.$Key | Update-Object -UpdateObject $options
+                } else {
+                    $Object.Value | Update-Object -UpdateObject $options
+                }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

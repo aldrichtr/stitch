@@ -18,7 +18,6 @@ function Find-BuildRunBook {
         )
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         :path foreach ($location in $Path) {
             :filter foreach ($possibleRunbookFilter in $possibleRunbookFilters) {
                 $options = @{
@@ -30,7 +29,6 @@ function Find-BuildRunBook {
                 Get-Childitem @options
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

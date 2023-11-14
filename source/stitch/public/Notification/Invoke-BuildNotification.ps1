@@ -29,7 +29,6 @@ function Invoke-BuildNotification {
         $appImage = (Join-Path (Get-ModulePath) "spool-of-thread_1f9f5.png")
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
 
         if (-not ($PSBoundParameters.ContainsKey('Text'))) {
             $Text = "Build Complete"
@@ -67,9 +66,6 @@ function Invoke-BuildNotification {
 
 
         New-BurntToastNotification @toastOptions
-
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

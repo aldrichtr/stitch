@@ -46,7 +46,6 @@ function Format-ChangelogEntry {
         $footerPattern = '\{ft\.(\w+)\}'
 
     } process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
 
         if ($EntryInfo.IsBreakingChange) {
             $formatOptions = $config.Format.BreakingChange ?? $DEFAULT_BREAKING_FORMAT
@@ -70,8 +69,6 @@ function Format-ChangelogEntry {
                 }
             }
         }
-
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     } end {
         $format
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"

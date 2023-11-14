@@ -14,7 +14,6 @@ function Get-ProjectVersionInfo {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        Write-Debug "`n$('-' * 80)`n-- Process start $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
         if (-not($PSBoundParameters.ContainsKey('Path'))) {
             $Path = Get-Location
         }
@@ -79,7 +78,6 @@ function Get-ProjectVersionInfo {
                 }
             }
         }
-        Write-Debug "`n$('-' * 80)`n-- Process end $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     end {
         $versionInfo
