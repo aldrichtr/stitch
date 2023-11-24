@@ -1,12 +1,15 @@
 ---
 url: https://github.com/aldrichtr/stitch
-version: 0.0.1
 status: pre-release
 ---
+
 # stitch project
 
 A set of PowerShell functions and Invoke-Build tasks stitched together to aid
 the developer.
+
+[![Analyze PowerShell source code](https://github.com/aldrichtr/stitch/actions/workflows/cicd-run-pssa.yml/badge.svg)](https://github.com/aldrichtr/stitch/actions/workflows/cicd-run-pssa.yml)
+[![Run unit tests](https://github.com/aldrichtr/stitch/actions/workflows/cicd-run-unit-tests.yml/badge.svg)](https://github.com/aldrichtr/stitch/actions/workflows/cicd-run-unit-tests.yml)
 
 ![space-pen](docs/images/space-pen.jpg)
 
