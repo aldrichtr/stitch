@@ -1,99 +1,184 @@
-## ############################################################################
-## vscode: language=yaml
-## vscode-fold=1
-## ############################################################################
-## GitVersion configuration file
-## ############################################################################
+# Hard set the version
+# next-version: 2.0
 
-# mode : controls how and when gitversion increments the version fields
-#
-# ContinuousDelivery : Calculate the next version and use that until it is *released*
-# ContinuousDeployment : Increment the version on every commit
-# Mainline : Like ContinuousDelivery but infer releases from merges and commits on `main`
 
-mode: ContinuousDelivery
-
-# git tag regex
-tag-prefix: '[vV]'
-continuous-delivery-fallback-tag: ''
 
 #-------------------------------------------------------------------------------
-#region Output field format
+#region mode
+# sets the mode of how gitversion should create a new version.  Can be `ContinuosDelivery`, `ContinuousDeployment`
+# or `Mainline`
+
+# ContinuousDelivery:   Continuous Delivery is the default versioning mode. In this mode, GitVersion calculates the
+#                       next version and will use that until that is released.
+# ContinuousDeployment: Sometimes you just want the version to keep changing and deploy continuously. In this case,
+#                       Continuous Deployment is a good mode to operate GitVersion by.
+# Mainline:             Mainline Development versioning mode works like the Continuous Delivery, except that it
+#                       tells GitVersion to *infer* releases from merges and commits to `main`.
+mode: ContinuousDelivery
+
+# The part of the SemVer to increment when GitVersion detects it needs to be increased, such as for commits after a
+# tag: Major, Minor, Patch, None.
+# The special value Inherit means that GitVersion should find the parent branch (i.e. the branch where the current
+# branch was branched from), and use its values for increment
+increment: Inherit
+
+# Configures GitVersion to update the build number or not when running on a build server.
+update-build-number: true
+
+#endregion mode
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#region Assembly File Versioning
+
+# Assembly File Versioning: Use either a preset scheme using `assembly-file-versioning-scheme`, or customize the
+# format using `assembly-file-versioning-format`
+
+# Assembly File Versioning Scheme
+# When updating assembly info, assembly-file-versioning-scheme tells GitVersion how to treat the AssemblyFileVersion
+# attribute. Note: you can use None to skip updating the AssemblyFileVersion while still updating the
+# AssemblyVersion and AssemblyInformationVersion attributes. Valid values: MajorMinorPatchTag, MajorMinorPatch,
+# MajorMinor, Major, None.
+assembly-file-versioning-scheme: MajorMinorPatch
+
+# Assembly File Versioning Format
+# Specifies the format of AssemblyFileVersion and overwrites the value of assembly-file-versioning-scheme.
+# Expressions in curly braces reference one of the variables or a process-scoped environment variable (when prefixed
+# with env:).
+# assembly-file-versioning-format:
+
+#endregion Assembly File Versioning
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#region Assembly Versioning
+
+# Assembly  Versioning: Use either a preset scheme using `assembly-versioning-scheme`, or customize the
+# format using `assembly-versioning-format`
+
+# Assembly Versioning Scheme
+# When updating assembly info, assembly-versioning-scheme tells GitVersion how to treat the AssemblyVersion
+# attribute. Useful to lock the major when using Strong Naming. Note: you can use None to skip updating the
+# AssemblyVersion while still updating the AssemblyFileVersion and AssemblyInformationVersion attributes. Valid
+# values: MajorMinorPatchTag, MajorMinorPatch, MajorMinor, Major, None.
+# assembly-versioning-scheme: MajorMinorPatch
+
+# Assembly Versioning Format
+# Specifies the format of AssemblyVersion and overwrites the value of assembly-versioning-scheme. Follows the same
+# formatting semantics as assembly-file-versioning-format.
+
+assembly-versioning-format: '{NuGetVersionV2}'
+
+#endregion Assembly Versioning
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#region Assembly Information
+
+# Assembly Informational Format
+# Specifies the format of AssemblyInformationalVersion. Follows the same formatting semantics as
+# assembly-file-versioning-format. The default value is {InformationalVersion}.
+assembly-informational-format: '{NuGetVersionV2}+{ShortSha}-{CommitDate}'
+
+#endregion Assembly Information
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#region tags
+
+# Tag Prefix
+# A regex which is used to trim Git tags before processing (e.g., v1.0.0). Default is [vV], although this is just
+# for illustrative purposes as we do a IgnoreCase match and could be v
+tag-prefix: '[vV]'
+
+# Tag Pre-release Weight
+# The pre-release weight in case of tagged commits. If the value is not set in the configuration, a default weight
+# of 60000 is used instead. If the WeightedPreReleaseNumber variable is 0 and this parameter is set, its value is
+# used. This helps if your branching model is GitFlow and the last release build, which is often tagged, can utilize
+# this parameter to produce a monotonically increasing build number.
+tag-pre-release-weight: 60000
+
+continuous-delivery-fallback-tag: ci
+
+#endregion tags
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#region Commit message processing
+
+# Commit Messages Incrementing
+# Increment the version based on the syntax of the commit message. Can be `Enabled`, `MergeMessageOnly` or
+# `Disabled`
+
+# If the incrementing mode is set to MergeMessageOnly you can add this information when merging a pull request. This
+# prevents commits within a PR to bump the version number.
+
+# One thing to be aware of: If the current version is an alpha-version (i.e. 0.x.y.), attempting to bump the major
+# version will merely bump the minor (eg from 0.2.0 to 0.3.0 instead of 1.0.0). Once the current version is greater
+# than 1.0.0, bumping the major version works as expected.
+commit-message-incrementing: MergeMessageOnly
+
+# explicitly, using a 'semver' trailer in your commit message
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+no-bump-message: '\+semver:\s?(none|skip)'
+
+# Infer version bump based on conventional commit rules
+# major-version-bump-message: "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\\([\\w\\s-]*\\))?(!:|:.*\\n\\n((.+\\n)+\\n)?BREAKING CHANGE:\\s.+)"
+# minor-version-bump-message: "^(feat)(\\([\\w\\s-]*\\))?:"
+# patch-version-bump-message: "^(build|chore|ci|docs|fix|perf|refactor|revert|style|test)(\\([\\w\\s-]*\\))?:"
+
+merge-message-formats: {}
+commit-date-format: yyyyMMddTHHmmss
+#endregion Commit message processing
+#-------------------------------------------------------------------------------
+
+
+
+
+#-------------------------------------------------------------------------------
+#region padding
 
 legacy-semver-padding: 4
 build-metadata-padding: 4
 commits-since-version-source-padding: 4
-tag-pre-release-weight: 60000
 
-# Control how the `CommitDate` field is formatted
-commit-date-format: yyyyMMddTHHmmss
-
-assembly-versioning-scheme: MajorMinorPatch
-assembly-file-versioning-scheme: MajorMinorPatchTag
-
-# Controls how the `AssemblySemVer` field is formatted
-assembly-versioning-format: '{Major}.{Minor}.{Patch}.{WeightedPreReleaseNumber ?? 0}'
-# Controls how the `AssemblySemFileVer` field is formatted
-assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{EscapedBranchName ?? none}.{BuildMetaDataPadded}'
-# Controls how the `InformationalVersion` field is formatted
-assembly-informational-format: '{FullSemVer}.Date.{CommitDate}-{ShortSha}'
-
-#endregion Output field format
+#endregion padding
 #-------------------------------------------------------------------------------
-
 #-------------------------------------------------------------------------------
-#region Commit message processing
-
-# Increment version fields based on the commit message content
-commit-message-incrementing: Enabled
-
-# Regexen to control how commit message options are found
-major-version-bump-message: '\+semver:\s?(breaking|major)'
-minor-version-bump-message: '\+semver:\s?(feature|minor)'
-patch-version-bump-message: '\+semver:\s?(hotfix|fix|patch)'
-no-bump-message: '\+semver:\s?(none|skip)'
-
-
-#-------------------------------------------------------------------------------
-#region Branch specific configuration
+#region Branch config
 
 branches:
-    # 'main'
-    #    should only increment when tagged.  This controls the version number
-    #    and release process to production
-    # 'release-vX.X.X/release/vX.X.X'
-    #    should be the version identified in the branch.  Each
-    #    commit should update the buildnumber
-    # 'fix/hotfix/bugfix/'
-    #
   main:
-    regex: '^main$'
+    tag: ''
+    increment: Minor
+    regex: ^master$|^main$
+    is-mainline: true
+  feature:
+    regex: ^feat(ure)?[/-]
+    mode: ContinuousDeployment
+    tag: beta
+    increment: Minor
+    pre-release-weight: 40000
+    source-branches:
+      - main
+  fix:
+    regex: ^(hot)?fix[/-]
+    mode: ContinuousDeployment
     tag: ''
     increment: Patch
-    is-release-branch: true
-    is-mainline: true
-    pre-release-weight: 1000
-  feature:
-    regex: '^feature[/-]'
-    mode: ContinuousDelivery
-    tag: useBranchName
-    increment: Patch
-    source-branches: ['main', 'release']
-    pre-release-weight: 5000
-  release:
-    regex: ^rel(ease)?[/-]
-    mode: ContinuousDelivery
-    tag: 'rc'
-    increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
     source-branches:
-    - main
-    - release
-    tracks-release-branches: false
-    is-release-branch: true
-    is-mainline: false
-    pre-release-weight: 3000
+      - main
+    pre-release-weight: 30000
+  task:
+    regex: ^(task|build)[/-]
+    mode: ContinuousDeployment
+    increment: None
+    source-branches:
+      - main
 
-#endregion Branch specific configuration
+#endregion Branch config
 #-------------------------------------------------------------------------------
+# A sequence of SHAs to be excluded from the version calculations. Useful when there is a rogue commit in history
+# yielding a bad version.
+ignore:
+  sha: []
