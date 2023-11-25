@@ -12,5 +12,6 @@ Enter-BuildJob {
     foreach ($attribute in $Job.Attributes) {
         $attribute.OnEnter()
     }
+    Invoke-BuildNotification -Status Passed -Text "Starting $($Task.Name)"
     Invoke-OutputHook 'EnterBuildJob' 'After'
 }

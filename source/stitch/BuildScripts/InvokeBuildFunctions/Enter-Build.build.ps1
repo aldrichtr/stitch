@@ -113,6 +113,7 @@ Enter-Build {
         }
     }
     logEnter ('-' * 80)
+    Invoke-BuildNotification -Text "$BuildProfile Build started" -Status Passed
     Invoke-OutputHook 'EnterBuild' 'After'
 
     Write-Debug "`n$('-' * 80)`n-- End Enter-Build`n$('-' * 80)"
