@@ -1,6 +1,6 @@
 param(
     [Parameter()][string]$GitTagVersionField = (
-        property GitTagVersionField 'MajorMinorPatch'
+        Get-BuildProperty GitTagVersionField 'MajorMinorPatch'
     )
 )
 

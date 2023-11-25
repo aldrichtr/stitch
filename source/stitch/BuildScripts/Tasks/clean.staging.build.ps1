@@ -2,7 +2,7 @@
 param(
     [Parameter()]
     [string[]]$ExcludePathFromClean = (
-        property ExcludePathFromClean @()
+        Get-BuildProperty ExcludePathFromClean @()
     )
 )
 <#

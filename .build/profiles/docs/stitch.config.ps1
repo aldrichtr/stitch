@@ -220,7 +220,7 @@ $BuildInfo = (
  Paths that should not be deleted when `Clean` is run.  By default everything in`$Staging` and `$Artifact` are removed
 #>
 $ExcludePathFromClean = (
-    Get-BuildProperty ExcludePathFromClean @( "$Artifact\logs*" , "$Artifact\backup*")
+    Get-BuildProperty ExcludePathFromClean @( "$Artifact\logs*" , "$Artifact\backup*", "$Artifact\module*")
 )
 
 #endregion Clean
@@ -378,7 +378,7 @@ $ModuleFileSuffix = (
 )
 
 <#
- If the module should be part of a larger namespace, set the namespace here.  ModuleNamespace is 
+ If the module should be part of a larger namespace, set the namespace here.  ModuleNamespace is
  a hashtable where the key is the module name and the value is the namespace like:
  @{
      Module1 = 'Fabricam.Automation'
@@ -675,6 +675,3 @@ $SkipBuildHeader = (
 
 #endregion Logging
 #-------------------------------------------------------------------------------
-
-
-

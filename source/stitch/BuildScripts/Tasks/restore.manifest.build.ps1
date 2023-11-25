@@ -1,12 +1,12 @@
 param(
     [Parameter()]
     [string]$ManifestBackupPath = (
-        property ManifestBackupPath (Join-Path $Artifact 'backup')
+        Get-BuildProperty ManifestBackupPath (Join-Path $Artifact 'backup')
     ),
 
     [Parameter()]
     [switch]$KeepManifestBackup = (
-        property KeepManifestBackup $false
+        Get-BuildProperty KeepManifestBackup $false
     )
 )
 #synopsis: Restore the manifests from the last backup

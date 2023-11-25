@@ -1,16 +1,16 @@
 param(
     [Parameter()]
     [string]$ChangelogBackupPath = (
-        property ChangelogBackupPath (Join-Path $Artifact 'backup')
+        Get-BuildProperty ChangelogBackupPath (Join-Path $Artifact 'backup')
     ),
     [Parameter()]
     [string]$ChangelogPath = (
-        property ChangelogPath (Join-Path $BuildRoot 'CHANGELOG.md')
+        Get-BuildProperty ChangelogPath (Join-Path $BuildRoot 'CHANGELOG.md')
     ),
 
     [Parameter()]
     [switch]$KeepChangelogBackup = (
-        property KeepChangelogBackup $false
+        Get-BuildProperty KeepChangelogBackup $false
     )
 )
 #synopsis: Restore the Changelog from the last backup
@@ -54,4 +54,3 @@ task restore.changelog {
         logWarn "$ChangelogBackupPath does not exist"
     }
 }
-

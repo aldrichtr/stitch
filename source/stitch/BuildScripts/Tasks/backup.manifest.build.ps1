@@ -1,7 +1,7 @@
 param(
     [Parameter()]
     [string]$ManifestBackupPath = (
-        property ManifestBackupPath (Join-Path $Artifact 'backup')
+        Get-BuildProperty ManifestBackupPath (Join-Path $Artifact 'backup')
     )
 )
 <#
