@@ -61,10 +61,12 @@
         },
         # Level 2
         @{
+            ## TODO: Use the type to determine the properties, where 't' is type and .dir is directory
+            ##       and .file is a file
+            ##'{t.dir}' = @{
             # does not have a '.' in the word
-            # '(^[^.]+$)' = @{
-            '{t.dir}' = @{
-                Component = '{n}'
+            '(^[^.]+$)' = @{
+                Component = '{1}'
             }
         }
     )
