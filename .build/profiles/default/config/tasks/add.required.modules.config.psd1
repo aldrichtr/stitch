@@ -1,0 +1,4 @@
+﻿@{
+    <#  #>
+    RequiredModules = 'PSDepend2'
+}
