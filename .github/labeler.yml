@@ -1,6 +1,68 @@
 # configuration file for the issue-labeler action.  See workflows/issue-labeler.yml
 
+## Issue types
+'is.bug':
+  - '^\s*-?\s*\+bug(fix)?$'
+'is.enhancement':
+  - '^\s*-?\s*\+enhance(ment)?$'
 'is.epic':
-  - '^(\[)?Epic(\])?'
+  - '^\s*-?\s*\+epic$'
 'is.feature':
-  - '^(\[)?Feat(\])?'
+  - '^\s*-?\s*\+feat(ure)?$'
+'is.idea':
+  - '^\s*-?\s*\+idea$'
+'is.question':
+  - '^\s*-?\s*\+question$'
+'is.refactor':
+  - '^\s*-?\s*\+refac(tor)?$'
+'is.task':
+  - '^\s*-?\s*\+task$'
+
+## Project areas
+
+'area.build':
+  - '^\s*-?\s*\[build\]$'
+'area.tests':
+  - '^\s*-?\s*\[tests\]$'
+'area.community':
+  - '^\s*-?\s*\[community\]$'
+'area.docs':
+  - '^\s*-?\s*\[docs\]$'
+'area.module':
+  - '^\s*-?\s*\[module\]$'
+'area.repo':
+  - '^\s*-?\s*\[repo\]$'
+'area.template':
+  - '^\s*-?\s*\[template\]$'
+'area.tasks':
+  - '^\s*-?\s*\[tasks\]$'
+
+## Story point value
+
+'sp.00':
+  - '^\s*-?\s*sp(0)?0$'
+'sp.01':
+  - '^\s*-?\s*sp(0)?1$'
+'sp.02':
+  - '^\s*-?\s*sp(0)?2$'
+'sp.03':
+  - '^\s*-?\s*sp(0)?3$'
+'sp.05':
+  - '^\s*-?\s*sp(0)?5$'
+'sp.08':
+  - '^\s*-?\s*sp(0)?8$'
+'sp.13':
+  - '^\s*-?\s*sp13$'
+
+## Closing reasons
+
+'closed.done':
+  - '^\s*-?\s*(closed|(closed)?\.done)$'
+'closed.duplicate':
+  - '^\s*-?\s*(closed)?\.dup(licate)?$'
+'closed.invalid':
+  - '^\s*-?\s*(closed)?\.invalid$'
+'closed.norepro':
+  - '^\s*-?\s*(closed)?\.norepro$'
+'closed.wontfix':
+  - '^\s*-?\s*(closed)?\.wontfix$'
