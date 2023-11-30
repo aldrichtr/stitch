@@ -1,0 +1,63 @@
+name: Story
+description: Create a new User or Enabler Story
+title: As a , I want to, so that
+projects:
+  - aldrichtr/3
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: "Story Type"
+      description: "The type of story to create"
+      options:
+        - User
+        - Enabler
+        - Spike
+      default: 0
+    validation:
+      required: true
+  - type: markdown
+    attributes:
+      value: "## Definition of Done"
+  - type: textarea
+    id: dod
+    attributes:
+      label: Definition of Done
+      description: How will we know when this is complete?
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: "## Assumptions"
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Assumptions
+      description: Things we expect to be true
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: "## Acceptance Criteria"
+  - type: textarea
+    id: accept
+    attributes:
+      label: Acceptance Criteria
+      description: How will we test it?
+      placeholder: Ideally, use GIVEN, WHEN, THEN syntax
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: "## Tasks"
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      description: What are the steps to implement this?
+      placeholder: "- [ ]"
+    validations:
+      required: false
+  
+  
+      
