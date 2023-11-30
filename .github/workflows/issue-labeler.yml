@@ -16,10 +16,16 @@ jobs:
     name: Triage issues and prs
     runs-on: ubuntu-latest
     steps:
-    - uses: github/issue-labeler@v3.3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/labeler.yml
-        enable-versioned-regex: 0
-        include-title: 1
-        include-body: 1
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: Update labels
+        uses: github/issue-labeler@v3.3
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: .github/labeler.yml
+          enable-versioned-regex: 0
+          include-title: 1
+          include-body: 1
