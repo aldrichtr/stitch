@@ -1,0 +1,45 @@
+defaultmarkdownhandler: goldmark
+goldmark:
+  extensions:
+    table: true
+    tasklist: true
+    strikethrough: true
+    linkify: true
+    definitionlist: true
+    footnote: true
+    typographer:
+      apostrophe: '&rsquo;'
+      rightanglequote: '&raquo;'
+      emdash: '&mdash;'
+      leftdoublequote: '&ldquo;'
+      ellipsis: '&hellip;'
+      endash: '&ndash;'
+      leftsinglequote: '&lsquo;'
+      rightsinglequote: '&rsquo;'
+      leftanglequote: '&laquo;'
+      rightdoublequote: '&rdquo;'
+    cjk: {}
+    linkifyprotocol: https
+  renderer: {}
+  parser:
+    wrapstandaloneimagewithinparagraph: true
+    attribute:
+      title: true
+    autoheadingid: true
+    autoheadingidtype: github
+asciidocext:
+  backend: html5
+  safemode: unsafe
+  noheaderorfooter: true
+  failurelevel: fatal
+tableofcontents:
+  endlevel: 3
+  startlevel: 2
+highlight:
+  tabwidth: 4
+  noclasses: true
+  style: monokai
+  linenumbersintable: true
+  codefences: true
+  linenostart: 1
+

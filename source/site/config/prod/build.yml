@@ -1,0 +1,5 @@
+buildstats:
+  enable        : true
+  disableClasses: false
+  disableIDs    : false
+  disableTags   : false

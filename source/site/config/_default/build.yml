@@ -1,0 +1,11 @@
+cachebusters:
+  - target: (js|scripts|javascript)
+    source: assets/.*\.(js|ts|jsx|tsx)
+  - target: (css|styles|scss|sass)
+    source: assets/.*\.(css|sass|scss)$
+  - target: (css|styles|scss|sass)
+    source: (postcss|tailwind)\.config\.js
+  - target: $1
+    source: assets/.*\.(.*)$
+buildstats: {}
+useresourcecachewhen: fallback

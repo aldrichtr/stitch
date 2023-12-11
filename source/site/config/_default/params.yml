@@ -1,0 +1,32 @@
+uniqueHomePage: true
+blogDir: blog
+repo: https://github.com/aldrichtr/stitch
+time_format_blog: Monday, January 02, 2006
+time_format_default: January 2, 2006
+enableDarkMode: true
+defaultLightingMode: dark
+codeMaxLines: 10
+showLineNumbers: false
+otherSearchableFields:
+  - Tags
+  - Categories
+enableCopyright: false
+search:
+  "on": true
+  global: false
+  algolia:
+    enable: false
+    id: Q40WQQX84U
+    index: compose
+    key: da87401a458102ec6bbd6cc5e5cf8d95
+logo:
+  darkMode:  images/spool-of-thread.png
+  lightMode: images/spool-of-thread.png
+source:
+  name: GitHub
+  iconLight: images/github-mark-white.png
+  iconDark: images/github-mark.png
+  url: https://github.com/aldrichtr/stitch
+author:
+  name: Weru
+  url: https://github.com/aldrichtr

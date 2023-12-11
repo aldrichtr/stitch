@@ -1,0 +1,14 @@
+tdewolff:
+  js:
+    version: 2022
+  css:
+    keepcss2: true
+  html:
+    keependtags: true
+    keepconditionalcomments: true
+    keepdefaultattrvals: true
+    keepdocumenttags: true
+  xml: {}
+  svg: {}
+  json: {}
+

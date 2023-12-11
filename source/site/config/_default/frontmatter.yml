@@ -1,0 +1,23 @@
+lastmod:
+  - :git
+  - lastmod
+  - modified
+  - date
+  - publishdate
+  - pubdate
+  - published
+date:
+  - date
+  - publishdate
+  - pubdate
+  - published
+  - lastmod
+  - modified
+publishdate:
+  - publishdate
+  - pubdate
+  - published
+  - date
+expirydate:
+  - expirydate
+  - unpublishdate

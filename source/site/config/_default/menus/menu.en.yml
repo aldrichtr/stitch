@@ -1,0 +1,4 @@
+main:
+  - name: 'Docs'
+    weight: 20
+    url: 'docs/'

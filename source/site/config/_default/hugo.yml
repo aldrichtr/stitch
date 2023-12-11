@@ -1,0 +1,41 @@
+
+baseURL: 'https://aldrichtr.github.io/stitch'
+copyright: "(c) Timothy Aldrich. All rights reserved."
+
+title: 'Stitch - A PowerShell module build system'
+
+theme: compose
+
+#-------------------------------------------------------------------------------
+#region Directories
+
+i18ndir: source/site/i18n
+contentdir: source/site/content
+archetypedir: source/site/archetypes
+resourcedir: source/site/resources
+themesdir: source/site/themes
+datadir: source/site/data
+layoutdir: source/site/layouts
+assetdir: source/site/assets
+publishdir: docs
+staticdir:
+  - source/site/static
+
+#endregion Directories
+#-------------------------------------------------------------------------------
+
+permalinks: {}
+
+sitemap:
+  filename: sitemap.xml
+  priority: -1
+
+pluralizelisttitles: true
+
+summarylength: 70
+paginate: 10
+paginatepath: page
+
+timeout: 30s
+defaultcontentlanguage: en
+titlecasestyle: AP

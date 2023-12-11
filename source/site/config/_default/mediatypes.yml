@@ -1,0 +1,154 @@
+application/yaml:
+  suffixes:
+    - yaml
+    - yml
+  delimiter: .
+image/png:
+  suffixes:
+    - png
+  delimiter: .
+text/html:
+  suffixes:
+    - html
+  delimiter: .
+text/markdown:
+  suffixes:
+    - md
+    - markdown
+  delimiter: .
+image/webp:
+  suffixes:
+    - webp
+  delimiter: .
+application/json:
+  suffixes:
+    - json
+  delimiter: .
+text/typescript:
+  suffixes:
+    - ts
+  delimiter: .
+application/octet-stream:
+  delimiter: .
+video/ogg:
+  suffixes:
+    - ogv
+  delimiter: .
+text/javascript:
+  suffixes:
+    - js
+    - jsm
+    - mjs
+  delimiter: .
+application/xml:
+  suffixes:
+    - xml
+  delimiter: .
+text/jsx:
+  suffixes:
+    - jsx
+  delimiter: .
+application/pdf:
+  suffixes:
+    - pdf
+  delimiter: .
+video/mp4:
+  suffixes:
+    - mp4
+  delimiter: .
+image/svg+xml:
+  suffixes:
+    - svg
+  delimiter: .
+text/x-sass:
+  suffixes:
+    - sass
+  delimiter: .
+application/wasm:
+  suffixes:
+    - wasm
+  delimiter: .
+text/css:
+  suffixes:
+    - css
+  delimiter: .
+image/tiff:
+  suffixes:
+    - tif
+    - tiff
+  delimiter: .
+font/ttf:
+  suffixes:
+    - ttf
+  delimiter: .
+image/jpeg:
+  suffixes:
+    - jpg
+    - jpeg
+    - jpe
+    - jif
+    - jfif
+  delimiter: .
+text/plain:
+  suffixes:
+    - txt
+  delimiter: .
+image/gif:
+  suffixes:
+    - gif
+  delimiter: .
+text/calendar:
+  suffixes:
+    - ics
+  delimiter: .
+application/toml:
+  suffixes:
+    - toml
+  delimiter: .
+text/x-scss:
+  suffixes:
+    - scss
+  delimiter: .
+text/csv:
+  suffixes:
+    - csv
+  delimiter: .
+application/manifest+json:
+  suffixes:
+    - webmanifest
+  delimiter: .
+font/otf:
+  suffixes:
+    - otf
+  delimiter: .
+application/rss+xml:
+  suffixes:
+    - xml
+    - rss
+  delimiter: .
+video/x-msvideo:
+  suffixes:
+    - avi
+  delimiter: .
+image/bmp:
+  suffixes:
+    - bmp
+  delimiter: .
+video/webm:
+  suffixes:
+    - webm
+  delimiter: .
+video/mpeg:
+  suffixes:
+    - mpg
+    - mpeg
+  delimiter: .
+video/3gpp:
+  suffixes:
+    - 3gpp
+    - 3gp
+  delimiter: .
+text/tsx:
+  suffixes:
+    - tsx
+  delimiter: .

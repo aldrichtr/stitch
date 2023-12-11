@@ -1,0 +1,20 @@
+proxy: direct
+hugoversion: {}
+noproxy: none
+private: "*.*"
+workspace: "off"
+mounts:
+  - target: content
+    source: content
+  - target: data
+    source: data
+  - target: layouts
+    source: layouts
+  - target: i18n
+    source: i18n
+  - target: archetypes
+    source: archetypes
+  - target: assets
+    source: assets
+  - target: static
+    source: static

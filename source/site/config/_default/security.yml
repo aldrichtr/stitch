@@ -1,0 +1,18 @@
+exec:
+  allow:
+    - ^(dart-)?sass(-embedded)?$
+    - ^go$
+    - ^npx$
+    - ^postcss$
+  osenv:
+    - (?i)^((HTTPS?|NO)_PROXY|PATH(EXT)?|APPDATA|TE?MP|TERM|GO\w+|(XDG_CONFIG_)?HOME|USERPROFILE|SSH_AUTH_SOCK|DISPLAY|LANG)$
+http:
+  urls:
+    - .*
+  methods:
+    - (?i)GET|POST
+funcs:
+  getenv:
+    - ^HUGO_
+    - ^CI$
+gotemplates: {}

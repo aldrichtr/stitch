@@ -1,0 +1,5 @@
+resamplefilter: box
+bgcolor: '#ffffff'
+hint: photo
+quality: 75
+
