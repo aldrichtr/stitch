@@ -1,0 +1,49 @@
+name: '[mgmt] Issue Labeler'
+
+on:
+  issues:
+    types: [opened, edited]
+  pull_request:
+    types: [opened, edited]
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  triage:
+    name: Manage labels in issues and PRs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: Update labels
+        uses: github/issue-labeler@v3.3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          # Path to the configuration file for this action
+          configuration-path: .github/labeler.yml
+          #-------------------------------------------------------------------------------
+          #region versioned config
+
+          # Use multiple versions of the configuration (labeler-v1.yml)
+          enable-versioned-regex: 0
+          # String to set a version in the issue/pr
+          # versioned-regex: 'issue_labeler_regex_version=(\d+)'
+          # if the version string is missing from the issue/pr add this label
+          # body-missing-regex-label: 'broken-template'
+
+          #endregion versioned config
+          #-------------------------------------------------------------------------------
+
+          # parts of the issue/pr to look in
+          include-title: 1
+          include-body : 1
+
+          # remove labels not found in the issue/pr
+          # sync-labels: 0
