@@ -14,8 +14,6 @@ body:
         - Enabler
         - Spike
       default: 0
-    validation:
-      required: true
   - type: markdown
     attributes:
       value: "## Definition of Done"
