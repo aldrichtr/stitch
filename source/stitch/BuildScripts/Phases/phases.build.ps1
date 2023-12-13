@@ -12,9 +12,6 @@ Remove-Variable phaseAlias
 #-------------------------------------------------------------------------------
 #region phase definition
 
-#synopsis: Reset the environment and remove any generated files, directories, or settings
-phase Clean
-
 #synopsis: configure the project is correct and all necessary information is available
 phase Validate
 
