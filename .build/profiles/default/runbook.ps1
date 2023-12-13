@@ -7,8 +7,6 @@ Use this file to manage the phases and tasks.
         'confirm.logging.directory',
         'confirm.module.directory'
 
-'Clean' | jobs 'clean.staging', 'clean.artifacts', 'Validate'
-
 # synopsis: Run the tests defined in the 'Unittests' config file
 pester unit.tests -ConfigurationFile "$BuildConfigPath\pester\UnitTests.config.psd1"
 
