@@ -1,0 +1,6 @@
+@{
+    <#  #>
+    ReleaseNotesFile = 'ReleaseNotes.md'
+
+    
+}

@@ -54,6 +54,8 @@ function Get-BuildScriptProperty {
         Finds all properties set using 'Get-BuildProperty' and returns the property name, files, paths, and line numbers
         where it was found.  If -MissingOnly is given, only those properties that are not yet added to the parameters
         database for the templates.
+    .NOTES
+        This function relies on the property being set to use `Get-BuildProperty` vice the `property` alias
     #>
     [CmdletBinding()]
     param(
