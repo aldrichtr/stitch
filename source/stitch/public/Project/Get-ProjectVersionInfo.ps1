@@ -1,86 +1,60 @@
+
 function Get-ProjectVersionInfo {
-    [CmdletBinding()]
+    <#
+    .SYNOPSIS
+        Return a collection of Version Information about the project
+    .DESCRIPTION
+        gitversion dotnet tool
+        git describe
+        version.(psd1|json|yaml)
+    #>
+    [CmdletBinding(
+        DefaultParameterSetName = 'gitdescribe'
+    )]
     param(
-        # Specifies a path to one or more locations.
+        # Use git describe instead of gitversion
         [Parameter(
-        Position = 0,
-        ValueFromPipeline,
-        ValueFromPipelineByPropertyName
+            ParameterSetName = 'gitdescribe'
         )]
-        [Alias('PSPath')]
-        [string[]]$Path
+        [switch]$UseGitDescribe,
+
+        # Use the information in version.(psd1|json|yml)
+        [Parameter(
+            ParameterSetName = 'versionfile'
+        )]
+        [switch]$UseVersionFile
     )
     begin {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
-        if (-not($PSBoundParameters.ContainsKey('Path'))) {
-            $Path = Get-Location
-        }
-        #TODO: We could also parse the version field from the root module's manifest
         Write-Debug 'Checking for version information'
-        Write-Debug '  - Checking for gitversion utility'
-        $gitverCmd = Get-Command dotnet-gitversion.exe -ErrorAction SilentlyContinue
-
-        if ($null -eq $gitverCmd) {
-            Write-Information "GitVersion is not installed.`nsee <https://gitversion.net/docs/usage/cli/installation> for details"
-            Write-Debug '    - gitversion not found'
-            Write-Debug '  - Looking for version.* file'
-            $found = Get-ChildItem -Path $Path -Filter 'version.*' -Recurse |
-                Sort-Object LastWriteTime |
-                    Select-Object -Last 1
-
-            if ($null -ne $found) {
-                Write-Verbose "Using $found for version info"
-                Write-Debug "    - Found $($found.FullName)"
-                switch -Regex ($found.extension) {
-                    'psd1' { $versionInfo = Import-Psd $found }
-                    'json' { $versionInfo = (Get-Content $found | ConvertFrom-Json) }
-                    'y(a)?ml' { $versionInfo = (Get-Content $found | ConvertFrom-Yaml) }
-                    Default { Write-Information "$($found.Name) found but no converter for $($found.extension) is set" }
-                }
+        try {
+            if ($UseVersionFile) {
+                Get-VersionFileInfo
             } else {
-                Write-Debug "    - No version files found in $Path"
-                $buildInfo = $PSCmdlet.GetVariableValue('BuildInfo')
+                $cmd = Get-Command 'gitversion' -ErrorAction SilentlyContinue
 
-                if ($null -ne $buildInfo) {
-                    switch ($buildInfo.Modules.Keys.Count) {
-                        0 {
-                            throw "Could not find any modules in project to get version info"
-                        }
-                        1 {
-                            $buildInfo.Modules[0].ModuleVersion | Write-Output
-                        }
-                        default {
-                            Write-Verbose "Multiple module versions found using highest version"
-                            $buildInfo.Modules.ModuleVersion | Sort-Object -Descending |
-                                Select-Object -First 1 | Write-Output
-                        }
-                    }
+                if (($null -ne $cmd) -and (-not ($UseGitDescribe))) {
+                    Get-GitVersionInfo
+                } else {
+                    Get-GitDescribeInfo
                 }
             }
-
-        } else {
-            Write-Verbose "Using gitversion for version info"
-            $gitVersionCommandInfo = & $gitverCmd @('-?')
-
-            Write-Debug '  - gitversion found.  Getting version info'
-            $gitVersionCommandInfo | Write-Debug
-            $gitVersionOutput = & $gitverCmd @( '-output', 'json')
-            if ([string]::IsNullorEmpty($gitVersionOutput)) {
-                Write-Warning "No output from gitversion"
-            } else {
-                Write-Debug "Version info: $gitVersionOutput"
-                try {
-                    $versionInfo = $gitVersionOutput | ConvertFrom-Json
-                } catch {
-                    throw "Could not parse json:`n$gitVersionOutput`n$_"
-                }
-            }
+        } catch {
+            $message       = "Could not get version information for the project"
+            $exceptionText = ( @($message, $_.ToString()) -join "`n")
+            $thisException = [Exception]::new($exceptionText)
+            $eRecord       = New-Object System.Management.Automation.ErrorRecord -ArgumentList (
+                $thisException,
+                $null,  # errorId
+                $_.CategoryInfo.Category, # errorCategory
+                $null  # targetObject
+            )
+            $PSCmdlet.ThrowTerminatingError( $eRecord )
         }
     }
     end {
-        $versionInfo
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
 }
