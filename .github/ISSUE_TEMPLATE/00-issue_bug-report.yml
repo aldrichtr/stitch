@@ -2,12 +2,11 @@ name: Bug Report
 description: Report a bug or defect
 title: "<A description of the problem>"
 labels:
-  - 'type:bug'
+  - 'is.bug'
 body:
   - type: markdown
     attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report.
+      value: Thanks for taking the time to fill out this bug report.
   - type: textarea
     id: version
     attributes:

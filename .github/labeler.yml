@@ -1,4 +1,9 @@
-# configuration file for the issue-labeler action.  See workflows/issue-labeler.yml
+# configuration file for the issue-labeler action.  See workflows/repo.issue.labels.yml
+
+## All new issues should get the "review" flag
+
+'flag.review':
+  - '/.*/'
 
 ## Issue types
 'is.bug':
