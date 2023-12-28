@@ -5,6 +5,8 @@ param(
     [string]$ConfigFile
 )
 
+$helperModule = (Join-Path 'tests' 'TestHelpers.psm1')
+
 if (Test-Path $ConfigFile) {
     try {
         $config = Import-PowerShellDataFile -Path $ConfigFile
@@ -19,6 +21,12 @@ if (Test-Path $ConfigFile) {
             Path = './tests'
         }
     }
+}
+
+if (Test-Path $helperModule) {
+    Import-Module $helperModule -Force
+} else {
+    throw "Could not find test helper module"
 }
 
 Invoke-Pester -Configuration $pesterConfig
