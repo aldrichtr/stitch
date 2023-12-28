@@ -2,10 +2,12 @@
 
 param(
     [Parameter()]
-    [string]$ConfigFile
+    [string]$ConfigFile = (Join-Path ".\.build\profiles\default\pester" "UnitTests.config.psd1"),
+
+    [Parameter()]
+    [string]$HelperModule = (Join-Path 'tests' 'TestHelpers.psm1')
 )
 
-$helperModule = (Join-Path 'tests' 'TestHelpers.psm1')
 
 if (Test-Path $ConfigFile) {
     try {
@@ -23,7 +25,7 @@ if (Test-Path $ConfigFile) {
     }
 }
 
-if (Test-Path $helperModule) {
+if (Test-Path $HelperModule) {
     Import-Module $helperModule -Force
 } else {
     throw "Could not find test helper module"
