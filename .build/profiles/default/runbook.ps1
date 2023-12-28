@@ -2,30 +2,84 @@
 Use this file to manage the phases and tasks.
 #>
 
-'Validate' | jobs 'confirm.project.directory',
-        'confirm.backup.directory',
-        'confirm.logging.directory',
-        'confirm.module.directory'
+#-------------------------------------------------------------------------------
+#region Lifecycle phases for default
+'Validate'   | before 'Initialize'
+'Initialize' | before 'Compile'
+'Compile'    | before 'Test'
+'Test'       | before 'Build'
+'Build'      | before 'Verify'
+'Verify'     | before 'Package'
+'Package'    | before 'Install'
+#endregion Lifecycle phases for default
+#-------------------------------------------------------------------------------
+
+Add-BuildTask . 'Build'
+
+#-------------------------------------------------------------------------------
+#region Validate
+
+'Validate' | jobs @(
+    'confirm.project.directory',
+    'confirm.backup.directory',
+    'confirm.logging.directory',
+    'confirm.module.directory')
+
+#endregion Validate
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#region Initialize
+
+'Initialize' | jobs @(
+    { logDebug '-- Begin Initialize phase --' }
+)
+#endregion Initialize
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#region Compile
+
+
+#endregion Compile
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#region Test
+
+
+$unitTestOptions = @{
+    Name              = 'unit.tests'
+    ConfigurationFile = "$BuildConfigPath\pester\UnitTests.config.psd1"
+    Type              = 'Unit'
+}
 
 # synopsis: Run the tests defined in the 'Unittests' config file
-pester unit.tests -ConfigurationFile "$BuildConfigPath\pester\UnitTests.config.psd1"
+pester @unitTestOptions
+
+Remove-Variable unitTestOptions
 
 'Test' | jobs {
-    logDebug "Loading TestHelpers module"
+    logDebug 'Loading TestHelpers module'
     Import-Module (Join-Path $Tests 'TestHelpers.psm1') -Force
 }, 'unit.tests'
 
-Add-BuildTask 'write.module' @(
+#endregion Test
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#region Build
+
+task 'write.module' @(
     'write.module.file',
     'write.module.file.prefix',
     'write.module.file.suffix',
     'format.module.file'
 )
 
-Add-BuildTask 'write.manifest' @(
+task 'write.manifest' @(
     'write.manifest.file',
     'add.exported.functions',
-    'add.import.functions',
     'add.exported.aliases',
     'add.required.modules',
     'add.psformat.files',
@@ -34,27 +88,43 @@ Add-BuildTask 'write.manifest' @(
 )
 
 'Build' | jobs @(
-    'Clean',
-    'Test',
     'write.module',
     'write.manifest',
     'copy.additional.item'
 )
 
+#endregion Build
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#region Verify
+
 # synopsis: Run the tests defined in the 'IntegrationTests' config file
 pester integration.tests -ConfigurationFile "$BuildConfigPath\pester\IntegrationTests.config.psd1" -Type 'Integration'
 
 'Verify' | jobs {
-    logDebug "Loading TestHelpers module"
+    logDebug 'Loading TestHelpers module'
     Import-Module (Join-Path $Tests 'TestHelpers.psm1') -Force
 }, 'integration.tests'
 
+#endregion Verify
+#-------------------------------------------------------------------------------
 
-'Package' | jobs 'Build', <# 'Verify' ,#> 'compress.nuget.package'
+#-------------------------------------------------------------------------------
+#region Package
 
 'register.project.psrepo' | before 'compress.nuget.package'
 'unregister.project.psrepo' | after 'compress.nuget.package'
 
-'Install' | jobs 'Package', 'install.module.currentuser'
+'Package' | jobs 'compress.nuget.package'
 
-Add-BuildTask . Build
+#endregion Package
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#region Install
+
+'Install' | jobs 'install.module.currentuser'
+
+#endregion Install
+#-------------------------------------------------------------------------------
