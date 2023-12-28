@@ -39,7 +39,6 @@ jobs:
           path: '.\source'
           recurse: true
           settings: ${{ env.pssa_config }}
-          enableExit: true
           # Ignore any manifests or data files in CI tests
           ignorePattern: '\.psd1$'
           output: ci.pssa-results.sarif
