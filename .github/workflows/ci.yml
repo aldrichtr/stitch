@@ -21,7 +21,7 @@ env:
   repo: ${{ github.event.repository.name }}
   pssa_config: ${{ github.workspace }}\PSScriptAnalyzerSettings.psd1
   unit_test_config: ${{ github.workspace}}\.build\profiles\default\pester\UnitTests.config.psd1
-  unit_test_helper: ${{ github.workspace}}\test\TestHelpers.psm1
+  unit_test_helper: ${{ github.workspace}}\tests\TestHelpers.psm1
 jobs:
   lint:
     name: Analyze source with PSSA
@@ -89,4 +89,5 @@ jobs:
             ConfigFile = $env:unit_test_config
             HelperModule = $env:unit_test_helper
           }
+          Write-Host "Running tests using Configuration '$($options.ConfigFile)' and helper module '$($options.HelperModule)'"
           .\.build\tools\runTests.ps1 @options
