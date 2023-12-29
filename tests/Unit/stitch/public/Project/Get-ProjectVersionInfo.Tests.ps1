@@ -35,9 +35,11 @@ Describe "Testing public function Get-ProjectVersionInfo" -Tags @('unit', 'Proje
             $errors.count | Should -Be 0
         }
 
-        It "It Should have a 'Path' parameter" {
-                $command.Parameters['Path'].Count | Should -Be 1
+        It "It Should have a 'UseGitDescribe' parameter" {
+                $command.Parameters['UseGitDescribe'].Count | Should -Be 1
+            }
+        It "It Should have a 'UseVersionFile' parameter" {
+                $command.Parameters['UseVersionFile'].Count | Should -Be 1
             }
     }
 }
-

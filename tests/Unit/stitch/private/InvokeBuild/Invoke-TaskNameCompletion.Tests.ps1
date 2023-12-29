@@ -1,6 +1,6 @@
 
 
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
 param()
 
 BeforeAll {
@@ -14,7 +14,7 @@ BeforeAll {
     $dataDirectory = (Get-TestDataPath $PSCommandPath)
 }
 
-Describe "Testing private function Invoke-TaskNameCompletion" -Tags @('unit', 'TaskNameCompletion', 'Invoke' ) {
+Describe 'Testing private function Invoke-TaskNameCompletion' -Tags @('unit', 'TaskNameCompletion', 'Invoke' ) {
     Context 'The Invoke-TaskNameCompletion command is available and is valid' {
         BeforeAll {
             $command = Get-Command 'Invoke-TaskNameCompletion'
@@ -35,8 +35,20 @@ Describe "Testing private function Invoke-TaskNameCompletion" -Tags @('unit', 'T
             $errors.count | Should -Be 0
         }
 
-        It "It Should have a 'Name' parameter" {
-                $command.Parameters['Name'].Attributes.Mandatory | Should -BeTrue
-            }
+        It "It Should have a 'commandName' parameter" {
+            $command.Parameters['commandName'].Attributes | Should -BeTrue
+        }
+        It "It Should have a 'parameterName' parameter" {
+            $command.Parameters['parameterName'].Attributes | Should -BeTrue
+        }
+        It "It Should have a 'wordToComplete' parameter" {
+            $command.Parameters['wordToComplete'].Attributes | Should -BeTrue
+        }
+        It "It Should have a 'commandAst' parameter" {
+            $command.Parameters['commandAst'].Attributes | Should -BeTrue
+        }
+        It "It Should have a 'fakeBoundParameters' parameter" {
+            $command.Parameters['fakeBoundParameters'].Attributes | Should -BeTrue
+        }
     }
 }
