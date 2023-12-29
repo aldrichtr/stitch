@@ -1,0 +1,22 @@
+{
+    "stages": {
+        "test": [
+            {"allowlist": ["^test\\.", "^dev\\."]}
+        ],
+        "uat": [
+            {"allowlist": ["^prod\\."]},
+            {"probability": 0.5}
+        ],
+        "prod": [
+            {"allowlist": ["^prod\\."]}
+        ]
+    },
+    "features": {
+        "phaseConfigFile": {
+            "stages": ["test"]
+        },
+        "buildOutputHook": {
+            "stages": ["test", "prod"]
+        }
+    }
+}
