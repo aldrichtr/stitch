@@ -19,7 +19,7 @@
             "type": "shell",
 
             "command": [
-                "Invoke-Build Test"
+                "${workspaceFolder}\\.build\\tools\\runTests.ps1"
             ],
             "presentation": {
                 "echo": true,
