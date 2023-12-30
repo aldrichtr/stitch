@@ -112,7 +112,7 @@ begin {
         Write-Debug "- BuildConfigRoot was set to '$BuildConfigRoot' by Parameters"
     } else {
         # Now that we have a starting point, see if we can find the BuildConfigRoot
-        $possibleBuildConfigRoot = ($startingDirectory | Find-BuildConfigurationRootDirectory -Debug)
+        $possibleBuildConfigRoot = ($startingDirectory | Find-BuildConfigurationRootDirectory)
         Write-Debug "- found BuildConfigRoot in '$possibleBuildConfigRoot'"
         if ($null -ne $possibleBuildConfigRoot) {
             $BuildConfigRoot = $possibleBuildConfigRoot

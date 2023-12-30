@@ -14,134 +14,148 @@ using namespace System.Diagnostics.CodeAnalysis
 #-------------------------------------------------------------------------------
 #region Rule suppression
 
-[SuppressMessage('PSReviewUnusedParameter', 'ProfilePath',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'BuildProfile',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'DefaultBuildProfile',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'BuildConfigRoot',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'BuildConfigFile',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'Source',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'Staging',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'Tests',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'Artifact',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'Docs',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'SourceTypeMap',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'SkipModuleTaskImport',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'BuildInfo',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ExcludePathFromClean',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'SkipDependencyCheck',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'DependencyTags',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'CodeCov',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'CodeCovFormat',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'CodeCovDirectory',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'CodeCovFile',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'TestResultFormat',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'TestResultDirectory',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'TestResultFile',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'PesterOutput',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'PesterResultDirectory',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'PesterResultFile',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'CopyAdditionalItems',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'CopyEmptySourceDirs',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'SkipManifestArrayFormat',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ModuleFileIncludeTypes',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ModuleFilePrefix',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ModuleFileSuffix',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ModuleNamespace',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ManifestBackupPath',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'KeepManifestBackup',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ManifestVersionField',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'SuppressManifestComments',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ExcludeFunctionsFromExport',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ExcludeAliasFromExport',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'FormatPsXmlDirectory',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'FormatPsXmlFileFilter',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'TypePsXmlDirectory',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'TypePsXmlFileFilter',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'HelpDocsCultureDirectory',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'HelpDocLogFile',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ChangelogPath',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ChangelogBackupPath',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'KeepChangelogBackup',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ChangelogVersionField',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'GitTagVersionField',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'GitStashMessage',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'IncludeUntrackedInGitStash',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'ProjectPSRepoName',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'PublishPsRepoName',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'PublishToPsRepo',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'PublishActionIfUncommitted',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'NugetApiKey',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'InstallSaveToPath',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'InstallSaveToModules',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'InstallModuleFromPsRepo',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'LogPath',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'LogFile',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'Output',
-    Justification = 'Parameters used in separate task files' )]
-[SuppressMessage('PSReviewUnusedParameter', 'SkipBuildHeader',
-    Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ProfilePath',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','BuildProfile',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','DefaultBuildProfile',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','BuildConfigRoot',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','BuildConfigFile',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','Source',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','Staging',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','Tests',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','Artifact',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','Docs',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','SourceTypeMap',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','SkipModuleTaskImport',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','BuildInfo',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ExcludePathFromClean',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','SkipDependencyCheck',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','DependencyTags',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','RequiredModules',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','CodeCov',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','CodeCovFormat',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','CodeCovDirectory',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','CodeCovFile',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','TestResultFormat',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','TestResultDirectory',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','TestResultFile',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','PesterOutput',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','PesterResultDirectory',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','PesterResultFile',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','CopyAdditionalItems',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','CopyEmptySourceDirs',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','SkipManifestArrayFormat',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ModuleFileIncludeTypes',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ModuleFilePrefix',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ModuleFileSuffix',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ModuleNamespace',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ManifestBackupPath',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','KeepManifestBackup',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ManifestVersionField',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','SuppressManifestComments',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ExcludeFunctionsFromExport',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ExcludeAliasFromExport',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','FormatPsXmlDirectory',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','FormatPsXmlFileFilter',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','TypePsXmlDirectory',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','TypePsXmlFileFilter',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','HelpDocsCultureDirectory',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','HelpDocLogFile',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','FormatSettings',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','AnalyzerSettings',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ProjectVersionSource',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ProjectVersionField',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ChangelogPath',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ChangelogBackupPath',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','KeepChangelogBackup',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ChangelogVersionField',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','GitTagVersionField',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','GitStashMessage',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','IncludeUntrackedInGitStash',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ProjectPSRepoName',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','PublishPsRepoName',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','PublishToPsRepo',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','PublishActionIfUncommitted',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','NugetApiKey',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ReleaseNotesFormat',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','ReleaseNotesFile',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','InstallSaveToPath',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','InstallSaveToModules',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','InstallModuleFromPsRepo',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','LogPath',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','LogFile',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','Output',
+Justification = 'Parameters used in separate task files' )]
+[SuppressMessage('PSReviewUnusedParameter','SkipBuildHeader',
+Justification = 'Parameters used in separate task files' )]
 
 #endregion Rule suppression
 #-------------------------------------------------------------------------------
@@ -150,171 +164,176 @@ param(
     #-------------------------------------------------------------------------------
     #region Profile
 
-    <#
+        <#
     The directory to search for runbooks
     #>
-    [Parameter()][String]$ProfilePath,
+        [Parameter()][String]$ProfilePath,
 
-    <#
+        <#
     The lifecycle profile to run.  Determines which runbook will be loaded.
     Runs the ``Build`` profile if none specified, or the single runbook if only one is found
     #>
-    [Parameter()]
-    [Alias('Profile')][String]$BuildProfile,
+        [Parameter()]
+        [Alias('Profile')][String]$BuildProfile,
 
-    <#
+        <#
     The default BuildProfile if not specified (and more than one runbook exists)
     #>
-    [Parameter()][String]$DefaultBuildProfile,
+        [Parameter()][String]$DefaultBuildProfile,
 
     #endregion Profile
     #-------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------
     #region Path
 
-    <#
+        <#
     The base path to configuration and settings files
     #>
-    [Parameter()][String]$BuildConfigRoot,
+        [Parameter()][String]$BuildConfigRoot,
 
-    <#
+        <#
     The file name of the configuration file
     #>
-    [Parameter()][String]$BuildConfigFile,
+        [Parameter()][String]$BuildConfigFile,
 
-    <#
+        <#
     The path to the source files for this project
     #>
-    [Parameter()][String]$Source,
+        [Parameter()][String]$Source,
 
-    <#
+        <#
     The path where the Build phase will stage the files it produces.
     #>
-    [Parameter()][String]$Staging,
+        [Parameter()][String]$Staging,
 
-    <#
+        <#
     The path to the Pester tests.
     #>
-    [Parameter()][String]$Tests,
+        [Parameter()][String]$Tests,
 
-    <#
+        <#
     The path to where build files and other artifacts (such as log files, supporting modules, etc.) are written
     #>
-    [Parameter()][String]$Artifact,
+        [Parameter()][String]$Artifact,
 
-    <#
+        <#
     The path where documentation (markdown help, etc.) is stored
     #>
-    [Parameter()][String]$Docs,
+        [Parameter()][String]$Docs,
 
-    <#
+        <#
     A table that maps source directory names to their types
     for example :
     @{ public = @{Visibility = 'public'; Type = 'function'}}
     #>
-    [Parameter()][hashtable]$SourceTypeMap,
+        [Parameter()][hashtable]$SourceTypeMap,
 
     #endregion Path
     #-------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------
     #region Tasks
 
-    <#
+        <#
     Do not import tasks from the Stitch module.  This can be used to bypass the import for debug/testing purposes
     #>
-    [Parameter()][switch]$SkipModuleTaskImport,
+        [Parameter()][switch]$SkipModuleTaskImport,
 
-    <#
+        <#
     The information related to the current project including Modules, Paths and Version information.  See Also Get-BuildConfiguration
     #>
-    [Parameter()][Hashtable]$BuildInfo,
+        [Parameter()][Hashtable]$BuildInfo,
 
     #endregion Tasks
     #-------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------
     #region Clean
 
-    <#
+        <#
     Paths that should not be deleted when `Clean` is run.  By default everything in`$Staging` and `$Artifact` are removed
     #>
-    [Parameter()][String[]]$ExcludePathFromClean,
+        [Parameter()][String[]]$ExcludePathFromClean,
 
     #endregion Clean
     #-------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------
     #region Validate
 
-    <#
+        <#
     Do not check for module dependencies (PSDepend)
     #>
-    [Parameter()][switch]$SkipDependencyCheck,
+        [Parameter()][switch]$SkipDependencyCheck,
 
-    <#
+        <#
     A list of tags to pass to PSDepend when installing requirements
     #>
-    [Parameter()][string[]]$DependencyTags,
+        [Parameter()][string[]]$DependencyTags,
+
+        <#
+    A table of required modules with the Module name as the key and a hashtable with Version and Tag information (see requirements.psd1)
+    #>
+        [Parameter()][hashtable]$RequiredModules,
 
     #endregion Validate
     #-------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------
     #region Test
 
-    <#
+        <#
     Produce codecoverage metrics when running Pester tests
     #>
-    [Parameter()][switch]$CodeCov,
+        [Parameter()][switch]$CodeCov,
 
-    <#
+        <#
     The format of the Code coverage output (CoverageGutters or JaCoCo)
     #>
-    [Parameter()][String]$CodeCovFormat,
+        [Parameter()][String]$CodeCovFormat,
 
-    <#
+        <#
     The Path to the directory where the Code Coverage output will be saved
     #>
-    [Parameter()][String]$CodeCovDirectory,
+        [Parameter()][String]$CodeCovDirectory,
 
-    <#
+        <#
     The name of the Code Coverage output file. Use {Type} and {Format} as replaceable fields
     #>
-    [Parameter()][String]$CodeCovFile,
+        [Parameter()][String]$CodeCovFile,
 
-    <#
+        <#
     The format of the Test result output (NUnitXml, Nunit2.5, or JUnitXml)
     #>
-    [Parameter()][String]$TestResultFormat,
+        [Parameter()][String]$TestResultFormat,
 
-    <#
+        <#
     The Path to the directory where the Test result output will be saved
     #>
-    [Parameter()][String]$TestResultDirectory,
+        [Parameter()][String]$TestResultDirectory,
 
-    <#
+        <#
     The name of the Test result output file. Use {Type} and {Format} as replaceable fields
     #>
-    [Parameter()][String]$TestResultFile,
+        [Parameter()][String]$TestResultFile,
 
-    <#
+        <#
     The output level of Invoke-Pester
     #>
-    [Parameter()][String]$PesterOutput,
+        [Parameter()][String]$PesterOutput,
 
-    <#
+        <#
     The directory to store the Invoke-Pester result object
     #>
-    [Parameter()][String]$PesterResultDirectory,
+        [Parameter()][String]$PesterResultDirectory,
 
-    <#
+        <#
     The file to store the Invoke-Pester result object
     #>
-    [Parameter()][String]$PesterResultFile,
+        [Parameter()][String]$PesterResultFile,
 
     #endregion Test
     #-------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------
     #region Build
 
-    <#
+        <#
     Additional paths in the `$Source` directory that should be copied to `$Staging`
     Each key of this hashtable is a module name of your project whose value is a hashtable of Source = Staging paths
     Specify paths relative to your module's source directory on the left and one of three options on the right:
@@ -329,221 +348,253 @@ param(
     }
     This will copy <source>/Module1/data/configuration.data.psd1 to <staging>/Module1/resources/config.psd1
     #>
-    [Parameter()][Hashtable]$CopyAdditionalItems,
+        [Parameter()][Hashtable]$CopyAdditionalItems,
 
-    <#
+        <#
     Copy the directory even though it contains no items
     #>
-    [Parameter()][switch]$CopyEmptySourceDirs,
+        [Parameter()][switch]$CopyEmptySourceDirs,
 
-    <#
+        <#
     build.manifest.array.format task will update a manifest so that arrays are written with '@(' and ')' surrounding the list.  Fields listed here will be ignored in the manifest
     #>
-    [Parameter()][String[]]$SkipManifestArrayFormat,
+        [Parameter()][String[]]$SkipManifestArrayFormat,
 
-    <#
+        <#
     The list of source types to include in the module file (.psm1).
     #>
-    [Parameter()][String[]]$ModuleFileIncludeTypes,
+        [Parameter()][String[]]$ModuleFileIncludeTypes,
 
-    <#
+        <#
     Either a string or the path to a file whose contents will be inserted at the top of the Module file
     Note that the content of the string is not automatically commented
     #>
-    [Parameter()][String]$ModuleFilePrefix,
+        [Parameter()][String]$ModuleFilePrefix,
 
-    <#
+        <#
     Either a string or the path to a file whose contents will be inserted at the bottom of the Module file
     #>
-    [Parameter()][String]$ModuleFileSuffix,
+        [Parameter()][String]$ModuleFileSuffix,
 
-    <#
+        <#
     If the module should be part of a larger namespace, set the namespace here.  ModuleNamespace is
     a hashtable where the key is the module name and the value is the namespace like:
     @{
         Module1 = 'Fabricam.Automation'
     }
     #>
-    [Parameter()][hashtable]$ModuleNamespace,
+        [Parameter()][hashtable]$ModuleNamespace,
 
-    <#
+        <#
     Where to make backups of the source manifest prior to updating the version information
     #>
-    [Parameter()][String]$ManifestBackupPath,
+        [Parameter()][String]$ManifestBackupPath,
 
-    <#
+        <#
     Backups are deleted after being restored by default.  Use this flag to restore the changelog from the latest backup and keep the backup file
     #>
-    [Parameter()][switch]$KeepManifestBackup,
+        [Parameter()][switch]$KeepManifestBackup,
 
-    <#
+        <#
     The gitversion field to use when setting the current version in the changelog
     #>
-    [Parameter()][String]$ManifestVersionField,
+        [Parameter()][String]$ManifestVersionField,
 
-    <#
+        <#
     Do not use New-ModuleManifest with parameters from the source, just copy directly
     #>
-    [Parameter()][switch]$SuppressManifestComments,
+        [Parameter()][switch]$SuppressManifestComments,
 
-    <#
+        <#
     Functions listed in this array will not be added to the FunctionsToExport array at build time
     #>
-    [Parameter()][string[]]$ExcludeFunctionsFromExport,
+        [Parameter()][string[]]$ExcludeFunctionsFromExport,
 
-    <#
+        <#
     Aliases listed in this array will not be added to the AliasesToExport array at build time
     #>
-    [Parameter()][string[]]$ExcludeAliasFromExport,
+        [Parameter()][string[]]$ExcludeAliasFromExport,
 
-    <#
+        <#
     The source directory where PowerShell format files are stored (if any)
     #>
-    [Parameter()][String]$FormatPsXmlDirectory,
+        [Parameter()][String]$FormatPsXmlDirectory,
 
-    <#
+        <#
     The file format used to find Format files in the source
     #>
-    [Parameter()][String]$FormatPsXmlFileFilter,
+        [Parameter()][String]$FormatPsXmlFileFilter,
 
-    <#
+        <#
     The source directory where PowerShell type files are stored (if any)
     #>
-    [Parameter()][String]$TypePsXmlDirectory,
+        [Parameter()][String]$TypePsXmlDirectory,
 
-    <#
+        <#
     The file format used to find Format files in the sourcetypes
     #>
-    [Parameter()][String]$TypePsXmlFileFilter,
+        [Parameter()][String]$TypePsXmlFileFilter,
 
-    <#
+        <#
     Set the name of the directory to export external help MAML file to
     #>
-    [Parameter()][String]$HelpDocsCultureDirectory,
+        [Parameter()][String]$HelpDocsCultureDirectory,
 
-    <#
+        <#
     The path to a log file for the PlatyPS Update-MarkdownHelp command
     #>
-    [Parameter()][string]$HelpDocLogFile,
+        [Parameter()][string]$HelpDocLogFile,
+
+        <#
+    Settings for the Invoke-Formatter function
+    Either a path to a psd1 file or a hashtable of settings
+    #>
+        [Parameter()][object]$FormatSettings,
+
+        <#
+    Settings for the Invoke-ScriptAnalyzer function
+    Either a path to a psd1 file or a hashtable of settings
+    #>
+        [Parameter()][object]$AnalyzerSettings,
+
+        <#
+    How to retrieve the version information.  Can be one of 'gitversion', 'gitdescribe' or 'file'
+    #>
+        [Parameter()][string]$ProjectVersionSource,
+
+        <#
+    The field in the version info to use for the module version
+    #>
+        [Parameter()][string]$ProjectVersionField,
 
     #endregion Build
     #-------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------
     #region Publish
 
-    <#
+        <#
     The path to the project's changelog (if any)
     #>
-    [Parameter()][String]$ChangelogPath,
+        [Parameter()][String]$ChangelogPath,
 
-    <#
+        <#
     Where to make backups of the changlog prior to updating the version information
     #>
-    [Parameter()][String]$ChangelogBackupPath,
+        [Parameter()][String]$ChangelogBackupPath,
 
-    <#
+        <#
     Backups are deleted after being restored by default.  Use this flag to restore the changelog from the latest backup and keep the backup file
     #>
-    [Parameter()][switch]$KeepChangelogBackup,
+        [Parameter()][switch]$KeepChangelogBackup,
 
-    <#
+        <#
     The gitversion field to use when setting the current version in the changelog
     #>
-    [Parameter()][String]$ChangelogVersionField,
+        [Parameter()][String]$ChangelogVersionField,
 
-    <#
+        <#
     The gitversion field to use when calling `git tag`
     #>
-    [Parameter()][String]$GitTagVersionField,
+        [Parameter()][String]$GitTagVersionField,
 
-    <#
+        <#
     An optional message to use when creating a git stash
     #>
-    [Parameter()][String]$GitStashMessage,
+        [Parameter()][String]$GitStashMessage,
 
-    <#
+        <#
     When creating a git stash, also stash untracked files
     #>
-    [Parameter()][switch]$IncludeUntrackedInGitStash,
+        [Parameter()][switch]$IncludeUntrackedInGitStash,
 
-    <#
+        <#
     The name of the temporary PSRepository to create when creating a nuget package
     #>
-    [Parameter()][String]$ProjectPSRepoName,
+        [Parameter()][String]$ProjectPSRepoName,
 
-    <#
+        <#
     The name of the PSRepository to publish the module to
     #>
-    [Parameter()][String]$PublishPsRepoName,
+        [Parameter()][String]$PublishPsRepoName,
 
-    <#
+        <#
     If publishing the module to a local PSRepository, add the name here
     #>
-    [Parameter()][String]$PublishToPsRepo,
+        [Parameter()][String]$PublishToPsRepo,
 
-    <#
+        <#
     What to do if publishing the module and there are uncommited changes
     - stash : perform a git stash before continuing
     - ignore : procede with publish task
     - abort : fail the build
     #>
-    [Parameter()][String]$PublishActionIfUncommitted,
+        [Parameter()][String]$PublishActionIfUncommitted,
 
-    <#
+        <#
     The API key to use when publishing to PublishPsRepoName
     #>
-    [Parameter()][string]$NugetApiKey,
+        [Parameter()][string]$NugetApiKey,
+
+        <#
+    The format used for adding release notes to the manifest, can be one of 'text' or 'url'
+    #>
+        [Parameter()][string]$ReleaseNotesFormat,
+
+        <#
+    The path to the releasenotes file to use
+    #>
+        [Parameter()][string]$ReleaseNotesFile,
 
     #endregion Publish
     #-------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------
     #region Install
 
-    <#
+        <#
     Location to save the modules to (copy from staging) See the `install.module.saveto` task
     #>
-    [Parameter()][String]$InstallSaveToPath,
+        [Parameter()][String]$InstallSaveToPath,
 
-    <#
+        <#
     List of modules to save (all modules in project by default) See the `install.module.saveto` task
     #>
-    [Parameter()][String[]]$InstallSaveToModules,
+        [Parameter()][String[]]$InstallSaveToModules,
 
-    <#
+        <#
     When installing the project's modules, use this repository as the source
     #>
-    [Parameter()][string]$InstallModuleFromPsRepo,
+        [Parameter()][string]$InstallModuleFromPsRepo,
 
     #endregion Install
     #-------------------------------------------------------------------------------
     #-------------------------------------------------------------------------------
     #region Logging
 
-    <#
+        <#
     The path to write the build log to. LogPath and LogFile are combined at runtime to determine the path to the build log
     #>
-    [Parameter()][String]$LogPath
-    ,
+        [Parameter()][String]$LogPath
+,
 
 
-    <#
+        <#
     The file name to write the build log to
     #>
-    [Parameter()][String]$LogFile
-    ,
+        [Parameter()][String]$LogFile
+,
 
 
-    <#
+        <#
     A table of output locations (Console and File), Levels (DEBUG, INFO, etc.) and other information that controls the output of the build
     #>
-    [Parameter()][Hashtable]$Output
-    ,
+        [Parameter()][Hashtable]$Output
+,
 
 
-    <#
+        <#
     Suppress Build header and footer output
     #>
-    [Parameter()][switch]$SkipBuildHeader
+        [Parameter()][switch]$SkipBuildHeader
 
 
 
@@ -577,26 +628,37 @@ begin {
     #endregion Define aliases
     #-------------------------------------------------------------------------------
 
+    # Any errors that occur while loading build scripts will get collected here
+    $script:errorMessage = @()
+
     #-------------------------------------------------------------------------------
     #region Load Stitch module
 
     Write-Debug "`n<$('-' * 80)"
-    $stitchModule = Get-Module Stitch
+    Write-Debug 'Ensure the stitch module is available'
+
+    <#
+    This allows us to load an alternate version of stitch for use in this build
+    script. (For example, when developing the stitch module)
+    Just import the stitch module you want to use prior to running Invoke-Build
+    #>
+
     Write-Debug '  - Checking if Stitch is already loaded'
+    $stitchModule = Get-Module Stitch -ErrorAction SilentlyContinue
     # Only load Stitch if it isn't already loaded.
     if ($null -eq $stitchModule) {
-        Write-Debug 'Did not find the stitch module'
+        Write-Debug '- Did not find the stitch module'
         try {
             Write-Debug '  - Attempting to load the stitch module'
-            Import-Module Stitch -NoClobber -ErrorAction Stop
+            $stitchModule = Import-Module Stitch -NoClobber -ErrorAction Stop -PassThru
         } catch {
-            Write-Error "Could not import Stitch`n$_"
+            throw "Could not import Stitch`n$_"
         }
     } else {
-        Write-Debug "  - Version $($stitchModule.Version) already loaded"
+        Write-Debug "  - Version $($stitchModule.Version) loaded"
     }
 
-    Write-Debug "Stitch loaded from $(Get-Module Stitch | Select-Object -ExpandProperty Path)"
+    Write-Debug "Stitch loaded from $($stitchModule.Path)"
     Write-Debug "`n$('-' * 80)>"
 
     #endregion Load Stitch module
@@ -607,129 +669,146 @@ begin {
     Write-Debug "`n<$('-' * 80)"
 
     <#
-    #TODO: Either hide or remove $BuildConfigPath as a Parameter.  It should be "dynamic" based on other settings
-
-    #TODO: ProfilePattern can be removed, we are "standardizing" on *runbook.ps1 (and it was moved to a function)
-
-
-    Here we need to ensure that at the least, we have found a useable build configuration root directory
-    `$BuildConfigRoot`  This could be one of a few directories under Invoke-Build`s `$BuildRoot`
-
+     Here we need to ensure that at the least, we have found a useable build configuration root directory
+    `$BuildConfigRoot`  This could be one of a few directories under Invoke-Build's `$BuildRoot`
     #>
 
-    $script:errorMessage = @()
 
     <#
+    We will drill down from StartingDirectory -> Build Configuration Root -> Profile Root -> Current Profile
     We are going to try to find the build configuration path.  This relies on either
     the ProfilePath or BuildConfigRoot being set to a valid path.
     #>
-    $buildRootIsNotSet = ([string]::IsNullorEmpty($BuildRoot))
-    $buildConfigRootIsNotSet = ([string]::IsNullorEmpty($BuildConfigRoot))
-    $profilePathIsNotSet = ([string]::IsNullorEmpty($ProfilePath))
+    $buildRootIsSet = (-not ([string]::IsNullorEmpty($BuildRoot)))
+    #-------------------------------------------------------------------------------
+    #region Starting Directory
 
-    if ($profilePathIsNotSet) {
-        Write-Debug "ProfilePath was not set.  Looking for a profile path"
-        #-------------------------------------------------------------------------------
-        #region Set BuildConfigRoot
-
-        # "Walk" our way up from either BuildRoot or the Current Location
-        if ($buildConfigRootIsNotSet) {
-            Write-Debug "  - BuildConfigRoot was not set.  Looking for a build directory"
-            if ($buildRootIsNotSet) {
-                $startingDirectory = (Get-Location)
-                Write-Debug "    - BuildRoot was not set.  Looking in current directory"
-            } else {
-                # BuildRoot is set
-                Write-Debug "    - BuildRoot was set. Looking in $BuildRoot"
-                $startingDirectory = $BuildRoot
-            }
-
-            # Now that we have a starting point, see if we can find the BuildConfigRoot
-            $possibleBuildConfigRoot = $startingDirectory | Find-BuildConfigurationRootDirectory
-            if ($null -ne $possibleBuildConfigRoot) {
-                $BuildConfigRoot = $possibleBuildConfigRoot
-                Write-Debug "    - BuildConfigRoot is now set to '$BuildConfigRoot'"
-                Remove-Variable possibleBuildConfigRoot -ErrorAction SilentlyContinue
-            }
+    Write-Debug 'Resolving the starting directory'
+    $startingDirectory = Resolve-ProjectRoot -ErrorAction SilentlyContinue
+    if ($null -eq $startingDirectory) {
+        if ($buildRootIsSet) {
+            Write-Debug "- BuildRoot was set. Looking in $BuildRoot"
+            $startingDirectory = $BuildRoot
         } else {
-            Write-Debug "  - BuildConfigRoot already set to '$BuildConfigRoot'"
+            $startingDirectory = (Get-Location).Path
+            Write-Debug '- BuildRoot was not set. Using current directory'
         }
-        #endregion Set BuildConfigRoot
-        #-------------------------------------------------------------------------------
+    } else {
+        Write-Debug '- Resolved Project Root'
+    }
 
-        Write-Verbose "Build configuration root: '$BuildConfigRoot'"
-        # Now that BuildConfigRoot is set, we want to find the Profile path
-        Write-Debug "  - Looking for the profile path"
+    # abort if we can't find the starting directory
+    if ($null -eq $startingDirectory) {
+        throw 'Something went wrong, could not determine starting directory'
+    } else {
+        Write-Verbose "Starting in $startingDirectory"
+    }
+
+    #endregion Starting Directory
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region Build Configuration Root
+    $buildConfigRootIsSet = (-not ([string]::IsNullorEmpty($BuildConfigRoot)))
+
+    Write-Debug 'Resolving the Build Configuration Root Directory'
+    if ($buildConfigRootIsSet) {
+        Write-Debug "- BuildConfigRoot was set to '$BuildConfigRoot' by Parameters"
+    } else {
+        # Now that we have a starting point, see if we can find the BuildConfigRoot
+        $possibleBuildConfigRoot = ($startingDirectory | Find-BuildConfigurationRootDirectory)
+        Write-Debug "- found BuildConfigRoot in '$possibleBuildConfigRoot'"
+        if ($null -ne $possibleBuildConfigRoot) {
+            $BuildConfigRoot = $possibleBuildConfigRoot
+            Write-Debug "- BuildConfigRoot is a $($BuildConfigRoot.GetType().FullName)"
+            Write-Debug "- BuildConfigRoot is now set to '$BuildConfigRoot'"
+            Remove-Variable possibleBuildConfigRoot -ErrorAction SilentlyContinue
+        }
+    }
+
+    #! abort if we cannot find the Build Configuration Root
+    if ($null -eq $BuildConfigRoot) {
+        throw 'Could not find the Build Configuration Root Directory (.build or .stitch by default)'
+    } elseif (-not (Test-Path $BuildConfigRoot)) {
+        throw "BuildConfigRoot points to an invalid path '$BuildConfigRoot'"
+    }
+    #endregion Build Configuration Root
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region Profile path
+
+
+    # if we made it here, then BuildConfigRoot is a valid path
+    # the best option is that $ProfilePath and $BuildProfile are set and that results in a valid path
+
+    # the next option is that $ProfilePath is set, and $DefaultBuildProfile are set and valid
+
+    # ProfilePath isn't set, we use BuildConfigRoot to look for runbooks
+
+    if ([string]::IsNullorEmpty($ProfilePath)) {
+        Write-Debug 'ProfilePath was not set.  Looking for a profile path'
+
         $possibleProfileRoot = $BuildConfigRoot | Find-BuildProfileRootDirectory
 
         if ($null -ne $possibleProfileRoot) {
-            Write-Debug "    - Found profile directory '$possibleProfileRoot'"
+            Write-Debug "- Found profile root directory '$possibleProfileRoot'"
             $ProfilePath = $possibleProfileRoot
-            $options = @{
-                Path = $ProfilePath
-            }
-        } else {
-            $options = @{
-                Path = $BuildConfigRoot
-            }
-            # there are no profile directories, maybe its just the runbook and config file
-            # here in BuildconfigRoot ?
         }
         Remove-Variable possibleProfileRoot -ErrorAction SilentlyContinue
-
-        if (-not ([string]::IsNullorEmpty($BuildProfile))) {
-            $options['BuildProfile'] = $BuildProfile
-        }
-        Write-Debug "    - Looking for BuildConfigPath in $($options.Path) $($BuildProfile ?? 'no build profile set')"
-        $possibleRunBook = Select-BuildRunBook @options
-
-        if ($null -ne $possibleRunBook) {
-            #! If we found the runbook, then the directory that it is in is our BuildConfigPath
-            Write-Debug "       - Found runbook at : $possibleRunBook"
-            $BuildConfigPath = $possibleRunBook | Split-Path -Parent
-            $Runbook = $possibleRunBook
-            Remove-Variable options, possibleRunBook -ErrorAction SilentlyContinue
-            Write-Verbose "Runbook : $Runbook"
-        } else {
-            Write-Debug "Could not find a runbook"
-        }
-    } else {
-        <#
-         ! ProfilePath is set
-         If this is the case, and it is a valid path, then we can look for the BuildProfile and find our
-         BuildConfigPath if the profile is found
-        #>
-        Write-Debug "ProfilePath set to $ProfilePath"
-        if (Test-Path $ProfilePath) {
-            Write-Debug "  - Found $ProfilePath set by -ProfilePath"
-
-            $options = @{
-                Path = $ProfilePath
-            }
-
-            if (-not ([string]::IsNullorEmpty($BuildProfile))) {
-                $options['BuildProfile'] = $BuildProfile
-            }
-
-            $possibleRunBook = Select-BuildRunBook @options
-
-            if ($null -ne $possibleRunBook) {
-                #! If we found the runbook, then the directory that it is in is our BuildConfigPath
-                $BuildConfigPath = $possibleRunBook | Split-Path -Parent
-                Remove-Variable options, possibleRunBook -ErrorAction SilentlyContinue
-
-            } else {
-                throw "ProfilePath is set, but it does not contain a runbook"
-            }
-        } else {
-            #! In the event that ProfilePath is set to an invalid path, we throw an error instead of
-            #! searching BuildConfigRoot
-            $errorMessage += "'$ProfilePath' is not a valid path"
-        }
-
+        Write-Verbose "ProfilePath set to $ProfilePath"
     }
 
-    Write-Verbose "Profile path: $ProfilePath"
+    # Either it was already set or we just found the ProfilePath
+    if ([string]::IsNullorEmpty($ProfilePath)) {
+        if (Test-Path $ProfilePath) {
+            Write-Debug "ProfilePath was set to $ProfilePath by parameter"
+            if (-not ([string]::IsNullorEmpty($BuildProfile))) {
+                $BuildConfigPath = (Join-Path $ProfilePath $BuildProfile)
+            } elseif (-not ([string]::IsNullorEmpty($DefaultBuildProfile))) {
+                $BuildConfigPath = (Join-Path $ProfilePath $DefaultBuildProfile)
+            } else {
+                $foundRunbooks = Select-BuildRunBook -Path $ProfilePath
+                if ($null -ne $foundRunbooks) {
+                    $BuildConfigPath = Split-Path -Path $foundRunbooks -Parent
+                    Write-Verbose "No Profiles were set, but found runbook in $ProfilePath"
+                }
+            }
+        } else {
+            throw "ProfilePath was set to an invalid path '$ProfilePath'"
+        }
+    }
+    #endregion Profile path
+    #-------------------------------------------------------------------------------
+
+    if ([string]::IsNullorEmpty($BuildConfigPath)) {
+        # we didn't find a valid configurtion path yet, see if we can find a runbook in the config root
+
+        #! it shouldn't be possible to get here without it, but let's make sure
+        if ($null -ne $BuildConfigRoot) {
+            if (Test-Path $BuildConfigRoot) {
+                $runbookOptions = @{
+                    Path = $BuildConfigRoot
+                }
+                if (-not ([string]::IsNullorEmpty($BuildProfile))) {
+                    $runbookOptions['BuildProfile'] = $BuildProfile
+                } elseif (-not ([string]::IsNullorEmpty($DefaultBuildProfile))) {
+                    $runbookOptions['BuildProfile'] = $DefaultBuildProfile
+                }
+                $foundRunbooks = Select-BuildRunBook -Path $ProfilePath
+                if ($null -ne $foundRunbooks) {
+                    $BuildConfigPath = Split-Path -Path $foundRunbooks -Parent
+                    $Runbook = $foundRunbooks
+                    Write-Verbose "A Runbook was found in '$BuildConfigRoot'"
+                }
+            } else {
+                throw "Build Configuration Root was set to an invalid path '$BuildConfigRoot'"
+            }
+        }
+    }
+
+    Remove-Variable runbookOptions, foundRunbooks -ErrorAction SilentlyContinue
+
     <#
     All of this was to set BuildConfigPath.  If we made it here and it still isnt set, we are in big trouble, we should
     just quit and let the user know why
@@ -750,7 +829,7 @@ begin {
     #-------------------------------------------------------------------------------
     #region Load stitch config
     Write-Debug "`n<$('-' * 80)"
-    Write-Debug "Looking for stitch configuration file"
+    Write-Debug 'Looking for stitch configuration file'
     if ($null -ne $BuildConfigPath) {
         $possibleStitchConfig = $BuildConfigPath | Find-StitchConfigurationFile
         if ($null -ne $possibleStitchConfig) {
@@ -765,7 +844,7 @@ begin {
                     Remove-Variable possibleStitchConfig
                 }
                 default {
-                    Write-Debug "Multiple config files found!"
+                    Write-Debug 'Multiple config files found!'
                     Write-Debug "Using Configuration file $($possibleStitchConfig[0].FullName)"
                     $StitchConfigFile = $possibleStitchConfig[0]
                     Remove-Variable possibleStitchConfig
@@ -858,6 +937,14 @@ begin {
             . $Runbook
             Write-Debug '  - Complete'
         }
+    } else {
+        Write-Debug "Runbook was not set, looking in BuildConfigPath"
+        $foundRunbooks = Select-BuildRunBook -Path $BuildConfigPath
+        foreach ($runbook in $foundRunbooks) {
+            Write-Debug "Importing runbook $Runbook"
+            . $Runbook
+        }
+        Write-Debug '  - Complete'
     }
 
     Write-Debug "`n$('-' * 80)>"
