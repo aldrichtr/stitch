@@ -18,72 +18,72 @@ using namespace System.Diagnostics.CodeAnalysis
 #-------------------------------------------------------------------------------
 #region Rule suppression
 
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ProfilePath', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'BuildProfile', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'DefaultBuildProfile', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'BuildConfigRoot', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'BuildConfigFile', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Source', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Staging', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Tests', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Artifact', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Docs', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SourceTypeMap', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SkipModuleTaskImport', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'BuildInfo', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ExcludePathFromClean', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SkipDependencyCheck', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'DependencyTags', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CodeCov', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CodeCovFormat', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CodeCovDirectory', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CodeCovFile', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'TestResultFormat', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'TestResultDirectory', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'TestResultFile', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PesterOutput', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PesterResultDirectory', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PesterResultFile', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CopyAdditionalItems', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CopyEmptySourceDirs', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SkipManifestArrayFormat', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ModuleFileIncludeTypes', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ModuleFilePrefix', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ModuleFileSuffix', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ModuleNamespace', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ManifestBackupPath', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'KeepManifestBackup', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ManifestVersionField', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SuppressManifestComments', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ExcludeFunctionsFromExport', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ExcludeAliasFromExport', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'FormatPsXmlDirectory', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'FormatPsXmlFileFilter', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'TypePsXmlDirectory', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'TypePsXmlFileFilter', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'HelpDocsCultureDirectory', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'HelpDocLogFile', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'FormatSettings', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'AnalyzerSettings', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ChangelogPath', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ChangelogBackupPath', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'KeepChangelogBackup', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ChangelogVersionField', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'GitTagVersionField', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'GitStashMessage', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'IncludeUntrackedInGitStash', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ProjectPSRepoName', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PublishPsRepoName', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PublishToPsRepo', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PublishActionIfUncommitted', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'NugetApiKey', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'InstallSaveToPath', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'InstallSaveToModules', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'InstallModuleFromPsRepo', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'LogPath', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'LogFile', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Output', Justification = 'Variable used in Invoke-Build scripts')]
-        [SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SkipBuildHeader', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ProfilePath', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'BuildProfile', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'DefaultBuildProfile', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'BuildConfigRoot', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'BuildConfigFile', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Source', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Staging', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Tests', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Artifact', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Docs', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SourceTypeMap', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SkipModuleTaskImport', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'BuildInfo', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ExcludePathFromClean', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SkipDependencyCheck', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'DependencyTags', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CodeCov', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CodeCovFormat', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CodeCovDirectory', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CodeCovFile', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'TestResultFormat', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'TestResultDirectory', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'TestResultFile', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PesterOutput', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PesterResultDirectory', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PesterResultFile', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CopyAdditionalItems', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'CopyEmptySourceDirs', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SkipManifestArrayFormat', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ModuleFileIncludeTypes', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ModuleFilePrefix', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ModuleFileSuffix', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ModuleNamespace', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ManifestBackupPath', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'KeepManifestBackup', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ManifestVersionField', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SuppressManifestComments', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ExcludeFunctionsFromExport', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ExcludeAliasFromExport', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'FormatPsXmlDirectory', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'FormatPsXmlFileFilter', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'TypePsXmlDirectory', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'TypePsXmlFileFilter', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'HelpDocsCultureDirectory', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'HelpDocLogFile', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'FormatSettings', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'AnalyzerSettings', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ChangelogPath', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ChangelogBackupPath', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'KeepChangelogBackup', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ChangelogVersionField', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'GitTagVersionField', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'GitStashMessage', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'IncludeUntrackedInGitStash', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'ProjectPSRepoName', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PublishPsRepoName', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PublishToPsRepo', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'PublishActionIfUncommitted', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'NugetApiKey', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'InstallSaveToPath', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'InstallSaveToModules', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'InstallModuleFromPsRepo', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'LogPath', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'LogFile', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'Output', Justification = 'Variable used in Invoke-Build scripts')]
+[SuppressMessage('PSUseDeclaredVarsMoreThanAssignments', 'SkipBuildHeader', Justification = 'Variable used in Invoke-Build scripts')]
 
 #endregion Rule suppression
 #-------------------------------------------------------------------------------
@@ -93,18 +93,18 @@ param()
 #region Profile
 <#
  The directory to search for runbooks
+ $ProfilePath = (
+     Get-BuildProperty ProfilePath (Join-Path $BuildConfigRoot 'profiles')
+     )
 #>
-$ProfilePath = (
-    Get-BuildProperty ProfilePath (Join-Path $BuildConfigRoot 'profiles')
-)
 
 <#
  The lifecycle profile to run.  Determines which runbook will be loaded.
- Runs the ``Build`` profile if none specified, or the single runbook if only one is found
+ Runs the `Build` profile if none specified, or the single runbook if only one is found
+ $BuildProfile = (
+     Get-BuildProperty BuildProfile 'default'
+     )
 #>
-$BuildProfile = (
-    Get-BuildProperty BuildProfile 'default'
-)
 
 <#
  The default BuildProfile if not specified (and more than one runbook exists)
@@ -120,17 +120,11 @@ $DefaultBuildProfile = (
 #region Path
 <#
  The base path to configuration and settings files
+ $BuildConfigRoot = (
+     Get-BuildProperty BuildConfigRoot (Join-Path $BuildRoot '.build')
+     )
 #>
-$BuildConfigRoot = (
-    Get-BuildProperty BuildConfigRoot (Join-Path $BuildRoot '.build')
-)
 
-<#
- The file name of the configuration file
-#>
-$BuildConfigFile = (
-    Get-BuildProperty BuildConfigFile 'stitch.config.ps1'
-)
 
 <#
  The path to the source files for this project
@@ -171,21 +165,21 @@ $Docs = (
  A table that maps source directory names to their types
  for example :
  @{ public = @{Visibility = 'public'; Type = 'function'}}
+ $SourceTypeMap = (
+     Get-BuildProperty SourceTypeMap @{
+         # directory name => visibility
+         'public'     = @{ Visibility = 'public'; Type = 'function' }
+         'class'      = @{ Visibility = 'private'; Type = 'class' }
+         'classes'    = @{ Visibility = 'private'; Type = 'class' }
+         'enum'       = @{ Visibility = 'private'; Type = 'enum' }
+         'private'    = @{ Visibility = 'private'; Type = 'function' }
+         'resource'   = @{ Visibility = 'private'; Type = 'resource' }
+         'assembly'   = @{ Visibility = 'private'; Type = 'resource' }
+         'assemblies' = @{ Visibility = 'private'; Type = 'resource' }
+         'data'       = @{ Visibility = 'private'; Type = 'resource' }
+        }
+        )
 #>
-$SourceTypeMap = (
-    Get-BuildProperty SourceTypeMap @{
-    # directory name => visibility
-    'public'     = @{ Visibility = 'public'; Type = 'function' }
-    'class'      = @{ Visibility = 'private'; Type = 'class' }
-    'classes'    = @{ Visibility = 'private'; Type = 'class' }
-    'enum'       = @{ Visibility = 'private'; Type = 'enum' }
-    'private'    = @{ Visibility = 'private'; Type = 'function' }
-    'resource'   = @{ Visibility = 'private'; Type = 'resource' }
-    'assembly'   = @{ Visibility = 'private'; Type = 'resource' }
-    'assemblies' = @{ Visibility = 'private'; Type = 'resource' }
-    'data'       = @{ Visibility = 'private'; Type = 'resource' }
-}
-)
 
 #endregion Path
 #-------------------------------------------------------------------------------
@@ -204,11 +198,11 @@ $SkipModuleTaskImport = (
 #>
 $BuildInfo = (
     Get-BuildProperty BuildInfo @{
-    Modules = @{}
-    Project = @{
-        Name = ''
+        Modules = @{}
+        Project = @{
+            Name = ''
+        }
     }
-}
 )
 
 #endregion Tasks
@@ -378,7 +372,7 @@ $ModuleFileSuffix = (
 )
 
 <#
- If the module should be part of a larger namespace, set the namespace here.  ModuleNamespace is 
+ If the module should be part of a larger namespace, set the namespace here.  ModuleNamespace is
  a hashtable where the key is the module name and the value is the namespace like:
  @{
      Module1 = 'Fabricam.Automation'
@@ -477,7 +471,7 @@ $HelpDocLogFile = (
  Either a path to a psd1 file or a hashtable of settings
 #>
 $FormatSettings = (
-    Get-BuildProperty FormatSettings (Join-Path $BuildRoot "CodeFormatting.psd1")
+    Get-BuildProperty FormatSettings (Join-Path $BuildRoot 'CodeFormatting.psd1')
 )
 
 <#
@@ -485,7 +479,7 @@ $FormatSettings = (
  Either a path to a psd1 file or a hashtable of settings
 #>
 $AnalyzerSettings = (
-    Get-BuildProperty AnalyzerSettings (Join-Path $BuildRoot "PSScriptAnalyzerSetting.psd1")
+    Get-BuildProperty AnalyzerSettings (Join-Path $BuildRoot 'PSScriptAnalyzerSetting.psd1')
 )
 
 #endregion Build
@@ -629,40 +623,38 @@ $LogFile = (
  A table of output locations (Console and File), Levels (DEBUG, INFO, etc.) and other information that controls the output of the build
 #>
 $Output = (
-    Get-BuildProperty Output  @{
-        Timestamp         = @{
+    Get-BuildProperty Output @{
+        Timestamp = @{
             Format          = '%s'
             ForegroundColor = 'BrightWhite'
         }
-        Console           = @{
+        Console   = @{
             Enabled = $true
             Level   = 'DEBUG'
             Message = @{
                 ForegroundColor = 'White'
             }
         }
-        File              = @{
+        File      = @{
             Enabled = $false
             Level   = 'DEBUG'
         }
-        5                 = @{
+        5         = @{
             ForegroundColor = 'BrightBlack'
             Label           = 'DEBUG'
         }
-        4                 = @{
+        4         = @{
             ForegroundColor = 'Blue'
             Label           = 'INFO'
         }
-        3                 = @{
+        3         = @{
             ForegroundColor = 'Yellow'
             Label           = 'WARN'
         }
-        2                 = @{
+        2         = @{
             ForegroundColor = 'Red'
             Label           = 'ERROR'
         }
-        'clean.artifacts' = 'INFO'
-        'clean.staging'   = 'INFO'
     }
 )
 
@@ -675,6 +667,3 @@ $SkipBuildHeader = (
 
 #endregion Logging
 #-------------------------------------------------------------------------------
-
-
-
