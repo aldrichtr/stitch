@@ -54,174 +54,14 @@ begin {
         Write-Debug "  - Version $($stitchModule.Version) loaded"
     }
 
+    Write-Verbose "Using $($stitchModule.Version) of stitch"
     Write-Debug "Stitch loaded from $($stitchModule.Path)"
     Write-Debug "`n$('-' * 80)>"
 
     #endregion Load Stitch module
     #-------------------------------------------------------------------------------
 
-    #-------------------------------------------------------------------------------
-    #region set BuildConfigPath
-    Write-Debug "`n<$('-' * 80)"
-
-    <#
-     Here we need to ensure that at the least, we have found a useable build configuration root directory
-    `$BuildConfigRoot`  This could be one of a few directories under Invoke-Build's `$BuildRoot`
-    #>
-
-
-    <#
-    We will drill down from StartingDirectory -> Build Configuration Root -> Profile Root -> Current Profile
-    We are going to try to find the build configuration path.  This relies on either
-    the ProfilePath or BuildConfigRoot being set to a valid path.
-    #>
-    $buildRootIsSet = (-not ([string]::IsNullorEmpty($BuildRoot)))
-    #-------------------------------------------------------------------------------
-    #region Starting Directory
-
-    Write-Debug 'Resolving the starting directory'
-    $startingDirectory = Resolve-ProjectRoot -ErrorAction SilentlyContinue
-    if ($null -eq $startingDirectory) {
-        if ($buildRootIsSet) {
-            Write-Debug "- BuildRoot was set. Looking in $BuildRoot"
-            $startingDirectory = $BuildRoot
-        } else {
-            $startingDirectory = (Get-Location).Path
-            Write-Debug '- BuildRoot was not set. Using current directory'
-        }
-    } else {
-        Write-Debug '- Resolved Project Root'
-    }
-
-    # abort if we can't find the starting directory
-    if ($null -eq $startingDirectory) {
-        throw 'Something went wrong, could not determine starting directory'
-    } else {
-        Write-Verbose "Starting in $startingDirectory"
-    }
-
-    #endregion Starting Directory
-    #-------------------------------------------------------------------------------
-
-    #-------------------------------------------------------------------------------
-    #region Build Configuration Root
-    $buildConfigRootIsSet = (-not ([string]::IsNullorEmpty($BuildConfigRoot)))
-
-    Write-Debug 'Resolving the Build Configuration Root Directory'
-    if ($buildConfigRootIsSet) {
-        Write-Debug "- BuildConfigRoot was set to '$BuildConfigRoot' by Parameters"
-    } else {
-        # Now that we have a starting point, see if we can find the BuildConfigRoot
-        $possibleBuildConfigRoot = ($startingDirectory | Find-BuildConfigurationRootDirectory)
-        Write-Debug "- found BuildConfigRoot in '$possibleBuildConfigRoot'"
-        if ($null -ne $possibleBuildConfigRoot) {
-            $BuildConfigRoot = $possibleBuildConfigRoot
-            Write-Debug "- BuildConfigRoot is a $($BuildConfigRoot.GetType().FullName)"
-            Write-Debug "- BuildConfigRoot is now set to '$BuildConfigRoot'"
-            Remove-Variable possibleBuildConfigRoot -ErrorAction SilentlyContinue
-        }
-    }
-
-    #! abort if we cannot find the Build Configuration Root
-    if ($null -eq $BuildConfigRoot) {
-        throw 'Could not find the Build Configuration Root Directory (.build or .stitch by default)'
-    } elseif (-not (Test-Path $BuildConfigRoot)) {
-        throw "BuildConfigRoot points to an invalid path '$BuildConfigRoot'"
-    }
-    #endregion Build Configuration Root
-    #-------------------------------------------------------------------------------
-
-    #-------------------------------------------------------------------------------
-    #region Profile path
-
-
-    # if we made it here, then BuildConfigRoot is a valid path
-    # the best option is that $ProfilePath and $BuildProfile are set and that results in a valid path
-
-    # the next option is that $ProfilePath is set, and $DefaultBuildProfile are set and valid
-
-    # ProfilePath isn't set, we use BuildConfigRoot to look for runbooks
-
-    if ([string]::IsNullorEmpty($ProfilePath)) {
-        Write-Debug 'ProfilePath was not set.  Looking for a profile path'
-
-        $possibleProfileRoot = $BuildConfigRoot | Find-BuildProfileRootDirectory
-
-        if ($null -ne $possibleProfileRoot) {
-            Write-Debug "- Found profile root directory '$possibleProfileRoot'"
-            $ProfilePath = $possibleProfileRoot
-        }
-        Remove-Variable possibleProfileRoot -ErrorAction SilentlyContinue
-        Write-Verbose "ProfilePath set to $ProfilePath"
-    }
-
-    # Either it was already set or we just found the ProfilePath
-    if ([string]::IsNullorEmpty($ProfilePath)) {
-        if (Test-Path $ProfilePath) {
-            Write-Debug "ProfilePath was set to $ProfilePath by parameter"
-            if (-not ([string]::IsNullorEmpty($BuildProfile))) {
-                $BuildConfigPath = (Join-Path $ProfilePath $BuildProfile)
-            } elseif (-not ([string]::IsNullorEmpty($DefaultBuildProfile))) {
-                $BuildConfigPath = (Join-Path $ProfilePath $DefaultBuildProfile)
-            } else {
-                $foundRunbooks = Select-BuildRunBook -Path $ProfilePath
-                if ($null -ne $foundRunbooks) {
-                    $BuildConfigPath = Split-Path -Path $foundRunbooks -Parent
-                    Write-Verbose "No Profiles were set, but found runbook in $ProfilePath"
-                }
-            }
-        } else {
-            throw "ProfilePath was set to an invalid path '$ProfilePath'"
-        }
-    }
-    #endregion Profile path
-    #-------------------------------------------------------------------------------
-
-    if ([string]::IsNullorEmpty($BuildConfigPath)) {
-        # we didn't find a valid configurtion path yet, see if we can find a runbook in the config root
-
-        #! it shouldn't be possible to get here without it, but let's make sure
-        if ($null -ne $BuildConfigRoot) {
-            if (Test-Path $BuildConfigRoot) {
-                $runbookOptions = @{
-                    Path = $BuildConfigRoot
-                }
-                if (-not ([string]::IsNullorEmpty($BuildProfile))) {
-                    $runbookOptions['BuildProfile'] = $BuildProfile
-                } elseif (-not ([string]::IsNullorEmpty($DefaultBuildProfile))) {
-                    $runbookOptions['BuildProfile'] = $DefaultBuildProfile
-                }
-                $foundRunbooks = Select-BuildRunBook -Path $ProfilePath
-                if ($null -ne $foundRunbooks) {
-                    $BuildConfigPath = Split-Path -Path $foundRunbooks -Parent
-                    $Runbook = $foundRunbooks
-                    Write-Verbose "A Runbook was found in '$BuildConfigRoot'"
-                }
-            } else {
-                throw "Build Configuration Root was set to an invalid path '$BuildConfigRoot'"
-            }
-        }
-    }
-
-    Remove-Variable runbookOptions, foundRunbooks -ErrorAction SilentlyContinue
-
-    <#
-    All of this was to set BuildConfigPath.  If we made it here and it still isnt set, we are in big trouble, we should
-    just quit and let the user know why
-    #>
-    if ($null -eq $BuildConfigPath) {
-        if ($errorMessage.Count -gt 0) {
-            throw ($errorMessage -join "`n")
-        } else {
-            throw "**Can't continue** Could not find the build configuration path"
-        }
-    } else {
-        Write-Verbose "Build configuration Path : $BuildConfigPath"
-    }
-    Write-Debug "`n$('-' * 80)>"
-    #endregion set BuildConfigPath
-    #-------------------------------------------------------------------------------
-
+    $BuildConfigPath = Find-BuildConfigurationDirectory -BuildProfile $BuildProfile
     #-------------------------------------------------------------------------------
     #region Load stitch config
     Write-Debug "`n<$('-' * 80)"
@@ -250,9 +90,7 @@ begin {
             . $StitchConfigFile
         }
     } else {
-        if ($errorMessage.Count -gt 0) {
-            throw ( $errorMessage -join "`n")
-        }
+
     }
     Write-Debug "`n$('-' * 80)>"
     #endregion Load stitch config
@@ -327,6 +165,9 @@ begin {
     #region Load the runbook
     Write-Debug "`n<$('-' * 80)"
 
+
+    $Runbook = $BuildConfigPath | Get-BuildRunBook
+
     if ($null -ne $Runbook) {
         if (Test-Path $Runbook) {
             Write-Debug "Importing runbook $Runbook"
@@ -334,7 +175,7 @@ begin {
             Write-Debug '  - Complete'
         }
     } else {
-        Write-Debug "Runbook was not set, looking in BuildConfigPath"
+        Write-Debug "Runbook was not found, looking in BuildConfigPath"
         $foundRunbooks = Select-BuildRunBook -Path $BuildConfigPath
         foreach ($runbook in $foundRunbooks) {
             Write-Debug "Importing runbook $Runbook"
