@@ -4,15 +4,8 @@ function Test-ProjectRoot {
     .SYNOPSIS
         Test if the given directory is the root directory of a project
     .DESCRIPTION
-        `Test-ProjectRoot` looks for "typical" project directories in the given -Path and returns true if at least
-        two of them exist.
-
-        Typical project directories are:
-        - A source directory (this may be controlled by the variable $Source)
-        - A staging directory (the variable $Staging)
-        - A tests directory (the variable $Tests)
-        - A artifact/output directory (the variable $Artifact)
-        - A documentation directory (the variable $Docs)
+        `Test-ProjectRoot` looks for the build configuration file and directory
+        `.build.ps1` and either `.stitch\` or `.build`
     .EXAMPLE
         Test-ProjectRoot
 
@@ -44,96 +37,33 @@ function Test-ProjectRoot {
             }
         )]
         [Alias('PSPath')]
-        [string]$Path = (Get-Location).ToString(),
-
-        # Powershell Data File with defaults
-        [Parameter(
-        )]
-        [string]$Defaults,
-
-        # Default Source directory
-        [Parameter(
-        )]
-        [string]$Source = '.\source',
-
-        # Default Tests directory
-        [Parameter(
-        )]
-        [string]$Tests = '.\tests',
-
-        # Default Staging directory
-        [Parameter(
-        )]
-        [string]$Staging = '.\stage',
-
-        # Default Artifact directory
-        [Parameter(
-        )]
-        [string]$Artifact = '.\out',
-
-        # Default Docs directory
-        [Parameter(
-        )]
-        [string]$Docs = '.\docs'
+        [string]$Path = (Get-Location).ToString()
     )
     begin {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
-        #! How many default directories must be present to be considered true
-        $DEFAULTS_REQUIRED = 2
-
-        $FAILSAFE_DEFAULTS = @{
-            Source   = $Source
-            Tests    = $Tests
-            Staging  = $Staging
-            Artifact = $Artifact
-            Docs     = $Docs
-        }
-
-        if ($PSBoundParameters.ContainsKey('Defaults')) {
-            if (Test-Path $Defaults) {
-                Write-Debug "Importing defaults from $Defaults"
-                $defaultFolders = Import-PowerShellDataFile $Defaults
-            }
-        } else {
-            Write-Debug 'No defaults file found using internal defaults'
-            $defaultFolders = $FAILSAFE_DEFAULTS
-        }
-        Write-Debug "Default Folders are:"
-        foreach ($key in $defaultFolders.Keys) {
-            Write-Debug ("  - {0,-16} => {1}" -f $key, $defaultFolders[$key])
-        }
+        $possibleRoots = @('.build', '.stitch')
     }
     process {
-        Write-Debug "Testing against default project directories in $Path"
-        $defaultsInDirectory = 0
-        foreach ($key in $defaultFolders.Keys) {
-            Write-Debug "Checking for $key variable. Defaults found so far $defaultsInDirectory"
-            $pathVariable = Get-Variable $key -ValueOnly -ErrorAction SilentlyContinue
-            Write-Debug "  - The path we are looking for is $pathVariable"
-            if ($null -ne $pathVariable) {
-                if ([system.io.path]::IsPathFullyQualified($pathVariable)) {
-                    Write-Debug "  - found $pathVariable fully qualified"
-                    $pathToTest = $pathVariable
+        $possibleBuildConfigRoot = $Path | Find-BuildConfigurationRootDirectory
+        if ($null -ne $possibleBuildConfigRoot) {
+            Write-Debug "Found build config root directory '$possibleBuildConfigRoot'"
+            if ($possibleBuildConfigRoot.Name -in $possibleRoots) {
+                Write-Debug "$($possibleBuildConfigRoot.Name) is a valid root"
+                if (Get-ChildItem -Path $Path -Filter '.build.ps1') {
+                    Write-Debug "Found build script"
+                    $true | Write-Output
                 } else {
-                    $pathToTest = (Join-Path $Path $pathVariable)
+                    Write-Debug "Did not find build script"
+                    $false | Write-Output
                 }
             } else {
-                throw "No value given for `$$key"
+                $false | Write-Output
             }
-
-            Write-Debug "Testing if $pathToTest is present"
-            if (Test-Path $pathToTest) {
-                Write-Debug '  - It was found'
-                $defaultsInDirectory += 1
-            } else {
-                Write-Debug '  - It was NOT found'
-            }
+        } else {
+            $false | Write-Output
         }
     }
     end {
-        Write-Debug "$defaultsInDirectory found $DEFAULTS_REQUIRED needed to pass"
-        $defaultsInDirectory -ge $DEFAULTS_REQUIRED | Write-Output
-
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
 }
