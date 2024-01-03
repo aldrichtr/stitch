@@ -31,8 +31,12 @@ Add-BuildTask . 'Build'
 #-------------------------------------------------------------------------------
 #region Initialize
 
+'install.psdepend' | before 'install.requirement'
+
 'Initialize' | jobs @(
-    { logDebug '-- Begin Initialize phase --' }
+    'install.psdepend',
+    'install.requirement',
+    'set.psmodulepath'
 )
 #endregion Initialize
 #-------------------------------------------------------------------------------
