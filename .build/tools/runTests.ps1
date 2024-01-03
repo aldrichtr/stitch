@@ -2,12 +2,33 @@
 
 param(
     [Parameter()]
-    [string]$ConfigFile = (Join-Path ".\.build\profiles\default\pester" "UnitTests.config.psd1"),
+    [string]$ConfigFile,
 
     [Parameter()]
-    [string]$HelperModule = (Join-Path 'tests' 'TestHelpers.psm1')
-)
+    [string]$HelperModule
+    )
 
+    if (-not ($PSBoundParameters.ContainsKey('ConfigFile'))) {
+        $options = @{
+            Path = (Get-Location)
+            ChildPath = '.build\profiles\default\pester'
+            AdditionalChildPath = 'UnitTests.config.psd1'
+
+        }
+        $ConfigFile = (Join-Path @options)
+        Remove-Variable -Name 'options'
+    }
+
+    if (-not ($PSBoundParameters.ContainsKey('HelperModule'))) {
+        $options = @{
+            Path = (Get-Location)
+            ChildPath = 'tests'
+            AdditionalChildPath = 'TestHelpers.psm1'
+        }
+        $HelperModule = (Join-Path @options)
+        Remove-Variable -Name 'options'
+
+    }
 
 if (Test-Path $ConfigFile) {
     try {

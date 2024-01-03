@@ -1,7 +1,7 @@
 param(
     [Parameter()]
     [string]$ChangelogBackupPath = (
-        Get-BuildProperty ChangelogBackupPath (Join-Path (property Artifact) 'backup')
+        Get-BuildProperty ChangelogBackupPath (Join-Path (Get-BuildProperty Artifact) 'backup')
     ),
     [Parameter()]
     [string]$ChangelogPath = (

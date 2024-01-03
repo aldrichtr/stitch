@@ -2,7 +2,7 @@ BeforeAll {
     # This method requires `tests/` to be structured the same as `source/`
     $sourceFile = (Get-SourceFilePath $PSCommandPath)
     if (Test-Path $sourceFile) {
-        # We don't need to source the build script, it is loaded by Invoke-Build
+        . $sourceFile
     } else {
         throw "Could not find $sourceFile from $PSCommandPath"
     }
