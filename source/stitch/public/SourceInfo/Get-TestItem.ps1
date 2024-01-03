@@ -56,7 +56,7 @@ function Get-TestItem {
             } else {
                 if ($item.Extension -eq '.ps1') {
                     try {
-                        $item | Get-TesItemtInfo | Write-Output
+                        $item | Get-TestItemtInfo | Write-Output
                     }
                     catch {
                         Write-Warning "$_"
