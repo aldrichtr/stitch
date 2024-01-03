@@ -54,6 +54,8 @@ function Get-TestItemInfo {
                 Tests = $testResult.Tests
                 Path = $p.FullName
             }
+
+            [PSCustomObject]$testInfo | Write-Output
         }
     }
     end {
