@@ -26,15 +26,8 @@ using namespace System.Diagnostics.CodeAnalysis
 #-------------------------------------------------------------------------------
 #region Rule suppression
 
-<%-
-    $groups = $Parameters.Values
-    foreach ($group in $groups) {
-        $group | Foreach-Object {
--%>
-[SuppressMessage('PSReviewUnusedParameter','<%= $_.Name %>',
-Justification = 'Parameters used in separate task files' )]
-<%-     } -%>
-<%- } -%>
+
+[SuppressMessage('PSReviewUnusedParameter','', Justification = 'Parameters used in separate task files' )]
 
 #endregion Rule suppression
 #-------------------------------------------------------------------------------
