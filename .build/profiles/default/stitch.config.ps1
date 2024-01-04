@@ -96,6 +96,14 @@ using namespace System.Diagnostics.CodeAnalysis
 param()
 #-------------------------------------------------------------------------------
 #region Profile
+
+<#
+ The base path to configuration and settings files
+#>
+$BuildConfigRoot = (
+    Get-BuildProperty BuildConfigRoot (Join-Path $BuildRoot '.build')
+)
+
 <#
  The directory to search for runbooks
 #>
@@ -123,12 +131,6 @@ $DefaultBuildProfile = (
 
 #-------------------------------------------------------------------------------
 #region Path
-<#
- The base path to configuration and settings files
-#>
-$BuildConfigRoot = (
-    Get-BuildProperty BuildConfigRoot (Join-Path $BuildRoot '.build')
-)
 
 <#
  The file name of the configuration file
@@ -390,7 +392,7 @@ $ModuleFileSuffix = (
 )
 
 <#
- If the module should be part of a larger namespace, set the namespace here.  ModuleNamespace is 
+ If the module should be part of a larger namespace, set the namespace here.  ModuleNamespace is
  a hashtable where the key is the module name and the value is the namespace like:
  @{
      Module1 = 'Fabricam.Automation'
@@ -715,6 +717,3 @@ $SkipBuildHeader = (
 
 #endregion Logging
 #-------------------------------------------------------------------------------
-
-
-
