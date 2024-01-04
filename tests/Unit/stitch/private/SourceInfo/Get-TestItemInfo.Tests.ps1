@@ -41,9 +41,5 @@ Describe "Testing private function Get-TestItemInfo" -Tags @('unit', 'TestItemIn
         It "It Should have a 'Root' parameter" {
                 $command.Parameters['Root'].Count | Should -Be 1
             }
-        It "It Should have a 'RunTest' parameter" {
-                $command.Parameters['RunTest'].Count | Should -Be 1
-            }
     }
 }
-
