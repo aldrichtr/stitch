@@ -50,14 +50,14 @@ task set.manifest.version {
             throw (logError "Could not load the current source manifest for $name" -PassThu)
         }
         if ($null -ne $currentVersion) {
-            if ($currentVersion.ContainsKey($ProjectVersionField)) {
+            if ($null -ne $currentVersion.($ProjectVersionField)) {
                 try {
-                    $currentVersion = [version]$currentVersion[$ProjectVersionField]
+                    $currentVersion = [version]$currentVersion.($ProjectVersionField)
                 } catch {
-                    throw (logError "$currentVersion[$ProjectVersionField] is not a valid version`n$_" -PassThu)
+                    throw (logError "$($currentVersion.($ProjectVersionField)) is not a valid version`n$_" -PassThu)
                 }
             } else {
-                throw (logError "Project Version Info does not cantain the field $ProjectVersionField" -PassThu)
+                throw (logError "Project Version Info does not contain the field $ProjectVersionField" -PassThu)
             }
         }
 

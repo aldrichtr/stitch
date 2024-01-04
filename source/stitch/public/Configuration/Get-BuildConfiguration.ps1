@@ -183,12 +183,6 @@ function Get-BuildConfiguration {
             Write-Debug 'Resolving project root'
             $resolveRootOptions = @{
                 Path     = $Path
-                Source   = $Source
-                Tests    = $Tests
-                Staging  = $Staging
-                Artifact = $Artifact
-                Docs     = $Docs
-
             }
             $root = (Get-Item (Resolve-ProjectRoot @resolveRootOptions -ErrorAction SilentlyContinue))
 
