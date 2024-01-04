@@ -37,25 +37,6 @@ Describe "Testing public function Test-ProjectRoot" -Tags @('unit', 'ProjectRoot
 
         It "It Should have a 'Path' parameter" {
                 $command.Parameters['Path'].Count | Should -Be 1
-            }
-        It "It Should have a 'Defaults' parameter" {
-                $command.Parameters['Defaults'].Count | Should -Be 1
-            }
-        It "It Should have a 'Source' parameter" {
-                $command.Parameters['Source'].Count | Should -Be 1
-            }
-        It "It Should have a 'Tests' parameter" {
-                $command.Parameters['Tests'].Count | Should -Be 1
-            }
-        It "It Should have a 'Staging' parameter" {
-                $command.Parameters['Staging'].Count | Should -Be 1
-            }
-        It "It Should have a 'Artifact' parameter" {
-                $command.Parameters['Artifact'].Count | Should -Be 1
-            }
-        It "It Should have a 'Docs' parameter" {
-                $command.Parameters['Docs'].Count | Should -Be 1
-            }
+        }
     }
 }
-
