@@ -1,0 +1,113 @@
+name: Code Quality
+run-name: >
+  Code Quality jobs for ${{ github.event.repository.name }}  on ${{ github.base_ref }}  by ${{ github.actor }}
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: pwsh
+
+env:
+  owner: 'aldrichtr'
+  repo: ${{ github.event.repository.name }}
+  root: ${{ github.workspace }}
+  test_helper: ${{ github.workspace }}\tests\TestHelpers.psm1
+  output_path: out\pester
+
+jobs:
+  tests:
+    name: Run pester tests
+    runs-on: windows-latest
+    outputs:
+      #! Output the uploaded artifact-id for use in other jobs
+      pester-results: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - id: checkout
+        name: Checkout the ${{ env.repo }} Repository
+        uses: actions/checkout@v4
+      - id: cache-modules
+        name: Use the module cache if present
+        uses: actions/cache@v3.3.2
+        with:
+          path: |
+            ~\Documents\PowerShell\Modules
+          key: ${{ runner.os }}-pwsh-${{ hashFiles('**/requirements.psd1') }}
+          restore-keys: |
+            ${{ runner.os }}-pwsh-
+      - id: install-psdepend
+        name: Install PSDepend2 from PSGallery
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: |
+          "$($PSStyle.Foregound.Cyan)Github runner cache does not exist$($PSStyle.Reset)"
+          $psdependModule = Get-InstalledModule PSDepend2 -ErrorAction SilentlyContinue
+          if ($null -ne $psdependModule) {
+              "$($PSStyle.Foreground.BrightBlack)PSDepend2 is already installed$($PSStyle.Reset)"
+
+          } else {
+              "$($PSStyle.Foreground.Cyan)Installing PSDepend2$($PSStyle.Reset)"
+
+              Set-PSRepository psgallery -InstallationPolicy trusted
+              Install-Module PSDepend2 -Scope CurrentUser -Confirm:$false -Force
+          }
+      - id: invoke-psdepend
+        name: Call PSDepend to install modules
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: |
+          Import-Module PSDepend2
+          "$($PSStyle.Foreground.Cyan)Installing Dependencies$($PSStyle.Reset)"
+          Invoke-PSDepend -Path "." -Recurse:$true -Confirm:$false -Target 'CurrentUser' -Tags 'ci'
+      - id: run-test
+        name: Run Pester tests
+        run: |
+          $pesterConfig = New-PesterConfiguration
+          $pesterConfig.Run.Path = (Join-Path $env:root 'tests')
+          $pesterConfig.Run.Exit = $true
+          $pesterConfig.Run.PassThu = $true
+
+          $pesterConfig.Filter.ExcludeTag = @('ci.excluded')
+
+          $pesterConfig.CodeCoverage.Enabled = $true
+          $pesterConfig.CodeCoverage.OutputPath = (Join-Path $env:output_path 'coverage.xml')
+          $pesterConfig.CodeCoverage.Path = 'source'
+
+          $pesterConfig.TestResult.Enabled = $true
+          $pesterConfig.TestResult.OutputPath = (Join-Path $env:output_path 'test-result.xml')
+
+          $pesterConfig.Output.CIFormat = 'GithubActions'
+
+
+          $options = @{
+            Configuration = $pesterConfig
+            HelperModule = $env:test_helper
+          }
+          "$($PSStyle.Foreground.Cyan)$($config.CodeCoverage.OutputFormat) formatted Coverage report will be written to $($config.CodeCoverage.OutputPath) $($PSStyle.Reset)"
+          $result = Invoke-Pester @options
+
+          if ($null -ne $result) {
+            $result | Export-CliXml -Path (Join-Path $env:output_path 'test-result-object.xml')
+          }
+      - id: upload
+        name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pester-files
+          path: |
+            ${{ env.output_path}}/coverage.xml
+            ${{ env.output_path}}/test-result.xml
+            ${{ env.output_path}}/test-result-object.xml
+          if-no-files-found: error
+          retention-days: 3
+  test_report:
+    name: Generate test report
+    runs-on: windows-latest
+    needs: tests
+    steps:
+      - id: download
+        name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: pester-files
+          path: ${{ github.workspace }}
+          repository: ${{ env.owner }}/${{ env.repo }}
+          run-id: ${{ needs.tests.outputs.pester-results }}
