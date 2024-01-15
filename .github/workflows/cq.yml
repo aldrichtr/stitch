@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v4
       - id: cache-modules
         name: Use the module cache if present
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v3.3.3
         with:
           path: |
             ~\Documents\PowerShell\Modules
