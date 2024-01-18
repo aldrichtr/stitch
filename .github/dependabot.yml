@@ -11,3 +11,6 @@ updates:
       interval: "weekly"
     assignees:
       - "aldrichtr"
+    labels:
+      - 'area.actions'
+      - 'flag.dependencies'
