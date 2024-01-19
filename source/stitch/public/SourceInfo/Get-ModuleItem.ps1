@@ -17,7 +17,6 @@ function Get-ModuleItem {
     param(
         # Specifies a path to one or more locations containing Module Source
         [Parameter(
-            Mandatory,
             Position = 0,
             ValueFromPipeline,
             ValueFromPipelineByPropertyName
@@ -35,6 +34,9 @@ function Get-ModuleItem {
         Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
     }
     process {
+        if (-not ($PSBoundParameters.ContainsKey('Path'))) {
+            $Path = Find-SourceDirectory
+        }
         foreach ($p in $Path) {
             Write-Debug "  Looking for module source in '$p'"
             try {
