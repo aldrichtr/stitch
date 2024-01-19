@@ -1,73 +1,80 @@
 # configuration file for the issue-labeler action.  See workflows/repo.issue.labels.yml
 
-## All new issues should get the "review" flag
-
-'flag.review':
-  - '/.*/'
 
 ## Issue types
 'is.bug':
-  - '^\s*-?\s*\+bug(fix)?$'
+  - '/^\s*-?\s*\+bug(fix)?$/gm'
 'is.enhancement':
-  - '^\s*-?\s*\+enhance(ment)?$'
-'is.epic':
-  - '^\s*-?\s*\+epic$'
+  - '/^\s*-?\s*\+enhance(ment)?$/gm'
 'is.feature':
-  - '^\s*-?\s*\+feat(ure)?$'
+  - '/^\s*-?\s*\+feat(ure)?$/gm'
 'is.idea':
-  - '^\s*-?\s*\+idea$'
+  - '/^\s*-?\s*\+idea$/gm'
 'is.question':
-  - '^\s*-?\s*\+question$'
+  - '/^\s*-?\s*\+question$/gm'
 'is.refactor':
-  - '^\s*-?\s*\+refac(tor)?$'
-'is.task':
-  - '^\s*-?\s*\+task$'
+  - '/^\s*-?\s*\+refac(tor)?$/gm'
+'is.mantenance':
+  - '/^\s*-?\s*\+maint(enance)?$/gm'
+
+## story types
+'story.epic':
+  - '/^\s*-?\s*\+epic$/gm'
+'story.user':
+  - '/^\s*s?\s*\+user$/gm'
+  - '/^\s*s?\s*\+story$/gm'
 
 ## Project areas
 
 'area.build':
-  - '^\s*-?\s*\[build\]$'
+  - '/^\s*-?\s*\[build\]$/gm'
 'area.tests':
-  - '^\s*-?\s*\[tests\]$'
+  - '/^\s*-?\s*\[tests\]$/gm'
 'area.community':
-  - '^\s*-?\s*\[community\]$'
+  - '/^\s*-?\s*\[community\]$/gm'
 'area.docs':
-  - '^\s*-?\s*\[docs\]$'
+  - '/^\s*-?\s*\[docs\]$/gm'
 'area.module':
-  - '^\s*-?\s*\[module\]$'
+  - '/^\s*-?\s*\[module\]$/gm'
 'area.repo':
-  - '^\s*-?\s*\[repo\]$'
+  - '/^\s*-?\s*\[repo\]$/gm'
 'area.template':
-  - '^\s*-?\s*\[template\]$'
+  - '/^\s*-?\s*\[template\]$/gm'
 'area.tasks':
-  - '^\s*-?\s*\[tasks\]$'
+  - '/^\s*-?\s*\[tasks\]$/gm'
 
 ## Story point value
 
 'sp.00':
-  - '^\s*-?\s*sp(0)?0$'
+  - '/^\s*-?\s*sp(0)?0$/gm'
 'sp.01':
-  - '^\s*-?\s*sp(0)?1$'
+  - '/^\s*-?\s*sp(0)?1$/gm'
 'sp.02':
-  - '^\s*-?\s*sp(0)?2$'
+  - '/^\s*-?\s*sp(0)?2$/gm'
 'sp.03':
-  - '^\s*-?\s*sp(0)?3$'
+  - '/^\s*-?\s*sp(0)?3$/gm'
 'sp.05':
-  - '^\s*-?\s*sp(0)?5$'
+  - '/^\s*-?\s*sp(0)?5$/gm'
 'sp.08':
-  - '^\s*-?\s*sp(0)?8$'
+  - '/^\s*-?\s*sp(0)?8$/gm'
 'sp.13':
-  - '^\s*-?\s*sp13$'
+  - '/^\s*-?\s*sp13$/gm'
 
 ## Closing reasons
 
 'closed.done':
-  - '^\s*-?\s*(closed|(closed)?\.done)$'
+  - '/^\s*-?\s*(closed|(closed)?\.done)$/gm'
 'closed.duplicate':
-  - '^\s*-?\s*(closed)?\.dup(licate)?$'
+  - '/^\s*-?\s*(closed)?\.dup(licate)?$/gm'
 'closed.invalid':
-  - '^\s*-?\s*(closed)?\.invalid$'
+  - '/^\s*-?\s*(closed)?\.invalid$/gm'
 'closed.norepro':
-  - '^\s*-?\s*(closed)?\.norepro$'
+  - '/^\s*-?\s*(closed)?\.norepro$/gm'
 'closed.wontfix':
-  - '^\s*-?\s*(closed)?\.wontfix$'
+  - '/^\s*-?\s*(closed)?\.wontfix$/gm'
+
+
+## All new issues should get the "review" flag
+
+'flag.review':
+  - '/.*/'
