@@ -65,7 +65,7 @@ jobs:
            ${{ runner.os }}-pwsh-
       - id: install-psdepend
         name: Install PSDepend2 from PSGallery
-        if: steps.cache-modules.outputs.cache-hit != 'true'
+        if: ${{ steps.cache-modules.outputs.cache-hit != 'true' }}
         run: |
           $psdependModule = Get-InstalledModule PSDepend2 -ErrorAction SilentlyContinue
           if ($null -ne $psdependModule) {
@@ -77,7 +77,7 @@ jobs:
           }
       - id: invoke-psdepend
         name: Call PSDepend to install modules
-        if: steps.cache-modules.outputs.cache-hit != 'true'
+        if: ${{ steps.cache-modules.outputs.cache-hit != 'true' }}
         run: |
           Import-Module PSDepend2
           Write-Host "Installing dependencies"
