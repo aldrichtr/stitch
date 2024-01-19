@@ -196,11 +196,11 @@ function Get-SourceItemInfo {
             $adjustedPath = [System.IO.Path]::GetRelativePath($Root, $fileItem.FullName)
             Write-Debug "  - '$($fileItem.FullName)' adjusted path is '$adjustedPath'"
             $sourceObject['ProjectPath'] = $adjustedPath
-
             $pathItems = [System.Collections.ArrayList]@(
                 $adjustedPath -split [regex]::Escape([System.IO.Path]::DirectorySeparatorChar)
-            )
-
+                )
+                #! The first item should be the module, second is the directory
+                $sourceObject['Directory'] = $pathItems[1]
             Write-Debug "Path Items for ${adjustedPath}: $($pathItems -join ', ')"
 
             Write-Debug "Matching 'Path' settings in Source Types Configuration"
