@@ -26,22 +26,42 @@
 
 ## Project areas
 
+'area.actions':
+  -'/^\s*-?\s*\[actions\]$/gm'
 'area.build':
-  - '/^\s*-?\s*\[build\]$/gm'
-'area.tests':
-  - '/^\s*-?\s*\[tests\]$/gm'
+  -'/^\s*-?\s*\[build\]$/gm'
+'area.build-script':
+  -'/^\s*-?\s*\[build-script\]$/gm'
+'area.code-quality':
+  -'/^\s*-?\s*\[code-quality\]$/gm'
 'area.community':
-  - '/^\s*-?\s*\[community\]$/gm'
+  -'/^\s*-?\s*\[community\]$/gm'
 'area.docs':
-  - '/^\s*-?\s*\[docs\]$/gm'
+  -'/^\s*-?\s*\[docs\]$/gm'
+'area.help':
+  -'/^\s*-?\s*\[help\]$/gm'
+'area.initialize':
+  -'/^\s*-?\s*\[initialize\]$/gm'
+'area.invoke-build':
+  -'/^\s*-?\s*\[invoke-build\]$/gm'
 'area.module':
-  - '/^\s*-?\s*\[module\]$/gm'
+  -'/^\s*-?\s*\[module\]$/gm'
+'area.phase':
+  -'/^\s*-?\s*\[phase\]$/gm'
 'area.repo':
-  - '/^\s*-?\s*\[repo\]$/gm'
-'area.template':
-  - '/^\s*-?\s*\[template\]$/gm'
+  -'/^\s*-?\s*\[repo\]$/gm'
+'area.runbook':
+  -'/^\s*-?\s*\[runbook\]$/gm'
+'area.source-info':
+  -'/^\s*-?\s*\[source-info\]$/gm'
 'area.tasks':
-  - '/^\s*-?\s*\[tasks\]$/gm'
+  -'/^\s*-?\s*\[tasks\]$/gm'
+'area.template':
+  -'/^\s*-?\s*\[template\]$/gm'
+'area.tests':
+  -'/^\s*-?\s*\[tests\]$/gm'
+'area.versioning':
+  -'/^\s*-?\s*\[versioning\]$/gm'
 
 ## Story point value
 
