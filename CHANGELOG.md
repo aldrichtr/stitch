@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2024-01-21
+
+### Bug Fixes
+
+- Replace broken report actions with test generator
+- Add appropriate labels to dependabot pull requests
+- The Directory field is not populated
+- Use Find-SourceDirectory unless Path is specified
+- Create vars in if statement
+- Convert to regex literal and add global and multiline
+
+### Features
+
+- Create dependabot.yml for github-actions
+- Add all areas
+
+### Miscellaneous Tasks
+
+- Bump actions/checkout from 1 to 4
+- Bump github/codeql-action from 2 to 3
+- Bump actions/cache from 3.3.2 to 4.0.0
+
 ## [0.2.0] - 2024-01-04
 
 ### Bug Fixes
@@ -72,6 +94,7 @@ All notable changes to this project will be documented in this file.
 - Generated task config files
 - Use updated build script for stitch
 - Update initialize phase
+- Bump version to 0.2.0
 
 ### Task
 
