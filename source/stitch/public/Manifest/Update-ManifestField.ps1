@@ -1,6 +1,16 @@
 
 function Update-ManifestField {
-    [CmdletBinding()]
+    <#
+    .SYNOPSIS
+        Set the Value of the given PropertyName, even if it is commented out in the manifest given in Path.
+    .EXAMPLE
+        Get-ChildItem foo.psd1 -Recurse | Update-ManifestField 'ModuleVersion' '0.9.0'
+
+        Sets ModuleVersion to '0.9.0' in foo.psd1
+    #>
+    [CmdletBinding(
+        SupportsShouldProcess
+    )]
     param(
         # Specifies a path to a manifest file
         [Parameter(
@@ -42,12 +52,20 @@ function Update-ManifestField {
         $options = $PSBoundParameters
         $null = $options.Remove('Name')
 
+        #! if we don't do this, then every field gets written as an array.  That doesn't work well for ! many of the
+        #! fields like ModuleVersion, etc.
+        if ($options.Value.Count -eq 1) {
+            $options.Value = [string]$options.Value[0]
+        }
+
         if ($manifestObject.ContainsKey($PropertyName)) {
             #-------------------------------------------------------------------------------
             #region Field exists
             Write-Debug "  - Manifest has a $PropertyName field.  Updating"
             try {
-                Update-Metadata @options
+                if ($PSCmdlet.ShouldProcess($Path, "Update $PropertyName to $Value")) {
+                    Update-Metadata @options
+                }
             }
             catch {
                 throw "Cannot update $PropertyName in $Path`n$_"
@@ -62,8 +80,10 @@ function Update-ManifestField {
             if ($null -ne $fieldToken) {
                 Write-Debug "  - Found comment"
                 try {
-                    $manifestItem | ConvertFrom-CommentedProperty -Property $PropertyName
-                    Update-Metadata @options
+                    if ($PSCmdlet.ShouldProcess($Path, "Update $PropertyName to $Value")) {
+                        $manifestItem | ConvertFrom-CommentedProperty -Property $PropertyName
+                        Update-Metadata @options
+                    }
                 }
                 catch {
                     throw "Cannot update $PropertyName in $Path`n$_"
@@ -86,7 +106,9 @@ function Update-ManifestField {
                     $PropertyName = $Value
                 }
                 try {
-                    Update-ModuleManifest @options
+                    if ($PSCmdlet.ShouldProcess($Path, "Update $PropertyName to $Value")) {
+                        Update-ModuleManifest @options
+                    }
                 } catch {
                     throw "Cannot update $PropertyName in $Path`n$_"
                 }
