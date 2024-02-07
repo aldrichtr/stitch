@@ -63,6 +63,7 @@ function Get-ModuleItem {
                                 [ModuleFlag]$flags = [ModuleFlag]::HasManifest
                                 Write-Debug "  Found $name.psd1 testing Manifest"
                                 $info['ManifestFile'] = "$name.psd1"
+                                $info['Path'] = $manifestFile
                             }
                     }
 
