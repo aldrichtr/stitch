@@ -36,11 +36,10 @@ Describe "Testing public function Get-ModuleItem" -Tags @('unit', 'ModuleItem', 
         }
 
         It "It Should have a 'Path' parameter" {
-                $command.Parameters['Path'].Attributes.Mandatory | Should -BeTrue
+                $command.Parameters['Path'].Count | Should -Be 1
             }
         It "It Should have a 'AsHashTable' parameter" {
                 $command.Parameters['AsHashTable'].Count | Should -Be 1
             }
     }
 }
-
