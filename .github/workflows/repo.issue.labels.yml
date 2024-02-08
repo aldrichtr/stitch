@@ -23,7 +23,7 @@ jobs:
           submodules: recursive
           fetch-depth: 0
       - name: Update labels
-        uses: github/issue-labeler@v3.3
+        uses: github/issue-labeler@v3.4
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           # Path to the configuration file for this action
