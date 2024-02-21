@@ -2,17 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.4.0] - 2024-02-08
+## [0.4.1] - 2024-02-21
 
 ### Bug Fixes
 
+- *(SourceInfo)* Finding source returns multiple, duplicate directories
+
+
+## [0.4.0] - 2024-02-15
+
+### Bug Fixes
+
+- *(test)* Path parameter is not mandatory
 - Value is added as array even if single value
 - Return the path to the manifest
-- Path parameter is not mandatory
 
-### Miscellaneous Tasks
 
-- Bump github/issue-labeler from 3.3 to 3.4
+### Build
+
+- *(deps)* Bump github/issue-labeler from 3.3 to 3.4
+- Bump version to 0.4.0
+
 
 ## [0.3.0] - 2024-01-21
 
@@ -25,20 +35,20 @@ All notable changes to this project will be documented in this file.
 - Create vars in if statement
 - Convert to regex literal and add global and multiline
 
+
 ### Features
 
 - Create dependabot.yml for github-actions
 - Add all areas
 
-### Miscellaneous Tasks
-
-- Bump actions/checkout from 1 to 4
-- Bump github/codeql-action from 2 to 3
-- Bump actions/cache from 3.3.2 to 4.0.0
 
 ### Build
 
+- *(deps)* Bump github/codeql-action from 2 to 3
+- *(deps)* Bump actions/checkout from 1 to 4
+- *(deps)* Bump actions/cache from 3.3.2 to 4.0.0
 - Bump version to 0.3.0
+
 
 ## [0.2.0] - 2024-01-04
 
@@ -47,12 +57,12 @@ All notable changes to this project will be documented in this file.
 - Remove validation from dropdown
 - Before and after task modify jobs list
 - Incorrect project wiki url
-- Upgrade action and configuration
-- Add repository checkout step
 - Do not fail analyzer job on results
 - Load test helper module prior to tests
 - Path to TestHelper module
 - Path syntax to TestHelper module
+- Upgrade action and configuration
+- Add repository checkout step
 - Source module does not import formats
 - Missing regex for component
 - Remove old ci files
@@ -73,27 +83,31 @@ All notable changes to this project will be documented in this file.
 - Remove parameters for project directories
 - Remove erroneous parameter for optionally running test
 
+
 ### Documentation
 
 - Added note about "property" alias
 
+
 ### Features
 
 - Improved label keywords
-- Get a list of tasks in or out of invokebuild
-- Output cbh of given task
 - Get project version from multiple sources
-- Use MD5 hashes to test if files have changed
 - Streamline the pr template
 - Feature pull-request template
 - Add review flag to all new issues
+- Get a list of tasks in or out of invokebuild
+- Output cbh of given task
+- Use MD5 hashes to test if files have changed
 - Override ToString for SourceInfo
 - Set the source directory based on module manifest
 - Set the test directory based on test files
 
+
 ### Refactor
 
 - Use module function to find runbook
+
 
 ### Styling
 
@@ -101,9 +115,11 @@ All notable changes to this project will be documented in this file.
 - Use command instead of alias in tasks
 - Remove noise from logger in debug mode
 
+
 ### WIP
 
 - Reorganize workflow files
+
 
 ### Build
 
@@ -111,6 +127,7 @@ All notable changes to this project will be documented in this file.
 - Use updated build script for stitch
 - Update initialize phase
 - Bump version to 0.2.0
+
 
 ### Task
 
@@ -121,29 +138,34 @@ All notable changes to this project will be documented in this file.
 - Organize debug launcher tasks
 - Consolidate github actions related to CI in one file
 
+
 ## [0.1.2-beta12] - 2023-11-14
 
 ### Bug Fixes
 
+- Merge file functions produce errors
 - Module functions cannot find the build config
 - Get-TaskConfiguration now uses user's stitch directory if found
 - SourceTypeMap properly identifies files and components
-- Merge file functions produce errors
 - Reduce debug "noise"
 - Import functions are not exported from module
+
 
 ### Refactor
 
 - Import functions use Merge-FileCollection
 
+
 ### WIP
 
 - Odds and ends. getting ready for new workstation
+
 
 ### Build
 
 - Bump source version to v0.1.2
 - Bump version to 0.1.2-beta12
+
 
 ## [0.1.1] - 2023-06-28
 
@@ -152,31 +174,36 @@ All notable changes to this project will be documented in this file.
 - Add condition when path is found
 - Change log message from warning to warn
 
+
 ### Build
 
 - Bump version to 0.1.1
+
 
 ## [0.1.0] - 2023-06-23
 
 ### Bug Fixes
 
+- *(doc)* Added installation instructions
 - Add 'Name' field to template data
-- Added installation instructions
+
 
 ### Documentation
 
 - Add initial readme document
 - Add images for readme
 
+
 ### Features
 
 - Initial source module and manifest
 - Import the module's source and tests
 
+
 ### Miscellaneous Tasks
 
-- Add ci config files and templates
 - Add various one-off tools and scripts
+
 
 ### Styling
 
@@ -184,15 +211,23 @@ All notable changes to this project will be documented in this file.
 - Minor comment fixes in pssa rules
 - Minor format change to comment
 
+
 ### Testing
 
 - PSSA custom rules
+
 
 ### Build
 
 - Stitch build driver and module loader
 - Stitch build configuration
 - Bump version to 0.1.0
+
+
+### Ci
+
+- Add ci config files and templates
+
 
 ### Task
 
@@ -202,5 +237,6 @@ All notable changes to this project will be documented in this file.
 - Add and configure the changelog
 - Configure module requirements
 - Add various project scripts
+
 
 <!-- generated by git-cliff -->
