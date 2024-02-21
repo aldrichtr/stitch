@@ -1,8 +1,8 @@
 
-function Find-SourceDirectory {
+function Resolve-SourceDirectory {
     <#
     .SYNOPSIS
-        Find the directory that contains the project's source files
+        Resolve the directory that contains the project's source files
     #>
     [CmdletBinding()]
     param(
@@ -14,6 +14,7 @@ function Find-SourceDirectory {
     }
     process {
         $root = Resolve-ProjectRoot
+        $sourceDirectory = $null
         Write-Debug "Looking for source directory in $root"
 
         $manifests = Find-ModuleManifest $root
@@ -29,9 +30,15 @@ function Find-SourceDirectory {
                     }
                     default {
                         if ($parts[0] -notin $ignoredDirectories) {
-
                             if ($parts.Count -lt $maximumNestedLevel ) {
-                                Get-Item (Join-Path $root $parts[0] ) | Write-Output
+                                $possibleSourceDirectory = Get-Item (Join-Path $root $parts[0])
+                                if ($null -eq $sourceDirectory) {
+                                    $sourceDirectory = $possibleSourceDirectory
+                                } else {
+                                    if ($possibleSourceDirectory.FullName -eq $sourceDirectory.FullName) {
+                                        Write-Debug "$($possibleSourceDirectory.Name) already set"
+                                    }
+                                }
                             } else {
                                 Write-Debug "$($manifest.Name) is nested below maximum levels: $($parts.Count)"
                             }
@@ -45,7 +52,7 @@ function Find-SourceDirectory {
         } else {
             throw "No manifests found in project '$root'"
         }
-
+        $sourceDirectory
     }
     end {
         Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
