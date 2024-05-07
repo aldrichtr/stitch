@@ -78,7 +78,7 @@ assembly-versioning-format: '{NuGetVersionV2}'
 # Assembly Informational Format
 # Specifies the format of AssemblyInformationalVersion. Follows the same formatting semantics as
 # assembly-file-versioning-format. The default value is {InformationalVersion}.
-assembly-informational-format: '{NuGetVersionV2}+{ShortSha}-{CommitDate}'
+assembly-informational-format: '{SemVer}+{ShortSha}.{CommitDate}'
 
 #endregion Assembly Information
 #-------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ continuous-delivery-fallback-tag: ci
 commit-message-incrementing: MergeMessageOnly
 
 # explicitly, using a 'semver' trailer in your commit message
-major-version-bump-message: '\+semver:\s?(breaking|major)'
+major-version-bump-message: '(.*BREAKING CHANGE:.*?)|(\+semver:\s?(breaking|major))'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
 no-bump-message: '\+semver:\s?(none|skip)'
@@ -156,7 +156,7 @@ branches:
   feature:
     regex: ^feat(ure)?[/-]
     mode: ContinuousDeployment
-    tag: beta
+    tag: prerelease
     increment: Minor
     pre-release-weight: 40000
     source-branches:
@@ -164,7 +164,7 @@ branches:
   fix:
     regex: ^(hot)?fix[/-]
     mode: ContinuousDeployment
-    tag: ''
+    tag: prerelease
     increment: Patch
     source-branches:
       - main
