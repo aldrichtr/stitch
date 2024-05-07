@@ -574,7 +574,7 @@ $IncludeUntrackedInGitStash = (
  The name of the temporary PSRepository to create when creating a nuget package
 #>
 $ProjectPSRepoName = (
-    Get-BuildProperty ProjectPSRepoName $BuildInfo.Project.Name
+    Get-BuildProperty ProjectPSRepoName "$(Resolve-ProjectName)"
 )
 
 <#
@@ -598,7 +598,7 @@ $PublishToPsRepo = (
  - abort : fail the build
 #>
 $PublishActionIfUncommitted = (
-    Get-BuildProperty PublishActionIfUncommitted 'local'
+    Get-BuildProperty PublishActionIfUncommitted 'stash'
 )
 
 <#

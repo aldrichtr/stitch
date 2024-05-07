@@ -92,9 +92,7 @@ task 'write.manifest' @(
 )
 
 'Build' | jobs @(
-    'write.module',
-    'write.manifest',
-    'copy.additional.item'
+    'write.module.modulebuilder'
 )
 
 #endregion Build
