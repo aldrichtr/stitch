@@ -35,7 +35,7 @@ function Get-ModuleItem {
     }
     process {
         if (-not ($PSBoundParameters.ContainsKey('Path'))) {
-            $Path = Find-SourceDirectory
+            $Path = Resolve-SourceDirectory
         }
         foreach ($p in $Path) {
             Write-Debug "  Looking for module source in '$p'"
