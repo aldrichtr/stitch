@@ -28,7 +28,7 @@ function Checkpoint-Directory {
         if (Test-Path $Path) {
             foreach ($file in (Get-ChildItem -Path $Path -File -Recurse)) {
                 $relative = [System.IO.Path]::GetRelativePath((Resolve-Path $Path), $file.FullName)
-                $checksum = ($file | Get-FileHash -Algorithm MD5 | Select-Object -ExpandProperty Hash)
+                $checksum = $file | Checkpoint-File
 
                 [PSCustomObject]@{
                     PSTypeName = 'File.Checksum'
