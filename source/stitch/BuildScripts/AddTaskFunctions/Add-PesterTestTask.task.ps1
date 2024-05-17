@@ -395,10 +395,10 @@ function Add-PesterTestTask {
             try {
                 $pesterResult = Invoke-Pester -Configuration (New-PesterConfiguration -Hashtable $pesterOptions)
                 if ($pesterResult.Result -ne 'Passed') {
-                    throw ('{0} out of {1} Pester tests failed' -f $pesterResult.FailedCount, $pesterResult.TotalCount)
+                    assert($null -ne $pesterResult) 'No PesterResult object was returned'
                 }
             } catch {
-                throw $_.Exception.GetType()
+                throw "There was an error running Pester tests`n$_"
             }
 
 
@@ -409,7 +409,6 @@ function Add-PesterTestTask {
                 logInfo "Pester Test result saved to $pesterResultPath"
             }
 
-            Remove-Variable pesterConfig, pesterResult, pesterOptions -ErrorAction SilentlyContinue
         }
         Remove-Variable pesterConfig, pesterResult, pesterOptions -ErrorAction SilentlyContinue
     }
