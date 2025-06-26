@@ -6,6 +6,9 @@ param(
 
 #synopsis: Generate a nuget package from the files in Staging.
 task compress.nuget.package {
+    if ([string]::IsNullorEmpty($ProjectPSRepoName)) {
+        $ProjectPSRepoName = Resolve-ProjectName
+    }
     logDebug "Looking for $ProjectPSRepoName before continuing"
     $psRepository = (Get-PSRepository | Where-Object {
         $_.Name -like $ProjectPSRepoName
