@@ -50,7 +50,16 @@ function Foreach-Module {
             catch {
                 #! if the invocation throws an exception, we want to give the user _that_ one, not the one
                 #! _from_ the invocation
-                throw $_.Exception.InnerException
+                if ($null -ne $_.Exception) {
+                    if ($null -ne $_.Exception.InnerException) {
+                        throw $_.Exception.InnerException
+                    } else {
+                        throw $_
+                    }
+                } else {
+                    throw $_
+                }
+
             }
         }
     }
