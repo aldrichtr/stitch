@@ -1,0 +1,93 @@
+name: Continuous Integration
+run-name:
+  "Continuous Integration jobs for ${{ github.event_name }} on ${{ github.base_ref }} by ${{ github.actor }}"
+
+###############################################################################
+## These actions run when there is a change in a pull request
+###############################################################################
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+defaults:
+  run:
+    shell: pwsh
+
+env:
+  repo: ${{ github.event.repository.name }}
+  pssa_config: ${{ github.workspace }}\PSScriptAnalyzerSettings.psd1
+  unit_test_config: ${{ github.workspace}}\.build\profiles\default\pester\UnitTests.config.psd1
+  unit_test_helper: ${{ github.workspace}}\tests\TestHelpers.psm1
+jobs:
+  lint:
+    name: Analyze source with PSSA
+    runs-on: windows-latest
+    permissions:
+      security-events: write
+    steps:
+      - id: checkout
+        name: Checkout the Repository
+        uses: actions/checkout@v4
+      - id: analyze
+        name: Run PSScriptAnalyzer
+        uses: microsoft/psscriptanalyzer-action@v1.1
+        with:
+          path: '.\source'
+          recurse: true
+          settings: ${{ env.pssa_config }}
+          # Ignore any manifests or data files in CI tests
+          ignorePattern: '\.psd1$'
+          output: ci.pssa-results.sarif
+      - id: upload
+        name: Upload Results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ci.pssa-results.sarif
+  test:
+    runs-on: windows-latest
+    name: Run unit tests
+    steps:
+      - id: checkout
+        name: Checkout the Repository
+        uses: actions/checkout@v4
+      - id: cache-modules
+        name: Use the module cache if present
+        uses: actions/cache@v4.0.2
+        with:
+         path: |
+           ~\Documents\PowerShell\Modules
+         key: ${{ runner.os }}-pwsh-${{ hashFiles('**/requirements.psd1') }}
+         restore-keys: |
+           ${{ runner.os }}-pwsh-
+      - id: install-psdepend
+        name: Install PSDepend2 from PSGallery
+        if: ${{ steps.cache-modules.outputs.cache-hit != 'true' }}
+        run: |
+          $psdependModule = Get-InstalledModule PSDepend2 -ErrorAction SilentlyContinue
+          if ($null -ne $psdependModule) {
+              Write-Host "PSDepend2 is already installed"
+              } else {
+              Write-Host "Installing PSDepend2"
+              Set-PSRepository psgallery -InstallationPolicy trusted
+              Install-Module PSDepend2 -Scope CurrentUser -Confirm:$false -Force
+          }
+      - id: invoke-psdepend
+        name: Call PSDepend to install modules
+        if: ${{ steps.cache-modules.outputs.cache-hit != 'true' }}
+        run: |
+          Import-Module PSDepend2
+          Write-Host "Installing dependencies"
+          Invoke-PSDepend -Path "." -Recurse:$true -Confirm:$false -Target 'CurrentUser' -Tags 'ci'
+      - id: unit-test
+        name: Run unit tests
+        run: |
+          $options = @{
+            ConfigFile = $env:unit_test_config
+            HelperModule = $env:unit_test_helper
+          }
+          Write-Host "Running tests using Configuration '$($options.ConfigFile)' and helper module '$($options.HelperModule)'"
+          .\.build\tools\runTests.ps1 @options
