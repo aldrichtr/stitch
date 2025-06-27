@@ -1,0 +1,43 @@
+<%= $FunctionName %> {
+    #-------------------------------------------------------------------------------
+    #region Before hook
+
+    <% $hookName = $FunctionName -replace '-', '' -%>
+    if ($null -ne $Output) {
+        if ($Output.ContainsKey('<%= $hookName -%>')) {
+            if ($Output.<%= $hookName -%>.ContainsKey('Before')) {
+                if ($Output.<%= $hookName -%>.Before -is [scriptblock]) {
+                    $Output.<%= $hookName -%>.Before.invoke()
+                } elseif ($Output.<%= $hookName -%>.Before -is [string]) {
+                    logEnter $Output.<%= $hookName -%>.Before
+                }
+            }
+        }
+    }
+
+    #endregion Before hook
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region Stitch code
+
+    #endregion Stitch code
+    #-------------------------------------------------------------------------------
+
+    #-------------------------------------------------------------------------------
+    #region After hook
+    if ($null -ne $Output) {
+        if ($Output.ContainsKey('<%= $hookName -%>')) {
+            if ($Output.<%= $hookName -%>.ContainsKey('After')) {
+                if ($Output.<%= $hookName -%>.After -is [scriptblock]) {
+                    $Output.<%= $hookName -%>.After.invoke()
+                } elseif ($Output.<%= $hookName -%>.After -is [string]) {
+                    logEnter $Output.<%= $hookName -%>.After
+                }
+            }
+        }
+    }
+
+    #endregion After hook
+    #-------------------------------------------------------------------------------
+}

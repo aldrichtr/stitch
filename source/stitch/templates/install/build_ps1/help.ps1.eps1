@@ -1,0 +1,10 @@
+<%# Comment based help for the .build.ps1 file -%>
+<#
+.SYNOPSIS
+    Main build script for the stitch build system
+.DESCRIPTION
+    This script is intended to be used by Invoke-Build.  It loads all of the required functions, tasks and helpers
+    and then runs the requested tasks
+
+    To see a list of tasks available, run `Invoke-Build ?`
+#>

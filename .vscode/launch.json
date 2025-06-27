@@ -1,0 +1,77 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Script: Debug Invoke-Build tasks",
+            "type": "PowerShell",
+            "request": "launch",
+            "createTemporaryIntegratedConsole": true,
+            "script": "${workspaceRoot}\\tools\\debugHarness.ps1",
+            "cwd": "${workspaceFolder}",
+            "args": [ ],
+            "presentation": {
+                "hidden": false,
+                "group": "",
+                "order": 1
+            }
+        },
+        {
+            "name": "PowerShell Interactive Session",
+            "type": "PowerShell",
+            "request": "launch",
+            "cwd": "${cwd}"
+        },
+        {
+            "name": "PowerShell Launch Current File",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "cwd": "${cwd}",
+            "presentation": {
+                "hidden": false,
+                "group": "Current File",
+                "order": 1
+            }
+        },
+        {
+            "name": "PowerShell Launch Current File in Temporary Console",
+            "type": "PowerShell",
+            "request": "launch",
+            "createTemporaryIntegratedConsole": true,
+            "script": "${file}",
+            "args": [ ],
+            "cwd": "${file}",
+            "presentation": {
+                "hidden": false,
+                "group": "Current File",
+                "order": 2
+            }
+        },
+        {
+            "name": "PowerShell Launch Current File w/Args Prompt",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "args": [
+                "${command:SpecifyScriptArgs}"
+            ],
+            "cwd": "${file}",
+            "presentation": {
+                "hidden": false,
+                "group": "Current File",
+                "order": 3
+            }
+
+        },
+        {
+            "name": "PowerShell Attach to Host Process",
+            "type": "PowerShell",
+            "request": "attach",
+            "processId": "${command:PickPSHostProcess}",
+            "runspaceId": 1
+        }
+    ]
+}

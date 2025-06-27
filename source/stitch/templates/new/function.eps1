@@ -1,0 +1,24 @@
+<%#
+---
+Description: Create a new function file
+Extension: .ps1
+---
+-%>
+
+function <%= $Name %> {
+    [CmdletBinding()]
+    param(
+
+    )
+    begin {
+        Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+        <%= $Begin %>
+    }
+    process {
+        <%= $Process %>
+    }
+    end {
+        <%= $End %>
+        Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+    }
+}

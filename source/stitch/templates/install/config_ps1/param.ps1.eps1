@@ -1,0 +1,8 @@
+<#
+<% foreach ($line in $Help) { -%>
+ <%= $line %>
+<%- } -%>
+#>
+$<%= $Name -%> = (
+    Get-BuildProperty <%= "$Name $Default" %>
+)

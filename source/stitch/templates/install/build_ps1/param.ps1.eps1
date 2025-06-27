@@ -1,0 +1,12 @@
+    <%# code: language=eps -%>
+    <%= '<#' %>
+    <%- foreach ($line in $Help) { -%>
+    <%= "$line" %>
+    <%- } -%>
+    <%= '#>' %>
+    <%- if ($null -ne $Alias) { -%>
+        [Parameter()]
+        [Alias(<%= "'$Alias'" %>)][<%= $Type %>]$<%= $Name -%>
+    <%- } else { -%>
+        [Parameter()][<%= $Type %>]$<%= $Name -%>
+    <%- } -%>
