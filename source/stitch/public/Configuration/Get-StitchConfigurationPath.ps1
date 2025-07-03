@@ -32,12 +32,14 @@ function Get-StitchConfigurationPath {
     }
   }
   process {
-    $path = [string]($stitchConfig.Local)
-    $path | Add-Member -NotePropertyName 'System' -NotePropertyValue $stitchConfig.System
-    $path | Add-Member -NotePropertyName 'User' -NotePropertyValue $stitchConfig.User
-    $path | Add-Member -NotePropertyName 'Local' -NotePropertyValue $stitchConfig.Local
-
-    $path
+    $configInfo = [psobject]([string]$stitchConfig.Local)
+    $configInfo | Add-Member -NotePropertyMembers $stitchConfig
+    Write-Debug "`$configInfo is a $($configInfo.GetType().FullName)"
+    $configInfo | Get-Member -MemberType NoteProperty
+    | Foreach-Object {
+        Write-Debug "it has $($_.Name) which is $($_.Definition)"
+    }
+    $configInfo
 
   }
   end {
