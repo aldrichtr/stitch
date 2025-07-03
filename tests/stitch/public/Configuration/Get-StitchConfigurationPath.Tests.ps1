@@ -77,5 +77,29 @@ Describe @options {
     }
   }
   <# --=-- #>
+  Context 'WHEN the configuration values are the defaults' {
+    BeforeAll {
+      $stitchConfig = Get-StitchConfigurationPath
+    }
+
+    It 'It should return the local directory .stitch' {
+      $stitchConfig | Should -Be ".stitch"
+    }
+
+    It 'It should be a string object' {
+      $stitchConfig | Should -BeOfType [System.String]
+    }
+
+    It "It should have a 'Local' Property set" {
+      $stitchConfig.Local | Should -Be '.stitch'
+    }
+
+    It "It should have a 'User' Property set" {
+      $stitchConfig.User | Should -Be (Join-Path $env:APPDATA 'stitch')
+    }
+    It "It should have a 'System' Property set" {
+      $stitchConfig.System | Should -Be (Join-Path $env:ProgramData 'stitch')
+    }
+  }
   <# --=-- #>
 }
