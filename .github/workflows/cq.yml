@@ -25,7 +25,7 @@ jobs:
     steps:
       - id: checkout
         name: Checkout the ${{ env.repo }} Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - id: cache-modules
         name: Use the module cache if present
         uses: actions/cache@v4.0.2
