@@ -26,29 +26,52 @@ function Import-StitchConfiguration {
     )]
     [Scope]$Scope,
 
+    # The Profile to import. If not specified `default` is used
+    [Parameter(
+    )]
+    [string]$ProfileName,
+
+    # The path to the key in the configuration
+    [Parameter(
+      Position = 1
+    )]
+    [string]$Key,
+
     # Optionally return the configuration as a hash table instead of a Stitch.ConfigurationInfo object.
     [Parameter(
     )]
     [switch]$AsHashtable
   )
   begin {
-    Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
-    $paths = Import-Configuration
-    | Select-Object -ExpandProperty Configuration
+    $self = $MyInvocation.MyCommand
+    Write-Debug "`n$('-' * 80)`n-- Begin $($self.Name)`n$('-' * 80)"
+
+    $stitchConfig = @{}
   }
   process {
-    $stitchConfig = @{}
-    if (-not ($PSBoundParameters.ContainsKey('Scope'))) {
-      $Scope = [Scope]::Local
+    # NOTE: If no Scope is given, then we want to merge all of them
+    if (-not ($PSBoundParameters.ContainsKey('Scope'))) { $Scope = [Scope]::Local }
+    if (-not ($PSBoundParameters.ContainsKey('ProfileName'))) { $ProfileName = 'default' }
+
+    $tree = Resolve-ProfileTree $ProfileName
+    if ($null -eq $tree) {
+      Write-Warning "Could not resolve profile structure for $ProfileName.  Using 'default'"
+      $tree = @('default')
     }
 
-    foreach ($s in @(0..2)) {
-      if ($Scope.HasFlag([Scope]($s))) {
-        $scopeConfig = Import-ScopeConfiguration -Scope $Scope
-        $stitchConfig = $stitchConfig | Update-Object $scopeConfig
+    Write-Debug "- Given that profile is $ProfileName, the profile-tree is $($tree -join ', ')"
+    for ($i=0; $i -le [int]$Scope) {
+      $currentScope = [Scope]($i)
+      foreach ($branch in $tree) {
+        Write-Debug "Importing configuration at $($currentScope.ToString()) for $branch"
+        $scopeConfig = Import-ProfileConfiguration $branch -Scope $currentScope
+        if ($null -ne $scopeConfig) {
+          # NOTE: If there were any configuration items, merge them into the running configuration
+          Write-Debug '- Merging that into the Configuration'
+          $stitchConfig = $stitchConfig | Update-Object -UpdateObject $scopeConfig
+        }
       }
     }
-
     if ($AsHashtable) {
       $stitchConfig
     } else {
@@ -57,6 +80,6 @@ function Import-StitchConfiguration {
     }
   }
   end {
-    Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+    Write-Debug "`n$('-' * 80)`n-- End $($self.Name)`n$('-' * 80)"
   }
 }

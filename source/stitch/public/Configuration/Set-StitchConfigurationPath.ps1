@@ -31,7 +31,8 @@ function Set-StitchConfigurationPath {
     [string]$Scope = 'Local'
   )
   begin {
-    Write-Debug "`n$('-' * 80)`n-- Begin $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+    $self = $MyInvocation.MyCommand
+    Write-Debug "`n$('-' * 80)`n-- Begin $($self.Name)`n$('-' * 80)"
     $config = Import-Configuration # This is from the `Configuration` module
 
   }
@@ -59,6 +60,6 @@ function Set-StitchConfigurationPath {
     }
   }
   end {
-    Write-Debug "`n$('-' * 80)`n-- End $($MyInvocation.MyCommand.Name)`n$('-' * 80)"
+    Write-Debug "`n$('-' * 80)`n-- End $($self.Name)`n$('-' * 80)"
   }
 }
