@@ -31,7 +31,7 @@ jobs:
     steps:
       - id: checkout
         name: Checkout the Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - id: analyze
         name: Run PSScriptAnalyzer
         uses: microsoft/psscriptanalyzer-action@v1.1
@@ -53,7 +53,7 @@ jobs:
     steps:
       - id: checkout
         name: Checkout the Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - id: cache-modules
         name: Use the module cache if present
         uses: actions/cache@v4.3.0
