@@ -2,3 +2,7 @@
 out/
 
 **/*.log
+
+# The project wiki is its own repo
+docs/wiki
+

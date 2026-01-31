@@ -1,0 +1,21 @@
+// -*- mode: jsonc -*-
+
+{
+  "folders": [
+    {
+      "name": "Stitch",
+      "path": "."
+    },
+    {
+      "name": "User Config",
+      "path": "../../.config/stitch"
+    },
+    {
+      "name": "Original Source",
+      "path": "../stitch-archive"
+    }
+  ],
+  "settings": {
+    "powershell.cwd": "Stitch"
+  }
+}

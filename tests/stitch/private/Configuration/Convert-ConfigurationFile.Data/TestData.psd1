@@ -1,0 +1,5 @@
+@{
+  Configuration = @{
+    Path = "$env:TEMP\test.txt"
+  }
+}
