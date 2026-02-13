@@ -1,0 +1,55 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build the module",
+            "type": "shell",
+            "command": "Invoke-Build Build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run the unit tests",
+            "type": "shell",
+            "command": "${env:APPDATA}\\stitch\\tools\\runTests.ps1",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": "$pester",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+        {
+            "label": "Clean generated files",
+            "type": "shell",
+            "command": "Invoke-Build -BuildProfile Clean"
+        }
+    ],
+  "inputs": [
+    {
+      "id": "TestTag",
+      "description": "Pester test tags to include",
+      "type": "promptString"
+    },
+    {
+      "id": "InvokeBuildTask",
+      "type": "command",
+      "command": "shellCommand.execute",
+      "args": {
+        "command": "${workspaceFolder}/getTasks.cmd",
+        "cwd": "${workspaceFolder}",
+        "fieldSeparator": "|",
+        "description": "Select the build task to run"
+      }
+    }
+  ]
+}
